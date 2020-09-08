@@ -5,10 +5,12 @@ import ctypes
 import os
 import unittest
 
+
 class LinkedList(ctypes.Structure):
     cwd = os.getcwd()
-    lib_path = os.path.join(cwd, 'libll.so')
+    lib_path = os.path.join(cwd, 'cmake-build-debug/libll.so')
     lib = ctypes.CDLL(lib_path)
+
     def __init__(self, head=0):
         self.lib.linked_list_tostring.restype = ctypes.c_char_p
         self.lib.linked_list_init.restype = ctypes.POINTER(LinkedList)
@@ -143,12 +145,11 @@ class LinkedListTest(unittest.TestCase):
         for i in range(10):
             ll.append(i)
         for i in range(10):
-            ll.append(9-i)
+            ll.append(9 - i)
         ret = ll.search_all(7)
         self.assertEqual(str(ret), '7->12')
         ret = ll.search_all(101)
         self.assertEqual(ret.size(), 0)
-
 
 
 if __name__ == "__main__":

@@ -16,3 +16,6 @@ Courseworks of SUSTech CS323-Compilers (2020fall)
 + Makefile tutorial: [A Simple Makefile Tutorial](https://cs.colby.edu/maxwell/courses/tutorials/maketutor/)
 
 + Data structure and algorithms tutorial series: [Linked List](https://www.tutorialspoint.com/data_structures_algorithms/linked_list_algorithms.htm)
+
+## License
+All code that commit by github user certseeds, or named nanoseeds, is based on AGPL3.0.
