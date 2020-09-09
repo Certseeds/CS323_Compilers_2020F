@@ -8,6 +8,9 @@
  */
 #include "linked_list.h"
 
+// this is based on C standard 11
+// compiler command is `gcc linked_list.c --shared -fPIC -o libll.so`
+// environment is ubuntu20.04.01 LTS-wsl; gcc9.3.0; python3.8.3
 node *linked_list_init_value(int value) {
     node *head = (node *) malloc(sizeof(node));
     head->count = value;
@@ -76,7 +79,6 @@ void linked_list_insert(node *head, int val, int index) {
     node *cur = head->next;
     while (cur != NULL) {
         index--;
-        printf("%d", index);
         if (index == 0) {
             will_insert->next = cur->next;
             cur->next = will_insert;
@@ -176,7 +178,7 @@ int linked_list_search(node *head, int val) {
 
 /* search all indexes of val */
 node *linked_list_search_all(node *head, int val) {
-    int* indexs = (int *) malloc(sizeof(int)*head->count);
+    int *indexs = (int *) malloc(sizeof(int) * head->count);
     for (int i = 0; i < head->count; ++i) {
         indexs[i] = -1;
     }
@@ -191,9 +193,9 @@ node *linked_list_search_all(node *head, int val) {
         index++;
         cur = cur->next;
     }
-    node* head_willreturn = linked_list_init();
+    node *head_willreturn = linked_list_init();
     for (int temp = 0; temp < count_remove_number; ++temp) {
-        linked_list_append(head_willreturn,indexs[temp]);
+        linked_list_append(head_willreturn, indexs[temp]);
     }
     free(indexs);
     return head_willreturn;
