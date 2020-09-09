@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-09-08 19:12:02
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-09-08 23:31:21
+ * @LastEditTime: 2020-09-09 08:18:52
  */
 #include "linked_list.h"
 
@@ -141,6 +141,7 @@ void linked_list_remove_all(node *head, int val) {
     for (; count_remove_number >= 0; --count_remove_number) {
         linked_list_delete(head, address[count_remove_number]);
     }
+    free(address);
 }
 
 /* get value at position index */
