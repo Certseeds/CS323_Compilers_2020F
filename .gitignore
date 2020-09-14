@@ -10,6 +10,7 @@
 *.swp
 *.so
 *.bak
+*.log
 peda-session-*
 .gdb_history
 lex.yy.c
