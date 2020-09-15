@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-# encoding: utf-8
+# coding=utf-8
+'''
+Github: https://github.com/Certseeds/CS323_Compilers
+Organization: SUSTech
+Author: nanoseeds
+Date: 2020-09-15 19:53:03
+LastEditors: nanoseeds
+LastEditTime: 2020-09-15 20:51:39
+'''
 
 import ctypes
 import os
@@ -30,6 +38,7 @@ test_cases = pickle.load(open('data.pickle', 'rb'))
 
 for input_, output in test_cases.items():
     ans = valid_ip_address(input_+'\n')
+    print(ans,output)
     if ans != output:
         print('Wrong!')
         print('Input: %s' % input_)

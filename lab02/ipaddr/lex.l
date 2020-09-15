@@ -3,9 +3,11 @@
     char *addr_type = NULL;
 %}
 %option noyywrap
-
-v4 "WRITE YOUR REGULAR EXPRESSIONS HERE"
-v6 "ADD ANY SUB-PATTERNS AS YOU WANT"
+v4_n [0-9]|[1-9][0-9]|[1][0-9]{2}|2[0-4][0-9]|25[0-5]
+v4 ^(({v4_n})(\.)){3}({v4_n})$
+v6_n1 [0-9a-fA-F]
+v6_ns {v6_n1}{1,4}
+v6 ^({v6_ns}:){7}{v6_ns}$
 
 %%
 {v4} { indicator = 4; }
