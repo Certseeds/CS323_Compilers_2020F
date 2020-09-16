@@ -6,7 +6,7 @@ Organization: SUSTech
 Author: nanoseeds
 Date: 2020-09-15 19:53:03
 LastEditors: nanoseeds
-LastEditTime: 2020-09-15 20:51:39
+LastEditTime: 2020-09-16 16:41:42
 '''
 
 import ctypes
@@ -38,7 +38,6 @@ test_cases = pickle.load(open('data.pickle', 'rb'))
 
 for input_, output in test_cases.items():
     ans = valid_ip_address(input_+'\n')
-    print(ans,output)
     if ans != output:
         print('Wrong!')
         print('Input: %s' % input_)
