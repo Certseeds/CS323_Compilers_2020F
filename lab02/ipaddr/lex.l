@@ -13,12 +13,19 @@ v6 ^({v6_ns}:){7}{v6_ns}$
 {v4} { indicator = 4; }
 {v6} { indicator = 6; }
 <<EOF>> {
-    if(indicator == 4)
-        addr_type = "IPv4";
-    else if(indicator == 6)
-        addr_type = "IPv6";
-    else
-        addr_type = "Neither";
+    switch(indicator) {
+        case 4:{
+            addr_type = "IPv4";
+            break;
+        }
+        case 6:{
+            addr_type = "IPv6";
+            break;
+        }
+        default:{
+            addr_type = "Neither";
+        }
+    }
     indicator = 0;
     return 0;
 }
