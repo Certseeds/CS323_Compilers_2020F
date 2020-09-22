@@ -10,9 +10,9 @@
     thick,base node/.style={circle,draw,minimum size=8pt}, real node/.style={double,circle,draw,minimum size=17pt}]
 
   \node[state,initial] (start) {$start$};
-  \node[state] (a) [above left of=start] {$a$};
-  \node[state] (b) [right of=start] {$b$};
-  \node[state] (c) [below left of=start] {$c$};
+  \node[state] (a) [above left of=start] {$0$};
+  \node[state] (b) [right of=start] {$1$};
+  \node[state] (c) [below left of=start] {$2$};
   \node[state,accepting] (F) [right of=b] {$F$};
   
   \path (start) edge              node {$a$} (a)

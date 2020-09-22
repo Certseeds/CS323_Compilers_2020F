@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-09-19 21:47:34
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-09-20 15:41:17
+ * @LastEditTime: 2020-09-23 02:51:15
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 <h2 style="text-align:center">CS323 Assignment 1</h2>
@@ -155,7 +155,7 @@ finally delete node 2.
 </div>
 
 now it is what we need.  
-we use A -> $0?1(01)^{*}$  
+we use RE -> $a?b(ab)^{*}$  
 Answer is  
 <div>
   <img src="./bonus_state7.png"><br />

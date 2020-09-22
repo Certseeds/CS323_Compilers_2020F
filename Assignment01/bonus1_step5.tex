@@ -15,8 +15,8 @@
   
   \path 
         (start) edge [bend right] node {$a$} (F)
-        (start) edge node {$a?1(a1)^{*}a?$} (F)
-        (start) edge  [bend left] node {$(a?1(a1)^{*})?a?c(ac|(a?1(a1)^{*}a?c))(a?1(a1)^{*})?a?$}(F)
+        (start) edge node {$a?b(ab)^{*}a?$} (F)
+        (start) edge  [bend left] node {$(a?b(ab)^{*})?a?c(ac|(a?b(ab)^{*}a?c))^{*}(a?b(ab)^{*})?a?$}(F)
 ;
 \end{tikzpicture}
 \end{document}
