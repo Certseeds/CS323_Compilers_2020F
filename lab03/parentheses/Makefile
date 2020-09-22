@@ -1,4 +1,4 @@
-CC=gcc
+CC=gcc --std=c11
 FLEX=flex
 BISON=bison
 

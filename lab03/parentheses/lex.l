@@ -1,5 +1,10 @@
+%option noyywrap
 %{
     #include"syntax.tab.h"
+    /*
+[({(())}[()])]
+[()[[]()]]
+*/
 %}
 %option noyywrap
 %%

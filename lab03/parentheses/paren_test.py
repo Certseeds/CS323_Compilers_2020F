@@ -1,4 +1,14 @@
 #!/usr/bin/env python3
+# coding=utf-8
+'''
+Github: https://github.com/Certseeds/CS323_Compilers_2020F
+Organization: SUSTech
+Author: nanoseeds
+Date: 2020-09-22 19:17:24
+LastEditors: nanoseeds
+LastEditTime: 2020-09-23 02:00:41
+'''
+#!/usr/bin/env python3
 # encoding: utf-8
 
 import ctypes
@@ -14,10 +24,10 @@ https://leetcode.com/problems/valid-parentheses
 """
 
 
-
 cwd = os.getcwd()
 lib_path = os.path.join(cwd, 'libparen.so')
 lib = ctypes.cdll.LoadLibrary(lib_path)
+
 
 def valid_parentheses(paren):
     func = lib.validParentheses
@@ -29,16 +39,19 @@ def valid_parentheses(paren):
 
 with open('data.pickle', 'rb') as f:
     truematch, falsematch = pickle.load(f)
-
+count: int = 0
 for input_ in truematch:
+    # count = count+1
+    # print(count)
     if valid_parentheses(input_) != 1:
         print('Wrong!')
-        print('Input: %s should be true' % input_)
-        exit(-1)
+        print('Input: {} should be true'.format(input_))
+        exit(2)
 for input_ in falsematch:
+    # count = count+1
+    # print(count)
     if valid_parentheses(input_) != 0:
         print('Wrong!')
-        print('Input: %s should be false' % input_)
-        exit(-1)
-
+        print('Input: {} should be False'.format(input_))
+        exit(-3)
 print('All tests passed!')
