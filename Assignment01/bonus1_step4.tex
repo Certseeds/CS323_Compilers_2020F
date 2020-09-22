@@ -11,18 +11,18 @@
 
   \node[state,initial] (start) {$start$};
  
-  \node[state] (2) [right of=start] {$2$};
-  \node[state,accepting] (F) [right of=2] {$F$};
+  \node[state] (c) [right of=start] {$c$};
+  \node[state,accepting] (F) [right of=c] {$F$};
   
   \path 
-        (start) edge [bend right] node {$0$} (F)
-        (start) edge [bend left] node {$0?1(01)^{*}0?$} (F)
-        (start) edge  node {$(0?1(01)^{*})?0?2$} (2)
-        (2)
-         edge   node {$(0?1(01)^{*})?0?$} (F)
-         edge [loop below] node {$02$} ( )
-         edge [loop above] node {$0?1(01)^{*}0?2$} ( )
+        (start) edge [bend right] node {$a$} (F)
+        (start) edge [bend left] node {$a?b(ab)^{*}a?$} (F)
+        (start) edge  node {$(a?b(ab)^{*})?a?c$} (c)
+        (c)
+         edge   node {$(a?b(ab)^{*})?a?$} (F)
+         edge [loop below] node {$ac$} ( )
+         edge [loop above] node {$a?b(ab)^{*}a?c$} ( )
          ;
 
 \end{tikzpicture}
-\end{document}https://www.overleaf.com/project/5f66c6dd8387d300018234e8
+\end{document}
