@@ -6,8 +6,9 @@ set -eoux pipefail
  # @Author: nanoseeds
  # @Date: 2020-09-23 01:30:40
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-09-23 01:58:41
+ # @LastEditTime: 2020-09-23 02:26:26
 ### 
+#! on work on ubuntu1804!
 CMAKE_DIR="cmake-build-debug"
 cmake_ensure_dir() {
   if [[ ! -d "${CMAKE_DIR}" ]]; then
