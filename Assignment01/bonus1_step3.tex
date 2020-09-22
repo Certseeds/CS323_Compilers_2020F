@@ -10,22 +10,22 @@
     thick,base node/.style={circle,draw,minimum size=8pt}, real node/.style={double,circle,draw,minimum size=17pt}]
 
   \node[state,initial] (start) {$start$};
-  \node[state] (1) [above left of=start] {$1$};
-  \node[state] (2) [below left of=start] {$2$};
+  \node[state] (b) [above left of=start] {$1$};
+  \node[state] (c) [below left of=start] {$2$};
   \node[state,accepting] (F) [right of=start] {$F$};
   
   \path 
-        (start) edge node {$0$} (F)
-        (start) edge   [bend right]           node {$01|1$} (1)
-        (start) edge    [bend left]          node {$02|2$} (2)
-        (1)
-         edge    [bend right]           node {$2|02$} (2)
-         edge [bend left] node {$\epsilon|0$} (F)
-         edge [loop left] node {$01$} ( )
-        (2)
-         edge     [bend right]         node {$1|01$} (1)
-         edge  [bend right] node {$\epsilon|0$} (F)
-         edge [loop left] node {$02$} ( )
+        (start) edge node {$a$} (F)
+        (start) edge   [bend right]           node {$ab|b$} (b)
+        (start) edge    [bend left]          node {$ac|c$} (c)
+        (b)
+         edge    [bend right]           node {$c|ac$} (c)
+         edge [bend left] node {$\epsilon|a$} (F)
+         edge [loop left] node {$ab$} ( )
+        (c)
+         edge     [bend right]         node {$b|ab$} (b)
+         edge  [bend right] node {$\epsilon|a$} (F)
+         edge [loop left] node {$ac$} ( )
          ;
 
 \end{tikzpicture}
