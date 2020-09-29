@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-09-15 19:11:58
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-09-22 19:15:00
+ * @LastEditTime: 2020-09-29 20:01:19
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 # CS323-Compilers
@@ -39,6 +39,11 @@ Coursework of SUSTech CS323-Compilers (2020fall)
 + Regular Expression
   + Testing regex: [Online regex tester and debugger](https://regex101.com/)
   + Visualizing regex: [Regulex: JavaScript Regular Expression Visualizer](https://jex.im/regulex/)
+
++ JSON Related
+  + Introduction of JSON format: [json.org](https://www.json.org/)
+  + The JSON standard: [RFC4627](https://tools.ietf.org/html/rfc4627)
+  + Parsing malformed JSON: [A Dirty JSON Parser](https://rmarcus.info/blog/2014/10/05/dirty-json-parser.html)
 
 ## License
 All code that commit by github user certseeds, or named nanoseeds, is based on AGPL3.0.
