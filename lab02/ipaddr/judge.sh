@@ -26,7 +26,6 @@ compiler() {
   cd "${CMAKE_DIR}"
   cmake ..
   make -j "$(nproc)"
-  cp ./libip.so ./../libip.so
   cd ..
 }
 run_test() {

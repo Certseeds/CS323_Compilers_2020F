@@ -23,7 +23,7 @@ https://leetcode.com/problems/validate-ip-address/
 
 
 cwd = os.getcwd()
-lib_path = os.path.join(cwd, 'libip.so')
+lib_path = os.path.join(cwd, 'cmake-build-debug/libip.so')
 lib = ctypes.cdll.LoadLibrary(lib_path)
 
 def valid_ip_address(ip):

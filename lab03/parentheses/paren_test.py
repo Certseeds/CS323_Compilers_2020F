@@ -15,7 +15,6 @@ import ctypes
 import os
 import pickle
 
-
 """
 Test cases originated from:
 
@@ -23,9 +22,10 @@ LeetCode 20. Validate Parentheses
 https://leetcode.com/problems/valid-parentheses
 """
 
-
 cwd = os.getcwd()
-lib_path = os.path.join(cwd, 'libparen.so')
+CMAKE_DIR = "cmake-build-debug"
+SO_NAME = "libCS323_Compilers_lab03_parentheses_paren.so"
+lib_path = os.path.join(cwd, '{}/{}'.format(CMAKE_DIR, SO_NAME))
 lib = ctypes.cdll.LoadLibrary(lib_path)
 
 

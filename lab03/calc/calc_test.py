@@ -4,10 +4,12 @@
 import ctypes
 import os
 
-
 cwd = os.getcwd()
-lib_path = os.path.join(cwd, 'libcalc.so')
+CMAKE_DIR = "cmake-build-debug"
+SO_NAME = "libCS323_Compilers_lab03_calc_calc.so"
+lib_path = os.path.join(cwd, '{}/{}'.format(CMAKE_DIR, SO_NAME))
 lib = ctypes.cdll.LoadLibrary(lib_path)
+
 
 def evaluate(expr):
     func = lib.evaluate
@@ -16,6 +18,7 @@ def evaluate(expr):
     expr_b = expr.encode('ascii')
     expr_buf = ctypes.c_char_p(expr_b)
     return func(expr_buf)
+
 
 testcases = [
     ('1 + 1', 2),
@@ -29,6 +32,6 @@ testcases = [
 
 for q, a in testcases:
     r = evaluate(q)
-    assert r == a, '%s: expect %d; got %d' % (q,a,r)
+    assert r == a, '%s: expect %d; got %d' % (q, a, r)
 else:
     print('pass all test cases')

@@ -5,24 +5,30 @@ set -eoux pipefail
 # @Organization: SUSTech
 # @Author: nanoseeds
 # @Date: 2020-09-08 23:20:25
- # @LastEditors: nanoseeds
- # @LastEditTime: 2020-09-08 23:37:04
+# @LastEditors: nanoseeds
+# @LastEditTime: 2020-10-02 17:37:04
 ###
-main() {
-    dire="cmake-build-debug"
-    if [ -d "${dire}" ]; then
-        rm -rf "${dire}"
-    fi
-    if [[ ! -d "${dire}" ]]; then
-        mkdir "${dire}"
-    fi
-    cd "${dire}"
-    cmake ..
-    make
-    ./CS323_Compliers_lab01_hello.out
-    ./CS323_Compliers_lab01_ll_main.out
-    cd ..
-    python3 ./ll_test.py
+CMAKE_DIR="cmake-build-debug"
+cmake_ensure_dir() {
+  # now in /lab01
+  if [[ ! -d "${CMAKE_DIR}" ]]; then
+    mkdir "${CMAKE_DIR}"
+  fi
+}
+compiler() {
+  # still in /lab01
+  cd "${CMAKE_DIR}"
+  cmake ..
+  make -j "$(nproc)"
+  ./CS323_Compilers_lab01_hello.out
+  ./CS323_Compilers_lab01_ll_main.out
+  cd ..
 }
 
-main
+run_test() {
+  # now in /lab01
+  python3 ./ll_test.py
+}
+cmake_ensure_dir
+compiler
+run_test

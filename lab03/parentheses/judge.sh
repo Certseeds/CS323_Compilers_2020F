@@ -20,7 +20,6 @@ compiler() {
   cd "${CMAKE_DIR}"
   cmake ..
   make -j "$(nproc)"
-  cp ./libparen.so ./../libparen.so
   cd ..
 }
 run_test() {
