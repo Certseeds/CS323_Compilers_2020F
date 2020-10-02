@@ -7,9 +7,9 @@
  * @LastEditTime: 2020-09-29 20:01:19
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
-# CS323-Compilers
+# CS323_Compilers_2020F
 
-Coursework of SUSTech CS323-Compilers (2020fall)
+Coursework of SUSTech CS323_Compilers_2020F (2020fall)
 
 ## Lab Schedule
 

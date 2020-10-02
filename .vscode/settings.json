@@ -23,7 +23,7 @@
         "autoAlready": true,
         "annotationStr": {
             "head": "/*",
-            "middle": " * @",
+            "middle": "* @",
             "end": " */",
             "use": false
         },

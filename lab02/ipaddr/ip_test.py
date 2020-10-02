@@ -6,7 +6,7 @@ Organization: SUSTech
 Author: nanoseeds
 Date: 2020-09-15 19:53:03
 LastEditors: nanoseeds
-LastEditTime: 2020-09-16 16:41:42
+LastEditTime: 2020-10-02 23:20:25
 '''
 
 import ctypes
@@ -23,7 +23,7 @@ https://leetcode.com/problems/validate-ip-address/
 
 
 cwd = os.getcwd()
-lib_path = os.path.join(cwd, 'cmake-build-debug/libip.so')
+lib_path = os.path.join(cwd, 'cmake-build-debug/libCS323_Compilers_lab02_ipaddr_ip.so')
 lib = ctypes.cdll.LoadLibrary(lib_path)
 
 def valid_ip_address(ip):

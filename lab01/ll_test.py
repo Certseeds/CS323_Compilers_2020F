@@ -8,7 +8,7 @@ import unittest
 
 class LinkedList(ctypes.Structure):
     cwd = os.getcwd()
-    lib_path = os.path.join(cwd, 'cmake-build-debug/libll.so')
+    lib_path = os.path.join(cwd, 'cmake-build-debug/libCS323_Compilers_lab01_ll.so')
     lib = ctypes.CDLL(lib_path)
 
     def __init__(self, head=0):

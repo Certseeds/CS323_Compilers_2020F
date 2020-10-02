@@ -36,7 +36,7 @@
 配置脚本为[enviroment.sh](./enviorment.sh)
 
 #### 虚拟机部分
-虚拟机可以在[this](http://10.20.38.233:2333/course/cs323-compilers/)下载,login as `student:compiler`
+虚拟机可以在[this](http://10.20.38.233:2333/course/CS323_Compilers_2020F/)下载,login as `student:compiler`
 
 ### Part 3: 词法分析中的Flex
 Flex是一个快速的词法分析器生成器(fast lex).需要指定要匹配的模式以及每个模式匹配之后的操作.Flex会使用文件中的正则表达式,并生成可识别所有模式的组合NFA，然后将其转换为等效的DFA，并尽可能的精简自动机，最后生成 实现词法分析器的C代码. Flex与它的前身Lex(由Lesk和Schmidt设计)相似，并且具有许多相似之处. 尽管我们将在项目中使用Flex，但几乎所有使用的功能都在Lex中提供.

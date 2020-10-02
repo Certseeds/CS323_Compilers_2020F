@@ -5,14 +5,14 @@ project(CS323_Compilers_project1 LANGUAGES C)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
 #FIND_PACKAGE(BISON REQUIRED)
-#SET(BisonOutput ${CMAKE_SOURCE_DIR}/src/rcdgen/parser.cpp)
+#SET(BisonOutput ${CMAKE_CURRENT_SOURCE_DIR}/src/rcdgen/parser.cpp)
 #IF(BISON_FOUND)
 #    ADD_CUSTOM_COMMAND(
 #            OUTPUT ${BisonOutput}
 #            COMMAND ${BISON_EXECUTABLE}
-#            --defines=${CMAKE_SOURCE_DIR}/src/rcdgen/tokens.h
+#            --defines=${CMAKE_CURRENT_SOURCE_DIR}/src/rcdgen/tokens.h
 #            --output=${BisonOutput}
-#            ${CMAKE_SOURCE_DIR}/src/rcdgen/parser.y
+#            ${CMAKE_CURRENT_SOURCE_DIR}/src/rcdgen/parser.y
 #            COMMENT "Generating parser.cpp"
 #    )
 #ENDIF()
@@ -25,7 +25,7 @@ IF (FLEX_FOUND)
             OUTPUT ${FlexOutput}
             COMMAND ${FLEX_EXECUTABLE}
             --outfile=${FlexOutput}
-            ${CMAKE_SOURCE_DIR}/lex.l
+            ${CMAKE_CURRENT_SOURCE_DIR}/lex.l
     )
 ENDIF ()
 ADD_EXECUTABLE(Flex.out ${FlexOutput})
