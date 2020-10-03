@@ -29,8 +29,7 @@ ADD_LIBRARY(${PROJECT_NAME}_lexer
         ${CMAKE_BINARY_DIR}/lex.yy.c
         )
 ADD_EXECUTABLE(Flex.out ${CMAKE_BINARY_DIR}/lex.yy.c)
-# ADD_LIBRARY(${PROJECT_NAME}_paren
-#         SHARED
-#         ${CMAKE_BINARY_DIR}/syntax.tab.c)
-
+        # ADD_LIBRARY(${PROJECT_NAME}_paren
+        #         SHARED
+        #         ${CMAKE_BINARY_DIR}/syntax.tab.c)
 # TARGET_LINK_LIBRARIES(${PROJECT_NAME}_paren ${PROJECT_NAME}_lexer)
