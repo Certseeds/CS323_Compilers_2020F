@@ -6,7 +6,7 @@
 # @Author: nanoseeds
 # @Date: 2020-09-19 17:59:07
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-10-04 22:33:04
+ # @LastEditTime: 2020-10-06 00:04:18
 ###
 CMAKE_DIR="cmake-build-debug"
 cmake_ensure_dir() {
@@ -15,7 +15,7 @@ cmake_ensure_dir() {
   fi
 }
 compiler() {
-  cd "${CMAKE_DIR}"
+  cd "${CMAKE_DIR}" || exit
   make clean
   cmake ..
   make -j "$(nproc)"
@@ -30,7 +30,8 @@ run_test() {
     ./CS323_Compilers_project1_pro1 ./../test/test_1_r"${i}".spl > \
       ./../test/test_1_r"${i}".test.out 2>&1
     diff ./../test/test_1_r"${i}".out ./../test/test_1_r"${i}".test.out \
-      -y --left-column
+    -q
+      #-y --left-column
   done
 
   # TODO deal with the `0xabc` for char
@@ -42,12 +43,12 @@ basic_illgeal_test() {
     ./CS323_Compilers_project1_pro1 ./../test/test_1_r"${i}".spl > \
       ./../test/test_1_r"${i}".test.out 2>&1
     diff ./../test/test_1_r"${i}".out ./../test/test_1_r"${i}".test.out \
-      -y --left-column
+    -q
+      #-y --left-column --suppress-common-lines 
   done
 }
 debug() {
-  i="08"
-  ./CS323_Compilers_project1_pro1 ./../test/test_1_r${i}.spl
+  ./CS323_Compilers_project1_pro1 ./../test/test_1_r09.spl
   exit
 }
 echo

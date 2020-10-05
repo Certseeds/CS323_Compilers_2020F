@@ -2,7 +2,8 @@
 cmake_minimum_required(VERSION 3.16.6)
 project(CS323_Compilers_project1 LANGUAGES C)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lfl -ly -fPIC")
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lfl -ly -fPIC -Wall -Wextra")
 
 FIND_PACKAGE(FLEX REQUIRED)
 FIND_PACKAGE(BISON REQUIRED)
@@ -26,8 +27,7 @@ SET_SOURCE_FILES_PROPERTIES(${GEN_SOURCES} GENERATED)
 
 ADD_LIBRARY(${PROJECT_NAME}_lexer
         SHARED
-        ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c
-        )
+        ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c)
 #ADD_EXECUTABLE(Flex.out ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c)
 # ADD_LIBRARY(${PROJECT_NAME}_pro1
 #         SHARED

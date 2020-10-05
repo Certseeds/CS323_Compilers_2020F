@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.16.6)
 project(CS323_Compilers_lab02_ipaddr LANGUAGES C)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -std=c11 -Wall -Wextra")
 
 #FIND_PACKAGE(BISON REQUIRED)
 #SET(BisonOutput ${CMAKE_SOURCE_DIR}/src/rcdgen/parser.cpp)

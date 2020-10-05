@@ -1,1 +1,4 @@
-./judge.sh: line 42: ./CS323_Compilers_project1_pro1: No such file or directory
+Error type A at Line 3: unknown lexeme 0x77G
+Error type A at Line 4: unknown lexeme 0xCS
+Error type A at Line 7: unknown lexeme '\x6u'
+Error type A at Line 8: unknown lexeme '\x910'
