@@ -6,7 +6,7 @@
 # @Author: nanoseeds
 # @Date: 2020-09-19 17:59:07
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-10-06 00:04:18
+ # @LastEditTime: 2020-10-08 11:28:57
 ###
 CMAKE_DIR="cmake-build-debug"
 cmake_ensure_dir() {
@@ -27,28 +27,38 @@ run_test() {
   able=("01" "02" "05" "09" "12")
   for i in "${able[@]}"; do
     echo "${i}"
-    ./CS323_Compilers_project1_pro1 ./../test/test_1_r"${i}".spl > \
-      ./../test/test_1_r"${i}".test.out 2>&1
-    diff ./../test/test_1_r"${i}".out ./../test/test_1_r"${i}".test.out \
-    -q
-      #-y --left-column
+    ./CS323_Compilers_project1_pro1 ./../test_example/test_1_r"${i}".spl > \
+      ./../test_example/test_1_r"${i}".test.out 2>&1
+    diff ./../test_example/test_1_r"${i}".out ./../test_example/test_1_r"${i}".test.out \
+      -y --left-column --suppress-common-lines
   done
-
-  # TODO deal with the `0xabc` for char
 }
 basic_illgeal_test() {
   able2=("03" "04" "06" "07" "08" "10" "11")
   for i in "${able2[@]}"; do
     echo "${i}"
-    ./CS323_Compilers_project1_pro1 ./../test/test_1_r"${i}".spl > \
-      ./../test/test_1_r"${i}".test.out 2>&1
-    diff ./../test/test_1_r"${i}".out ./../test/test_1_r"${i}".test.out \
-    -q
-      #-y --left-column --suppress-common-lines 
+    ./CS323_Compilers_project1_pro1 ./../test_example/test_1_r"${i}".spl > \
+      ./../test_example/test_1_r"${i}".test.out 2>&1
+    diff ./../test_example/test_1_r"${i}".out ./../test_example/test_1_r"${i}".test.out \
+      -y --left-column --suppress-common-lines --suppress-common-lines
+  done
+}
+test_SID() {
+  able3=("1" "2" "3" "4" "5")
+  for i in "${able3[@]}"; do
+    echo "${i}"
+    ./CS323_Compilers_project1_pro1 ./../test/test_SID_"${i}".spl > \
+      ./../test/test_SID_"${i}".test.out 2>&1
+    diff ./../test/test_SID_"${i}".out ./../test/test_SID_"${i}".test.out \
+      -y --left-column --suppress-common-lines --suppress-common-lines
   done
 }
 debug() {
-  ./CS323_Compilers_project1_pro1 ./../test/test_1_r09.spl
+  i="10"
+  ./CS323_Compilers_project1_pro1 ./../test_example/test_1_r"${i}".spl > \
+    ./../test_example/test_1_r"${i}".test.out 2>&1
+  diff ./../test_example/test_"${i}".out ./../test_example/test_"${i}".test.out \
+    -y --left-column --suppress-common-lines --suppress-common-lines
   exit
 }
 echo
@@ -57,3 +67,4 @@ compiler
 #debug
 run_test
 basic_illgeal_test
+test_SID

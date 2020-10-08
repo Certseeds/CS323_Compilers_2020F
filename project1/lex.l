@@ -1,30 +1,7 @@
 %{
-    #include <stdarg.h>
-    struct Node{
-        char * name;
-        int nodes_num;
-        union {
-            int linenum;
-            char char_value;
-            int int_value;
-            float float_value;
-            char* string_value;
-        };
-        struct Node** nodes;
-        void (*print)(int,struct Node *);
-    };
-    void print_line(int space,struct Node * node);
-    void print_str_value(int space,struct Node* node);
-    void print_int_value(int space,struct Node* node);
-    void print_float_value(int space,struct Node* node);
-    void print_char_value(int space,struct Node* node);
-    void print_name(int space,struct Node* node);
-    void print_nothing(int space,struct Node* node);
-    void node_set_sub(struct Node* node,int num,...);
-    struct Node* new_node_key(char* nam);
-    struct Node* new_node_key_value(char* nam);
-    struct Node* new_node_line_num(char* nam,int line_nu,int nodes_nu);
+    #include "node.h"
     int isError = 0;
+    #define LEXER_ERROR_OUTPUT stdout
 %}
 %{
     #include"syntax.tab.h"
@@ -146,12 +123,12 @@ CHAR_16_toolong '\\x{digit_16}{3,}'
 }
 {UINT32_16_error_more_0} {
     isError=1;
-    fprintf(stderr, "Error type A at Line %s: Illgeal UINT32 hex-Leading 0 \n", yytext);
+    fprintf(LEXER_ERROR_OUTPUT, "Error type A at Line %s: Illgeal UINT32 hex-Leading 0 \n", yytext);
     return ILLEGAL_TOKEN;
 }
 {UINT32_16_error_illgeal_char} {
     isError=1;
-    fprintf(stderr, "Error type A at Line %s: UINT32_16_error_illgeal_char \n", yytext);
+    fprintf(LEXER_ERROR_OUTPUT, "Error type A at Line %s: UINT32_16_error_illgeal_char \n", yytext);
     return ILLEGAL_TOKEN;
 }
 {CHAR} {
@@ -163,63 +140,41 @@ CHAR_16_toolong '\\x{digit_16}{3,}'
 {CHAR_16} {
     yytext[1]='0';
     yytext[yyleng-1]='\0';
-    // printf("hex char %s\n",yytext+1);
     yylval.Node_value = new_node_key("CHAR");
     yylval.Node_value->string_value = (char*)malloc(sizeof(char)*(yyleng));
     memcpy(yylval.Node_value->string_value,yytext+sizeof(char),sizeof(char)*(yyleng-1));
     yylval.Node_value->string_value[0]='\\';
     yylval.Node_value->string_value[yyleng-1]='\0';
     yylval.Node_value->print=&print_str_value;
-    // printf("hex char %c \n",yylval.char_value);
     return CHAR;
 }
 {CHAR_16_more0} {
     isError=1;
-    fprintf(stderr,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
+    fprintf(LEXER_ERROR_OUTPUT,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
     return ILLEGAL_TOKEN;
 }
 {CHAR_16_illgeal_char} {
     isError=1;
-    fprintf(stderr,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
+    fprintf(LEXER_ERROR_OUTPUT,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
     return ILLEGAL_TOKEN;
 }
 {CHAR_16_toolong} {
     isError=1;
-    fprintf(stderr,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
+    fprintf(LEXER_ERROR_OUTPUT,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
     return ILLEGAL_TOKEN;
 }
 [^0-9a-zA-Z_'\\\(\)\[\]\{\}\;\,\+\-\*\/] {
     isError=1;
     // illgeal characters
-    fprintf(stderr,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
+    fprintf(LEXER_ERROR_OUTPUT,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
     //yymore();
     return ILLEGAL_TOKEN;
 }
-[0-9]{ID} {
+[0-9]*{ID} {
     isError=1;
     // Illgeal ID
-    fprintf(stderr,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
+    fprintf(LEXER_ERROR_OUTPUT,"Error type A at Line %d: unknown lexeme %s\n",yylineno, yytext);
     // TODO
     return ID;
 }
 %%
-// int main(int argc, char **argv){
-//     char *file_path;
-//     if(argc < 2){
-//         fprintf(stderr, "Usage: %s <file_path>\n", argv[0]);
-//         return EXIT_FAIL;
-//     }
-//     else if(argc == 2){
-//         file_path = argv[1];
-//         if(!(yyin = fopen(file_path, "r"))){
-//             perror(argv[1]);
-//             return EXIT_FAIL;
-//         }
-//         yylex();
-//         return EXIT_OK;
-//     }
-//     else{
-//         fputs("Too much arguments!\n", stderr);
-//         return EXIT_FAIL;
-//     }
-// }

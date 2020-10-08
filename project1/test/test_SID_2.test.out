@@ -1,0 +1,754 @@
+Program (1)
+  ExtDefList (1)
+    ExtDef (1)
+      Specifier (1)
+        TYPE: int
+      ExtDecList (1)
+        VarDec (1)
+          ID: int_global
+      SEMI
+    ExtDefList (2)
+      ExtDef (2)
+        Specifier (2)
+          TYPE: float
+        ExtDecList (2)
+          VarDec (2)
+            ID: float_global
+        SEMI
+      ExtDefList (3)
+        ExtDef (3)
+          Specifier (3)
+            TYPE: char
+          ExtDecList (3)
+            VarDec (3)
+              ID: char_global
+          SEMI
+        ExtDefList (4)
+          ExtDef (4)
+            Specifier (4)
+              StructSpecifier (4)
+                STRUCT
+                ID: my_struct1
+                LC
+                DefList (5)
+                  Def (5)
+                    Specifier (5)
+                      TYPE: int
+                    DecList (5)
+                      Dec (5)
+                        VarDec (5)
+                          ID: code
+                    SEMI
+                  DefList (6)
+                    Def (6)
+                      Specifier (6)
+                        TYPE: char
+                      DecList (6)
+                        Dec (6)
+                          VarDec (6)
+                            ID: data
+                      SEMI
+                    DefList (7)
+                      Def (7)
+                        Specifier (7)
+                          TYPE: float
+                        DecList (7)
+                          Dec (7)
+                            VarDec (7)
+                              ID: money
+                        SEMI
+                RC
+            SEMI
+          ExtDefList (9)
+            ExtDef (9)
+              Specifier (9)
+                StructSpecifier (9)
+                  STRUCT
+                  ID: my_struct2
+                  LC
+                  DefList (11)
+                    Def (11)
+                      Specifier (11)
+                        StructSpecifier (11)
+                          STRUCT
+                          ID: my_struct1
+                      DecList (11)
+                        Dec (11)
+                          VarDec (11)
+                            ID: mine
+                      SEMI
+                    DefList (12)
+                      Def (12)
+                        Specifier (12)
+                          StructSpecifier (12)
+                            STRUCT
+                            ID: my_struct1
+                        DecList (12)
+                          Dec (12)
+                            VarDec (12)
+                              ID: yours
+                        SEMI
+                  RC
+              ExtDecList (13)
+                VarDec (13)
+                  ID: name2s
+              SEMI
+            ExtDefList (14)
+              ExtDef (14)
+                Specifier (14)
+                  StructSpecifier (14)
+                    STRUCT
+                    ID: my_struct3
+                    LC
+                    DefList (16)
+                      Def (16)
+                        Specifier (16)
+                          StructSpecifier (16)
+                            STRUCT
+                            ID: my_struct2
+                        DecList (16)
+                          Dec (16)
+                            VarDec (16)
+                              ID: mine
+                        SEMI
+                      DefList (17)
+                        Def (17)
+                          Specifier (17)
+                            StructSpecifier (17)
+                              STRUCT
+                              ID: my_struct2
+                          DecList (17)
+                            Dec (17)
+                              VarDec (17)
+                                ID: yours
+                          SEMI
+                    RC
+                ExtDecList (18)
+                  VarDec (18)
+                    ID: name3s
+                SEMI
+              ExtDefList (19)
+                ExtDef (19)
+                  Specifier (19)
+                    StructSpecifier (19)
+                      STRUCT
+                      ID: my_struct4
+                      LC
+                      DefList (21)
+                        Def (21)
+                          Specifier (21)
+                            StructSpecifier (21)
+                              STRUCT
+                              ID: my_struct2
+                          DecList (21)
+                            Dec (21)
+                              VarDec (21)
+                                ID: mine
+                          SEMI
+                        DefList (22)
+                          Def (22)
+                            Specifier (22)
+                              StructSpecifier (22)
+                                STRUCT
+                                ID: my_struct3
+                            DecList (22)
+                              Dec (22)
+                                VarDec (22)
+                                  ID: yours
+                            SEMI
+                      RC
+                  ExtDecList (23)
+                    VarDec (23)
+                      ID: name4
+                  SEMI
+                ExtDefList (24)
+                  ExtDef (24)
+                    Specifier (24)
+                      TYPE: int
+                    FunDec (24)
+                      ID: testfunction
+                      LP
+                      VarList (24)
+                        ParamDec (24)
+                          Specifier (24)
+                            TYPE: int
+                          VarDec (24)
+                            ID: a
+                        COMMA
+                        VarList (24)
+                          ParamDec (24)
+                            Specifier (24)
+                              TYPE: int
+                            VarDec (24)
+                              ID: b
+                      RP
+                    CompSt (25)
+                      LC
+                      DefList (26)
+                        Def (26)
+                          Specifier (26)
+                            TYPE: int
+                          DecList (26)
+                            Dec (26)
+                              VarDec (26)
+                                ID: fl
+                              ASSIGN
+                              Exp (26)
+                                INT: 2
+                          SEMI
+                        DefList (27)
+                          Def (27)
+                            Specifier (27)
+                              TYPE: float
+                            DecList (27)
+                              Dec (27)
+                                VarDec (27)
+                                  ID: fl2
+                                ASSIGN
+                                Exp (27)
+                                  FLOAT: 2.000000
+                            SEMI
+                          DefList (28)
+                            Def (28)
+                              Specifier (28)
+                                TYPE: char
+                              DecList (28)
+                                Dec (28)
+                                  VarDec (28)
+                                    ID: te
+                                  ASSIGN
+                                  Exp (28)
+                                    CHAR: a
+                              SEMI
+                            DefList (29)
+                              Def (29)
+                                Specifier (29)
+                                  TYPE: char
+                                DecList (29)
+                                  Dec (29)
+                                    VarDec (29)
+                                      ID: c
+                                    ASSIGN
+                                    Exp (29)
+                                      CHAR: c
+                                SEMI
+                              DefList (30)
+                                Def (30)
+                                  Specifier (30)
+                                    TYPE: int
+                                  DecList (30)
+                                    Dec (30)
+                                      VarDec (30)
+                                        ID: d
+                                      ASSIGN
+                                      Exp (30)
+                                        INT: 2
+                                  SEMI
+                                DefList (31)
+                                  Def (31)
+                                    Specifier (31)
+                                      TYPE: float
+                                    DecList (31)
+                                      Dec (31)
+                                        VarDec (31)
+                                          ID: float2313
+                                        ASSIGN
+                                        Exp (31)
+                                          INT: 3
+                                    SEMI
+                      StmtList (32)
+                        Stmt (32)
+                          Exp (32)
+                            Exp (32)
+                              ID: d
+                            ASSIGN
+                            Exp (32)
+                              INT: 3
+                          SEMI
+                        StmtList (33)
+                          Stmt (33)
+                            Exp (33)
+                              Exp (33)
+                                ID: c
+                              ASSIGN
+                              Exp (33)
+                                CHAR: e
+                            SEMI
+                          StmtList (34)
+                            Stmt (34)
+                              Exp (34)
+                                Exp (34)
+                                  ID: float2313
+                                ASSIGN
+                                Exp (34)
+                                  FLOAT: 231.229996
+                              SEMI
+                            StmtList (35)
+                              Stmt (35)
+                                RETURN
+                                Exp (35)
+                                  INT: 115
+                                SEMI
+                      RC
+                  ExtDefList (37)
+                    ExtDef (37)
+                      Specifier (37)
+                        TYPE: int
+                      FunDec (37)
+                        ID: testingfunctions
+                        LP
+                        VarList (37)
+                          ParamDec (37)
+                            Specifier (37)
+                              TYPE: int
+                            VarDec (37)
+                              ID: value
+                          COMMA
+                          VarList (37)
+                            ParamDec (37)
+                              Specifier (37)
+                                TYPE: float
+                              VarDec (37)
+                                ID: value2
+                        RP
+                      CompSt (38)
+                        LC
+                        DefList (39)
+                          Def (39)
+                            Specifier (39)
+                              StructSpecifier (39)
+                                STRUCT
+                                ID: my_struct2
+                            DecList (39)
+                              Dec (39)
+                                VarDec (39)
+                                  ID: obj2
+                            SEMI
+                        StmtList (40)
+                          Stmt (40)
+                            Exp (40)
+                              Exp (40)
+                                Exp (40)
+                                  Exp (40)
+                                    ID: obj2
+                                  DOT
+                                  ID: mine
+                                DOT
+                                ID: code
+                              ASSIGN
+                              Exp (40)
+                                ID: int_global
+                            SEMI
+                          StmtList (41)
+                            Stmt (41)
+                              Exp (41)
+                                Exp (41)
+                                  Exp (41)
+                                    Exp (41)
+                                      ID: obj2
+                                    DOT
+                                    ID: mine
+                                  DOT
+                                  ID: data
+                                ASSIGN
+                                Exp (41)
+                                  ID: float_global
+                              SEMI
+                            StmtList (42)
+                              Stmt (42)
+                                Exp (42)
+                                  Exp (42)
+                                    Exp (42)
+                                      Exp (42)
+                                        ID: obj2
+                                      DOT
+                                      ID: yours
+                                    DOT
+                                    ID: code
+                                  ASSIGN
+                                  Exp (42)
+                                    ID: value
+                                SEMI
+                              StmtList (43)
+                                Stmt (43)
+                                  Exp (43)
+                                    Exp (43)
+                                      Exp (43)
+                                        Exp (43)
+                                          ID: obj2
+                                        DOT
+                                        ID: yours
+                                      DOT
+                                      ID: data
+                                    ASSIGN
+                                    Exp (43)
+                                      ID: value2
+                                  SEMI
+                                StmtList (44)
+                                  Stmt (44)
+                                    Exp (44)
+                                      Exp (44)
+                                        ID: int_global
+                                      ASSIGN
+                                      Exp (44)
+                                        Exp (44)
+                                          ID: int_global
+                                        PLUS
+                                        Exp (44)
+                                          INT: 1
+                                    SEMI
+                                  StmtList (45)
+                                    Stmt (45)
+                                      RETURN
+                                      Exp (45)
+                                        INT: 11
+                                      SEMI
+                        RC
+                    ExtDefList (51)
+                      ExtDef (51)
+                        Specifier (51)
+                          TYPE: int
+                        FunDec (51)
+                          ID: test_1_r01
+                          LP
+                          VarList (51)
+                            ParamDec (51)
+                              Specifier (51)
+                                TYPE: int
+                              VarDec (51)
+                                ID: a
+                            COMMA
+                            VarList (51)
+                              ParamDec (51)
+                                Specifier (51)
+                                  TYPE: int
+                                VarDec (51)
+                                  ID: b
+                          RP
+                        CompSt (52)
+                          LC
+                          DefList (53)
+                            Def (53)
+                              Specifier (53)
+                                TYPE: char
+                              DecList (53)
+                                Dec (53)
+                                  VarDec (53)
+                                    ID: c
+                                  ASSIGN
+                                  Exp (53)
+                                    CHAR: c
+                              SEMI
+                          StmtList (54)
+                            Stmt (54)
+                              IF
+                              LP
+                              Exp (54)
+                                Exp (54)
+                                  ID: a
+                                GT
+                                Exp (54)
+                                  ID: b
+                              RP
+                              Stmt (55)
+                                CompSt (55)
+                                  LC
+                                  StmtList (56)
+                                    Stmt (56)
+                                      RETURN
+                                      Exp (56)
+                                        ID: a
+                                      SEMI
+                                  RC
+                              ELSE
+                              Stmt (59)
+                                CompSt (59)
+                                  LC
+                                  StmtList (60)
+                                    Stmt (60)
+                                      RETURN
+                                      Exp (60)
+                                        ID: b
+                                      SEMI
+                                  RC
+                            StmtList (62)
+                              Stmt (62)
+                                RETURN
+                                Exp (62)
+                                  INT: 1
+                                SEMI
+                          RC
+                      ExtDefList (64)
+                        ExtDef (64)
+                          Specifier (64)
+                            TYPE: int
+                          FunDec (64)
+                            ID: func_rua
+                            LP
+                            VarList (64)
+                              ParamDec (64)
+                                Specifier (64)
+                                  TYPE: int
+                                VarDec (64)
+                                  ID: a
+                            RP
+                          CompSt (65)
+                            LC
+                            StmtList (67)
+                              Stmt (67)
+                                RETURN
+                                Exp (67)
+                                  Exp (67)
+                                    INT: 3
+                                  MUL
+                                  Exp (67)
+                                    ID: a
+                                SEMI
+                            RC
+                        ExtDefList (69)
+                          ExtDef (69)
+                            Specifier (69)
+                              TYPE: int
+                            FunDec (69)
+                              ID: func_wei_zaima
+                              LP
+                              VarList (69)
+                                ParamDec (69)
+                                  Specifier (69)
+                                    TYPE: int
+                                  VarDec (69)
+                                    ID: x
+                                COMMA
+                                VarList (69)
+                                  ParamDec (69)
+                                    Specifier (69)
+                                      TYPE: int
+                                    VarDec (69)
+                                      ID: y
+                              RP
+                            CompSt (70)
+                              LC
+                              StmtList (71)
+                                Stmt (71)
+                                  RETURN
+                                  Exp (71)
+                                    Exp (71)
+                                      ID: x
+                                    PLUS
+                                    Exp (71)
+                                      ID: y
+                                  SEMI
+                              RC
+                          ExtDefList (73)
+                            ExtDef (73)
+                              Specifier (73)
+                                TYPE: int
+                              FunDec (73)
+                                ID: main
+                                LP
+                                RP
+                              CompSt (73)
+                                LC
+                                DefList (74)
+                                  Def (74)
+                                    Specifier (74)
+                                      TYPE: int
+                                    DecList (74)
+                                      Dec (74)
+                                        VarDec (74)
+                                          ID: a
+                                        ASSIGN
+                                        Exp (74)
+                                          INT: 1
+                                    SEMI
+                                  DefList (75)
+                                    Def (75)
+                                      Specifier (75)
+                                        TYPE: int
+                                      DecList (75)
+                                        Dec (75)
+                                          VarDec (75)
+                                            ID: b1
+                                          ASSIGN
+                                          Exp (75)
+                                            INT: 2
+                                      SEMI
+                                    DefList (76)
+                                      Def (76)
+                                        Specifier (76)
+                                          TYPE: int
+                                        DecList (76)
+                                          Dec (76)
+                                            VarDec (76)
+                                              ID: b2
+                                            ASSIGN
+                                            Exp (76)
+                                              INT: 1131796
+                                        SEMI
+                                      DefList (77)
+                                        Def (77)
+                                          Specifier (77)
+                                            TYPE: int
+                                          DecList (77)
+                                            Dec (77)
+                                              VarDec (77)
+                                                ID: b3
+                                              ASSIGN
+                                              Exp (77)
+                                                INT: 26318864
+                                          SEMI
+                                        DefList (78)
+                                          Def (78)
+                                            Specifier (78)
+                                              TYPE: float
+                                            DecList (78)
+                                              Dec (78)
+                                                VarDec (78)
+                                                  ID: c1
+                                                ASSIGN
+                                                Exp (78)
+                                                  FLOAT: 3.000000
+                                            SEMI
+                                          DefList (79)
+                                            Def (79)
+                                              Specifier (79)
+                                                TYPE: float
+                                              DecList (79)
+                                                Dec (79)
+                                                  VarDec (79)
+                                                    ID: d
+                                                  ASSIGN
+                                                  Exp (79)
+                                                    FLOAT: 3.000000
+                                              SEMI
+                                            DefList (80)
+                                              Def (80)
+                                                Specifier (80)
+                                                  TYPE: char
+                                                DecList (80)
+                                                  Dec (80)
+                                                    VarDec (80)
+                                                      ID: e1
+                                                    ASSIGN
+                                                    Exp (80)
+                                                      CHAR: e
+                                                SEMI
+                                              DefList (81)
+                                                Def (81)
+                                                  Specifier (81)
+                                                    TYPE: char
+                                                  DecList (81)
+                                                    Dec (81)
+                                                      VarDec (81)
+                                                        ID: e2
+                                                      ASSIGN
+                                                      Exp (81)
+                                                        CHAR: \x2a
+                                                  SEMI
+                                                DefList (82)
+                                                  Def (82)
+                                                    Specifier (82)
+                                                      TYPE: int
+                                                    DecList (82)
+                                                      Dec (82)
+                                                        VarDec (82)
+                                                          ID: c
+                                                    SEMI
+                                StmtList (83)
+                                  Stmt (83)
+                                    IF
+                                    LP
+                                    Exp (83)
+                                      Exp (83)
+                                        ID: e1
+                                      NE
+                                      Exp (83)
+                                        CHAR: a
+                                    RP
+                                    Stmt (83)
+                                      CompSt (83)
+                                        LC
+                                        StmtList (84)
+                                          Stmt (84)
+                                            Exp (84)
+                                              Exp (84)
+                                                ID: a
+                                              ASSIGN
+                                              Exp (84)
+                                                INT: 3
+                                            SEMI
+                                          StmtList (85)
+                                            Stmt (85)
+                                              RETURN
+                                              Exp (85)
+                                                ID: testingfunctions
+                                                LP
+                                                Args (85)
+                                                  Exp (85)
+                                                    ID: a
+                                                  COMMA
+                                                  Args (85)
+                                                    Exp (85)
+                                                      ID: testfunction
+                                                      LP
+                                                      Args (85)
+                                                        Exp (85)
+                                                          ID: b1
+                                                        COMMA
+                                                        Args (85)
+                                                          Exp (85)
+                                                            INT: 2
+                                                      RP
+                                                RP
+                                              SEMI
+                                        RC
+                                    ELSE
+                                    Stmt (86)
+                                      CompSt (86)
+                                        LC
+                                        StmtList (87)
+                                          Stmt (87)
+                                            Exp (87)
+                                              Exp (87)
+                                                ID: b1
+                                              ASSIGN
+                                              Exp (87)
+                                                INT: 2
+                                            SEMI
+                                          StmtList (88)
+                                            Stmt (88)
+                                              RETURN
+                                              Exp (88)
+                                                ID: func_wei_zaima
+                                                LP
+                                                Args (88)
+                                                  Exp (88)
+                                                    ID: func_rua
+                                                    LP
+                                                    Args (88)
+                                                      Exp (88)
+                                                        ID: b1
+                                                    RP
+                                                  COMMA
+                                                  Args (88)
+                                                    Exp (88)
+                                                      ID: func_wei_zaima
+                                                      LP
+                                                      Args (88)
+                                                        Exp (88)
+                                                          ID: b3
+                                                        COMMA
+                                                        Args (88)
+                                                          Exp (88)
+                                                            ID: b2
+                                                      RP
+                                                RP
+                                              SEMI
+                                        RC
+                                  StmtList (90)
+                                    Stmt (90)
+                                      RETURN
+                                      Exp (90)
+                                        INT: 1
+                                      SEMI
+                                RC

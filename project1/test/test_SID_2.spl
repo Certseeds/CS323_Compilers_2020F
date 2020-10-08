@@ -1,0 +1,91 @@
+int int_global;
+float float_global;
+char char_global;
+struct my_struct1{
+  int code;
+  char data;
+  float money;
+};
+struct my_struct2
+{
+    struct my_struct1 mine;
+    struct my_struct1 yours;
+} name2s;
+struct my_struct3
+{
+    struct my_struct2 mine;
+    struct my_struct2 yours;
+} name3s;
+struct my_struct4
+{
+    struct my_struct2 mine;
+    struct my_struct3 yours;
+} name4;
+int testfunction(int a, int b)
+{
+  int fl =2;
+  float fl2=2.0;
+  char te = 'a';
+  char c = 'c';
+  int d = 2;
+  float float2313=3;
+  d=3;
+  c='e';
+  float2313=231.23;
+  return 115;
+}
+int testingfunctions(int value,float value2)
+{
+  struct my_struct2 obj2;
+  obj2.mine.code= int_global;
+  obj2.mine.data=float_global;
+  obj2.yours.code=value;
+  obj2.yours.data=value2;
+  int_global = int_global  + 1;
+  return 11;
+}
+// 114514
+// 114514
+// 114514
+// 114514
+int test_1_r01(int a, int b)
+{
+  char c = 'c';
+  if (a > b)
+  {
+    return a;
+  }
+  else
+  {
+    return b;
+  }
+  return 1;
+}
+int func_rua(int a)
+{
+  
+  return 3 * a;
+}
+int func_wei_zaima(int x, int y)
+{
+  return x + y;
+}
+int main() {
+    int a = 1;
+    int b1 = 2;
+    int b2 = 0x114514;
+    int b3 = 0X1919810;
+    float c1 = 3.0;
+    float d= 3.0;
+    char e1 = 'e';
+    char e2 = '\x2a';
+    int c;
+    if ( e1 != 'a'){
+      a=3;
+      return testingfunctions(a,testfunction(b1,2));
+    }else{
+      b1=2;
+      return func_wei_zaima(func_rua(b1),func_wei_zaima(b3,b2));
+    }
+    return 1;
+}

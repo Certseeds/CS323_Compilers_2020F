@@ -1,0 +1,4 @@
+int main(){
+    char 92buzai = 'a';
+    return 1;
+}
