@@ -1,3 +1,11 @@
+/*
+ * @Github: https://github.com/Certseeds/CS323_Compilers_2020F
+ * @Organization: SUSTech
+ * @Author: nanoseeds
+ * @Date: 2020-10-07 22:38:55
+ * @LastEditors: nanoseeds
+ * @LastEditTime: 2020-10-08 14:43:48
+ */
 //
 // Created by nanos on 2020/10/7.
 //
@@ -28,7 +36,7 @@ int main(int argc,char** argv){
         yyparse();
     }
     if(isError == 0){
-        root_node->print(0,root_node);
+        root_node->print(0);
     }
     return 0;
 }

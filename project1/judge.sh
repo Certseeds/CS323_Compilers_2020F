@@ -1,12 +1,11 @@
 #!/bin/bash
-
 ###
 # @Github: https://github.com/Certseeds/CS323_Compilers_2020F
 # @Organization: SUSTech
 # @Author: nanoseeds
 # @Date: 2020-09-19 17:59:07
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-10-08 11:28:57
+ # @LastEditTime: 2020-10-08 14:58:35
 ###
 CMAKE_DIR="cmake-build-debug"
 cmake_ensure_dir() {
@@ -61,10 +60,30 @@ debug() {
     -y --left-column --suppress-common-lines --suppress-common-lines
   exit
 }
-echo
-cmake_ensure_dir
-compiler
-#debug
-run_test
-basic_illgeal_test
-test_SID
+# echo
+# make_file
+# cmake_ensure_dir
+# compiler
+# debug
+# run_test
+# basic_illgeal_test
+# test_SID
+
+make_file() {
+  cd src || exit
+  make clean
+  make splc
+  cp ./splc ./../splc
+  mv ./../splc ./../splc.out
+  make clean
+  cd ..
+  able=("01" "02" "05" "09" "12" "03" "04" "06" "07" "08" "10" "11")
+  for i in "${able[@]}"; do
+    echo "${i}"
+    ./splc.out ./test_example/test_1_r"${i}".spl > \
+      ./test_example/test_1_r"${i}".test.out 2>&1
+    diff ./test_example/test_1_r"${i}".out ./test_example/test_1_r"${i}".test.out \
+      -y --left-column --suppress-common-lines --suppress-common-lines
+  done
+}
+make_file

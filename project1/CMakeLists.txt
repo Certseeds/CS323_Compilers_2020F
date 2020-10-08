@@ -1,62 +1,10 @@
-# header begin
-cmake_minimum_required(VERSION 3.16.6)
-project(CS323_Compilers_project1 LANGUAGES C)
+ # header begin
+ cmake_minimum_required(VERSION 3.16.6)
+ project(CS323_Compilers_project1 LANGUAGES CXX)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lfl -ly -fPIC -Wall -Wextra")
+ set(CMAKE_CXX_STANDARD 17)
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -Wall -Wextra")
 
-FIND_PACKAGE(FLEX REQUIRED)
-FIND_PACKAGE(BISON REQUIRED)
-
-FLEX_TARGET(lexer
-        ${CMAKE_CURRENT_SOURCE_DIR}/lex.l
-        ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c)
-BISON_TARGET(parser
-        ${CMAKE_CURRENT_SOURCE_DIR}/syntax.y
-        ${CMAKE_CURRENT_BINARY_DIR}/syntax.tab.c
-        COMPILE_FLAGS "-t -d -v")
-
-ADD_FLEX_BISON_DEPENDENCY(lexer parser)
-
-SET(GEN_SOURCES
-        ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c
-        ${CMAKE_CURRENT_BINARY_DIR}/syntax.tab.c
-        ${CMAKE_CURRENT_BINARY_DIR}/syntax.tab.h
-        )
-SET_SOURCE_FILES_PROPERTIES(${GEN_SOURCES} GENERATED)
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/node.h DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/main.c DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/yyerror_myself.h DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-add_library(${PROJECT_NAME}_node
-        SHARED
-
-        ${CMAKE_CURRENT_SOURCE_DIR}/node.c
-        )
-add_library(${PROJECT_NAME}_yyerror
-        SHARED
-        ${CMAKE_CURRENT_SOURCE_DIR}/yyerror_myself.c
-        )
-ADD_LIBRARY(${PROJECT_NAME}_lexer
-        SHARED
-        ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c)
-#ADD_EXECUTABLE(Flex.out ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c)
-# ADD_LIBRARY(${PROJECT_NAME}_pro1
-#         SHARED
-#         ${CMAKE_CURRENT_BINARY_DIR}/syntax.tab.c)
-ADD_LIBRARY(${PROJECT_NAME}_parser
-        SHARED
-        ${CMAKE_CURRENT_BINARY_DIR}/syntax.tab.c)
-
-ADD_EXECUTABLE(${PROJECT_NAME}_pro1
-        ${CMAKE_CURRENT_BINARY_DIR}/main.c)
-
-
-TARGET_LINK_LIBRARIES(${PROJECT_NAME}_lexer ${PROJECT_NAME}_node)
-TARGET_LINK_LIBRARIES(${PROJECT_NAME}_parser
-        ${PROJECT_NAME}_node
-        ${PROJECT_NAME}_yyerror
-        )
-TARGET_LINK_LIBRARIES(${PROJECT_NAME}_pro1
-        ${PROJECT_NAME}_lexer
-        ${PROJECT_NAME}_parser)
+ add_library(${PROJECT_NAME}_node
+         ${CMAKE_CURRENT_SOURCE_DIR}/src/node.cpp
+         )

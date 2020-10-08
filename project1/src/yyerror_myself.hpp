@@ -4,8 +4,8 @@
 
 #ifndef CS323_COMPLIERS_PROJECT1_TEST_YYERROR_MYSELF_HPP
 #define CS323_COMPLIERS_PROJECT1_TEST_YYERROR_MYSELF_HPP
-#include <stdio.h>
-enum YYERROR_TYPE {
+#include <string>
+enum class YYERROR_TYPE {
     LACK_OF_RC = 1,
     LACK_OF_RB,
     LACK_OF_RP,
@@ -17,6 +17,6 @@ enum YYERROR_TYPE {
     MISS_COMMA
 };
 
-void yyerror_myself(enum YYERROR_TYPE type);
+void yyerror_myself(YYERROR_TYPE type);
 
 #endif //CS323_COMPLIERS_PROJECT1_TEST_YYERROR_MYSELF_HPP
