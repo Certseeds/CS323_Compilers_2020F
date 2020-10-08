@@ -4,11 +4,12 @@
 ## @Author: nanoseeds
 ## @Date: 2020-09-08 19:12:02
 ## @LastEditors: nanoseeds
-## @LastEditTime: 2020-09-22 23:28:46
+## @LastEditTime: 2020-10-08 15:00:49
 ### 
 *.out
 *.swp
 *.so
+*.o
 *.bak
 *.log
 peda-session-*
