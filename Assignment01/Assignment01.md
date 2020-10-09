@@ -4,11 +4,12 @@
  * @Author: nanoseeds
  * @Date: 2020-09-19 21:47:34
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-09-23 02:51:15
+ * @LastEditTime: 2020-10-09 10:49:48
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 <h2 style="text-align:center">CS323 Assignment 1</h2>
 
+**Scores**: 105(only have a few error of Question 2-6)
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
@@ -61,6 +62,8 @@ Answer:
 first of all, Substrings' length range is [0,n].  
 second , the length is n, so we can view the string as n char with n+1 blocks, what we should do is do double divide in n+1 blocks, the middle part is the substring.  
 so Answer is $\tbinom{n+1}{2}$(select 2 from n+1).  
+**Correct Answer: The Answer is  $\tbinom{n+1}{2}+1$**
+
 
 7. subsequence (A subsequence of s is any string formed by deleting zero or more not necessarily consecutive  positions of s. For example, baan is a subsequence of banana.)</br>
 Answer:  
@@ -78,7 +81,7 @@ ALL in ALL
 | 3     |                                                    $1$ |
 | 4     |                                                    $1$ |
 | 5     | $\begin{cases}  0, & m==n \\\\ 1, & 0<m<n \end{cases}$ |
-| 6     |                                      $\tbinom{n+1}{2}$ |
+| 6     |                                      $\tbinom{n+1}{2}+1$ |
 | 7     |                        $\sum_{m=0}^{n}{\tbinom{n}{m}}$ |
 
 ### Question 3
