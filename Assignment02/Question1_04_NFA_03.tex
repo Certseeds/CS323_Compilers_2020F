@@ -1,0 +1,19 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\begin{document}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+    thick,base node/.style={circle,draw,minimum size=8pt}, real node/.style={double,circle,draw,minimum size=17pt}]
+
+  \node[state,initial] (start) {$9$};
+  \node[state,accepting] (end) [right of=start] {$10$};
+  
+  \path (start) edge              node {$a$} (end)
+         ;
+
+\end{tikzpicture}
+\end{document}  

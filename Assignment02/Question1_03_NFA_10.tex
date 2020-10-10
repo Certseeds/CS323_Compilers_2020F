@@ -1,0 +1,52 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\begin{document}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+    thick,base node/.style={circle,draw,minimum size=8pt}, real node/.style={double,circle,draw,minimum size=17pt}
+    ]
+    
+    
+
+  \node[state]          (first){$1$};
+  \node[state,initial]  (start) [below left of=first]{$0$};
+  \node[state]          (a) [above right of=first] {$2$};
+  \node[state]          (b) [right of=a] {$3$};
+  \node[state]          (c) [below right of=first] {$4$};
+  \node[state]          (d) [right of=c] {$5$};
+  \node[state]          (e) [below right of=b] {$6$};
+  \node[state]          (f)  [below right of=e] {$7$};
+  \node[state]   (start2)  [right of = f] {$8$};
+  \node[state] (a2) [below left of=start2] {$9$};
+  \node[state] (b2) [below of=a2] {$10$};
+  \node[state] (c2) [below right of=start2] {$11$};
+  \node[state] (d2) [below of=c2] {$12$};
+  \node[state,accepting] (e2) [below right of=b2] {$13$};
+  
+  \path (start) edge node {$\epsilon$} (first)
+        (first) edge    node {$\epsilon$} (a)
+        (first) edge    node {$\epsilon$} (c)
+        (a) edge      node {$a$} (b)
+        (b) edge       node {$\epsilon$} (e)
+        (c) edge          node {$b$} (d)
+        (d) edge       node {$\epsilon$} (e)
+        (e) edge       node {$\epsilon$} (f)
+        (e) edge       node {$\epsilon$} (first)
+        (start) edge  [bend right]     node {$\epsilon$} (f)
+        (f) edge       node {$a$} (start2)
+        
+        
+        (start2) edge       node {$\epsilon$} (a2)
+        (start2) edge       node {$\epsilon$} (c2)
+        (a2) edge           node {$a$} (b2)
+        (b2) edge       node {$\epsilon$} (e2)
+        (c2) edge          node {$b$} (d2)
+        (d2) edge       node {$\epsilon$} (e2)
+         ;
+
+\end{tikzpicture}
+\end{document}
