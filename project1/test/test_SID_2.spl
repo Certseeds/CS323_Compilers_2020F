@@ -25,12 +25,9 @@ int testfunction(int a, int b)
 {
   int fl =2;
   float fl2=2.0;
-  char te = 'a';
-  char c = 'c';
   int d = 2;
   float float2313=3;
   d=3;
-  c='e';
   float2313=231.23;
   return 115;
 }
@@ -50,7 +47,6 @@ int testingfunctions(int value,float value2)
 // 114514
 int test_1_r01(int a, int b)
 {
-  char c = 'c';
   if (a > b)
   {
     return a;
@@ -77,8 +73,6 @@ int main() {
     int b3 = 0X1919810;
     float c1 = 3.0;
     float d= 3.0;
-    char e1 = 'e';
-    char e2 = '\x2a';
     int c;
     if ( e1 != 'a'){
       a=3;

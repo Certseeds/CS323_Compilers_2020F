@@ -211,245 +211,211 @@ Program (1)
                           DefList (28)
                             Def (28)
                               Specifier (28)
-                                TYPE: char
+                                TYPE: int
                               DecList (28)
                                 Dec (28)
                                   VarDec (28)
-                                    ID: te
+                                    ID: d
                                   ASSIGN
                                   Exp (28)
-                                    CHAR: a
+                                    INT: 2
                               SEMI
                             DefList (29)
                               Def (29)
                                 Specifier (29)
-                                  TYPE: char
+                                  TYPE: float
                                 DecList (29)
                                   Dec (29)
                                     VarDec (29)
-                                      ID: c
+                                      ID: float2313
                                     ASSIGN
                                     Exp (29)
-                                      CHAR: c
+                                      INT: 3
                                 SEMI
-                              DefList (30)
-                                Def (30)
-                                  Specifier (30)
-                                    TYPE: int
-                                  DecList (30)
-                                    Dec (30)
-                                      VarDec (30)
-                                        ID: d
-                                      ASSIGN
-                                      Exp (30)
-                                        INT: 2
-                                  SEMI
-                                DefList (31)
-                                  Def (31)
-                                    Specifier (31)
-                                      TYPE: float
-                                    DecList (31)
-                                      Dec (31)
-                                        VarDec (31)
-                                          ID: float2313
-                                        ASSIGN
-                                        Exp (31)
-                                          INT: 3
-                                    SEMI
-                      StmtList (32)
-                        Stmt (32)
-                          Exp (32)
-                            Exp (32)
+                      StmtList (30)
+                        Stmt (30)
+                          Exp (30)
+                            Exp (30)
                               ID: d
                             ASSIGN
-                            Exp (32)
+                            Exp (30)
                               INT: 3
                           SEMI
-                        StmtList (33)
-                          Stmt (33)
-                            Exp (33)
-                              Exp (33)
-                                ID: c
+                        StmtList (31)
+                          Stmt (31)
+                            Exp (31)
+                              Exp (31)
+                                ID: float2313
                               ASSIGN
-                              Exp (33)
-                                CHAR: e
+                              Exp (31)
+                                FLOAT: 231.229996
                             SEMI
-                          StmtList (34)
-                            Stmt (34)
-                              Exp (34)
-                                Exp (34)
-                                  ID: float2313
-                                ASSIGN
-                                Exp (34)
-                                  FLOAT: 231.229996
+                          StmtList (32)
+                            Stmt (32)
+                              RETURN
+                              Exp (32)
+                                INT: 115
                               SEMI
-                            StmtList (35)
-                              Stmt (35)
-                                RETURN
-                                Exp (35)
-                                  INT: 115
-                                SEMI
                       RC
-                  ExtDefList (37)
-                    ExtDef (37)
-                      Specifier (37)
+                  ExtDefList (34)
+                    ExtDef (34)
+                      Specifier (34)
                         TYPE: int
-                      FunDec (37)
+                      FunDec (34)
                         ID: testingfunctions
                         LP
-                        VarList (37)
-                          ParamDec (37)
-                            Specifier (37)
+                        VarList (34)
+                          ParamDec (34)
+                            Specifier (34)
                               TYPE: int
-                            VarDec (37)
+                            VarDec (34)
                               ID: value
                           COMMA
-                          VarList (37)
-                            ParamDec (37)
-                              Specifier (37)
+                          VarList (34)
+                            ParamDec (34)
+                              Specifier (34)
                                 TYPE: float
-                              VarDec (37)
+                              VarDec (34)
                                 ID: value2
                         RP
-                      CompSt (38)
+                      CompSt (35)
                         LC
-                        DefList (39)
-                          Def (39)
-                            Specifier (39)
-                              StructSpecifier (39)
+                        DefList (36)
+                          Def (36)
+                            Specifier (36)
+                              StructSpecifier (36)
                                 STRUCT
                                 ID: my_struct2
-                            DecList (39)
-                              Dec (39)
-                                VarDec (39)
+                            DecList (36)
+                              Dec (36)
+                                VarDec (36)
                                   ID: obj2
                             SEMI
-                        StmtList (40)
-                          Stmt (40)
-                            Exp (40)
-                              Exp (40)
-                                Exp (40)
-                                  Exp (40)
+                        StmtList (37)
+                          Stmt (37)
+                            Exp (37)
+                              Exp (37)
+                                Exp (37)
+                                  Exp (37)
                                     ID: obj2
                                   DOT
                                   ID: mine
                                 DOT
                                 ID: code
                               ASSIGN
-                              Exp (40)
+                              Exp (37)
                                 ID: int_global
                             SEMI
-                          StmtList (41)
-                            Stmt (41)
-                              Exp (41)
-                                Exp (41)
-                                  Exp (41)
-                                    Exp (41)
+                          StmtList (38)
+                            Stmt (38)
+                              Exp (38)
+                                Exp (38)
+                                  Exp (38)
+                                    Exp (38)
                                       ID: obj2
                                     DOT
                                     ID: mine
                                   DOT
                                   ID: data
                                 ASSIGN
-                                Exp (41)
+                                Exp (38)
                                   ID: float_global
                               SEMI
-                            StmtList (42)
-                              Stmt (42)
-                                Exp (42)
-                                  Exp (42)
-                                    Exp (42)
-                                      Exp (42)
+                            StmtList (39)
+                              Stmt (39)
+                                Exp (39)
+                                  Exp (39)
+                                    Exp (39)
+                                      Exp (39)
                                         ID: obj2
                                       DOT
                                       ID: yours
                                     DOT
                                     ID: code
                                   ASSIGN
-                                  Exp (42)
+                                  Exp (39)
                                     ID: value
                                 SEMI
-                              StmtList (43)
-                                Stmt (43)
-                                  Exp (43)
-                                    Exp (43)
-                                      Exp (43)
-                                        Exp (43)
+                              StmtList (40)
+                                Stmt (40)
+                                  Exp (40)
+                                    Exp (40)
+                                      Exp (40)
+                                        Exp (40)
                                           ID: obj2
                                         DOT
                                         ID: yours
                                       DOT
                                       ID: data
                                     ASSIGN
-                                    Exp (43)
+                                    Exp (40)
                                       ID: value2
                                   SEMI
-                                StmtList (44)
-                                  Stmt (44)
-                                    Exp (44)
-                                      Exp (44)
+                                StmtList (41)
+                                  Stmt (41)
+                                    Exp (41)
+                                      Exp (41)
                                         ID: int_global
                                       ASSIGN
-                                      Exp (44)
-                                        Exp (44)
+                                      Exp (41)
+                                        Exp (41)
                                           ID: int_global
                                         PLUS
-                                        Exp (44)
+                                        Exp (41)
                                           INT: 1
                                     SEMI
-                                  StmtList (45)
-                                    Stmt (45)
+                                  StmtList (42)
+                                    Stmt (42)
                                       RETURN
-                                      Exp (45)
+                                      Exp (42)
                                         INT: 11
                                       SEMI
                         RC
-                    ExtDefList (51)
-                      ExtDef (51)
-                        Specifier (51)
+                    ExtDefList (48)
+                      ExtDef (48)
+                        Specifier (48)
                           TYPE: int
-                        FunDec (51)
+                        FunDec (48)
                           ID: test_1_r01
                           LP
-                          VarList (51)
-                            ParamDec (51)
-                              Specifier (51)
+                          VarList (48)
+                            ParamDec (48)
+                              Specifier (48)
                                 TYPE: int
-                              VarDec (51)
+                              VarDec (48)
                                 ID: a
                             COMMA
-                            VarList (51)
-                              ParamDec (51)
-                                Specifier (51)
+                            VarList (48)
+                              ParamDec (48)
+                                Specifier (48)
                                   TYPE: int
-                                VarDec (51)
+                                VarDec (48)
                                   ID: b
                           RP
-                        CompSt (52)
+                        CompSt (49)
                           LC
-                          DefList (53)
-                            Def (53)
-                              Specifier (53)
-                                TYPE: char
-                              DecList (53)
-                                Dec (53)
-                                  VarDec (53)
-                                    ID: c
-                                  ASSIGN
-                                  Exp (53)
-                                    CHAR: c
-                              SEMI
-                          StmtList (54)
-                            Stmt (54)
+                          StmtList (50)
+                            Stmt (50)
                               IF
                               LP
-                              Exp (54)
-                                Exp (54)
+                              Exp (50)
+                                Exp (50)
                                   ID: a
                                 GT
-                                Exp (54)
+                                Exp (50)
                                   ID: b
                               RP
+                              Stmt (51)
+                                CompSt (51)
+                                  LC
+                                  StmtList (52)
+                                    Stmt (52)
+                                      RETURN
+                                      Exp (52)
+                                        ID: a
+                                      SEMI
+                                  RC
+                              ELSE
                               Stmt (55)
                                 CompSt (55)
                                   LC
@@ -457,298 +423,263 @@ Program (1)
                                     Stmt (56)
                                       RETURN
                                       Exp (56)
-                                        ID: a
-                                      SEMI
-                                  RC
-                              ELSE
-                              Stmt (59)
-                                CompSt (59)
-                                  LC
-                                  StmtList (60)
-                                    Stmt (60)
-                                      RETURN
-                                      Exp (60)
                                         ID: b
                                       SEMI
                                   RC
-                            StmtList (62)
-                              Stmt (62)
+                            StmtList (58)
+                              Stmt (58)
                                 RETURN
-                                Exp (62)
+                                Exp (58)
                                   INT: 1
                                 SEMI
                           RC
-                      ExtDefList (64)
-                        ExtDef (64)
-                          Specifier (64)
+                      ExtDefList (60)
+                        ExtDef (60)
+                          Specifier (60)
                             TYPE: int
-                          FunDec (64)
+                          FunDec (60)
                             ID: func_rua
                             LP
-                            VarList (64)
-                              ParamDec (64)
-                                Specifier (64)
+                            VarList (60)
+                              ParamDec (60)
+                                Specifier (60)
                                   TYPE: int
-                                VarDec (64)
+                                VarDec (60)
                                   ID: a
                             RP
-                          CompSt (65)
+                          CompSt (61)
                             LC
-                            StmtList (67)
-                              Stmt (67)
+                            StmtList (63)
+                              Stmt (63)
                                 RETURN
-                                Exp (67)
-                                  Exp (67)
+                                Exp (63)
+                                  Exp (63)
                                     INT: 3
                                   MUL
-                                  Exp (67)
+                                  Exp (63)
                                     ID: a
                                 SEMI
                             RC
-                        ExtDefList (69)
-                          ExtDef (69)
-                            Specifier (69)
+                        ExtDefList (65)
+                          ExtDef (65)
+                            Specifier (65)
                               TYPE: int
-                            FunDec (69)
+                            FunDec (65)
                               ID: func_wei_zaima
                               LP
-                              VarList (69)
-                                ParamDec (69)
-                                  Specifier (69)
+                              VarList (65)
+                                ParamDec (65)
+                                  Specifier (65)
                                     TYPE: int
-                                  VarDec (69)
+                                  VarDec (65)
                                     ID: x
                                 COMMA
-                                VarList (69)
-                                  ParamDec (69)
-                                    Specifier (69)
+                                VarList (65)
+                                  ParamDec (65)
+                                    Specifier (65)
                                       TYPE: int
-                                    VarDec (69)
+                                    VarDec (65)
                                       ID: y
                               RP
-                            CompSt (70)
+                            CompSt (66)
                               LC
-                              StmtList (71)
-                                Stmt (71)
+                              StmtList (67)
+                                Stmt (67)
                                   RETURN
-                                  Exp (71)
-                                    Exp (71)
+                                  Exp (67)
+                                    Exp (67)
                                       ID: x
                                     PLUS
-                                    Exp (71)
+                                    Exp (67)
                                       ID: y
                                   SEMI
                               RC
-                          ExtDefList (73)
-                            ExtDef (73)
-                              Specifier (73)
+                          ExtDefList (69)
+                            ExtDef (69)
+                              Specifier (69)
                                 TYPE: int
-                              FunDec (73)
+                              FunDec (69)
                                 ID: main
                                 LP
                                 RP
-                              CompSt (73)
+                              CompSt (69)
                                 LC
-                                DefList (74)
-                                  Def (74)
-                                    Specifier (74)
+                                DefList (70)
+                                  Def (70)
+                                    Specifier (70)
                                       TYPE: int
-                                    DecList (74)
-                                      Dec (74)
-                                        VarDec (74)
+                                    DecList (70)
+                                      Dec (70)
+                                        VarDec (70)
                                           ID: a
                                         ASSIGN
-                                        Exp (74)
+                                        Exp (70)
                                           INT: 1
                                     SEMI
-                                  DefList (75)
-                                    Def (75)
-                                      Specifier (75)
+                                  DefList (71)
+                                    Def (71)
+                                      Specifier (71)
                                         TYPE: int
-                                      DecList (75)
-                                        Dec (75)
-                                          VarDec (75)
+                                      DecList (71)
+                                        Dec (71)
+                                          VarDec (71)
                                             ID: b1
                                           ASSIGN
-                                          Exp (75)
+                                          Exp (71)
                                             INT: 2
                                       SEMI
-                                    DefList (76)
-                                      Def (76)
-                                        Specifier (76)
+                                    DefList (72)
+                                      Def (72)
+                                        Specifier (72)
                                           TYPE: int
-                                        DecList (76)
-                                          Dec (76)
-                                            VarDec (76)
+                                        DecList (72)
+                                          Dec (72)
+                                            VarDec (72)
                                               ID: b2
                                             ASSIGN
-                                            Exp (76)
+                                            Exp (72)
                                               INT: 1131796
                                         SEMI
-                                      DefList (77)
-                                        Def (77)
-                                          Specifier (77)
+                                      DefList (73)
+                                        Def (73)
+                                          Specifier (73)
                                             TYPE: int
-                                          DecList (77)
-                                            Dec (77)
-                                              VarDec (77)
+                                          DecList (73)
+                                            Dec (73)
+                                              VarDec (73)
                                                 ID: b3
                                               ASSIGN
-                                              Exp (77)
+                                              Exp (73)
                                                 INT: 26318864
                                           SEMI
-                                        DefList (78)
-                                          Def (78)
-                                            Specifier (78)
+                                        DefList (74)
+                                          Def (74)
+                                            Specifier (74)
                                               TYPE: float
-                                            DecList (78)
-                                              Dec (78)
-                                                VarDec (78)
+                                            DecList (74)
+                                              Dec (74)
+                                                VarDec (74)
                                                   ID: c1
                                                 ASSIGN
-                                                Exp (78)
+                                                Exp (74)
                                                   FLOAT: 3.000000
                                             SEMI
-                                          DefList (79)
-                                            Def (79)
-                                              Specifier (79)
+                                          DefList (75)
+                                            Def (75)
+                                              Specifier (75)
                                                 TYPE: float
-                                              DecList (79)
-                                                Dec (79)
-                                                  VarDec (79)
+                                              DecList (75)
+                                                Dec (75)
+                                                  VarDec (75)
                                                     ID: d
                                                   ASSIGN
-                                                  Exp (79)
+                                                  Exp (75)
                                                     FLOAT: 3.000000
                                               SEMI
-                                            DefList (80)
-                                              Def (80)
-                                                Specifier (80)
-                                                  TYPE: char
-                                                DecList (80)
-                                                  Dec (80)
-                                                    VarDec (80)
-                                                      ID: e1
-                                                    ASSIGN
-                                                    Exp (80)
-                                                      CHAR: e
+                                            DefList (76)
+                                              Def (76)
+                                                Specifier (76)
+                                                  TYPE: int
+                                                DecList (76)
+                                                  Dec (76)
+                                                    VarDec (76)
+                                                      ID: c
                                                 SEMI
-                                              DefList (81)
-                                                Def (81)
-                                                  Specifier (81)
-                                                    TYPE: char
-                                                  DecList (81)
-                                                    Dec (81)
-                                                      VarDec (81)
-                                                        ID: e2
-                                                      ASSIGN
-                                                      Exp (81)
-                                                        CHAR: \x2a
-                                                  SEMI
-                                                DefList (82)
-                                                  Def (82)
-                                                    Specifier (82)
-                                                      TYPE: int
-                                                    DecList (82)
-                                                      Dec (82)
-                                                        VarDec (82)
-                                                          ID: c
-                                                    SEMI
-                                StmtList (83)
-                                  Stmt (83)
+                                StmtList (77)
+                                  Stmt (77)
                                     IF
                                     LP
-                                    Exp (83)
-                                      Exp (83)
+                                    Exp (77)
+                                      Exp (77)
                                         ID: e1
                                       NE
-                                      Exp (83)
-                                        CHAR: a
+                                      Exp (77)
+                                        CHAR: 'a'
                                     RP
-                                    Stmt (83)
-                                      CompSt (83)
+                                    Stmt (77)
+                                      CompSt (77)
                                         LC
-                                        StmtList (84)
-                                          Stmt (84)
-                                            Exp (84)
-                                              Exp (84)
+                                        StmtList (78)
+                                          Stmt (78)
+                                            Exp (78)
+                                              Exp (78)
                                                 ID: a
                                               ASSIGN
-                                              Exp (84)
+                                              Exp (78)
                                                 INT: 3
                                             SEMI
-                                          StmtList (85)
-                                            Stmt (85)
+                                          StmtList (79)
+                                            Stmt (79)
                                               RETURN
-                                              Exp (85)
+                                              Exp (79)
                                                 ID: testingfunctions
                                                 LP
-                                                Args (85)
-                                                  Exp (85)
+                                                Args (79)
+                                                  Exp (79)
                                                     ID: a
                                                   COMMA
-                                                  Args (85)
-                                                    Exp (85)
+                                                  Args (79)
+                                                    Exp (79)
                                                       ID: testfunction
                                                       LP
-                                                      Args (85)
-                                                        Exp (85)
+                                                      Args (79)
+                                                        Exp (79)
                                                           ID: b1
                                                         COMMA
-                                                        Args (85)
-                                                          Exp (85)
+                                                        Args (79)
+                                                          Exp (79)
                                                             INT: 2
                                                       RP
                                                 RP
                                               SEMI
                                         RC
                                     ELSE
-                                    Stmt (86)
-                                      CompSt (86)
+                                    Stmt (80)
+                                      CompSt (80)
                                         LC
-                                        StmtList (87)
-                                          Stmt (87)
-                                            Exp (87)
-                                              Exp (87)
+                                        StmtList (81)
+                                          Stmt (81)
+                                            Exp (81)
+                                              Exp (81)
                                                 ID: b1
                                               ASSIGN
-                                              Exp (87)
+                                              Exp (81)
                                                 INT: 2
                                             SEMI
-                                          StmtList (88)
-                                            Stmt (88)
+                                          StmtList (82)
+                                            Stmt (82)
                                               RETURN
-                                              Exp (88)
+                                              Exp (82)
                                                 ID: func_wei_zaima
                                                 LP
-                                                Args (88)
-                                                  Exp (88)
+                                                Args (82)
+                                                  Exp (82)
                                                     ID: func_rua
                                                     LP
-                                                    Args (88)
-                                                      Exp (88)
+                                                    Args (82)
+                                                      Exp (82)
                                                         ID: b1
                                                     RP
                                                   COMMA
-                                                  Args (88)
-                                                    Exp (88)
+                                                  Args (82)
+                                                    Exp (82)
                                                       ID: func_wei_zaima
                                                       LP
-                                                      Args (88)
-                                                        Exp (88)
+                                                      Args (82)
+                                                        Exp (82)
                                                           ID: b3
                                                         COMMA
-                                                        Args (88)
-                                                          Exp (88)
+                                                        Args (82)
+                                                          Exp (82)
                                                             ID: b2
                                                       RP
                                                 RP
                                               SEMI
                                         RC
-                                  StmtList (90)
-                                    Stmt (90)
+                                  StmtList (84)
+                                    Stmt (84)
                                       RETURN
-                                      Exp (90)
+                                      Exp (84)
                                         INT: 1
                                       SEMI
                                 RC

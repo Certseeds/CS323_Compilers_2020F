@@ -1,3 +1,11 @@
+/*
+ * @Github: https://github.com/Certseeds/CS323_Compilers_2020F
+ * @Organization: SUSTech
+ * @Author: nanoseeds
+ * @Date: 2020-10-11 10:55:36
+ * @LastEditors: nanoseeds
+ * @LastEditTime: 2020-10-11 11:48:02
+ */
 //
 // Created by nanos on 2020/10/7.
 //
@@ -12,7 +20,7 @@ void Node::print(int space) {
     }
     print_n_space(space);
     switch (this->TYPE) {
-        case Node_TYPE::LINE : {
+        case Node_TYPE::LINE: {
             this->print_line(space);
             break;
         }
@@ -42,7 +50,7 @@ void Node::print(int space) {
     }
 }
 
-Node::Node() : name("No Name"), TYPE(Node_TYPE::NAME){}
+Node::Node() : name("No Name"), TYPE(Node_TYPE::NAME) {}
 
 Node::Node(std::string nam) : name(std::move(nam)), TYPE(Node_TYPE::NAME) {}
 
@@ -56,26 +64,22 @@ Node::Node(Node_TYPE type) : name("No Name"), TYPE(type) {}
 
 Node::Node(std::string nam, Node_TYPE type) : name(std::move(nam)), TYPE(type) {}
 
-Node::Node(std::string nam, int line_nu) :
-        name(std::move(nam)), TYPE(Node_TYPE::LINE), linenum(line_nu) {
+Node::Node(std::string nam, int line_nu) : name(std::move(nam)), TYPE(Node_TYPE::LINE), linenum(line_nu) {
     this->nodes = std::vector<Node *>(this->nodes_num);
 }
 
-Node::Node(std::string nam, int line_nu, Node_TYPE type) :
-        name(std::move(nam)), TYPE(type), linenum(line_nu) {
+Node::Node(std::string nam, int line_nu, Node_TYPE type) : name(std::move(nam)), TYPE(type), linenum(line_nu) {
     this->nodes = std::vector<Node *>(this->nodes_num);
 }
 
-
-Node::Node(std::string nam, std::string value, Node_TYPE type) :
-        name(std::move(nam)), string_value(std::move(value)), TYPE(type) {}
+Node::Node(std::string nam, std::string value, Node_TYPE type) : name(std::move(nam)), string_value(std::move(value)),
+                                                                 TYPE(type) {}
 
 void Node::print_n_space(int n) { std::cout << std::string(n, ' '); }
 
 void Node::print_line(int space) {
     printf("%s (%d)\n", this->name.c_str(), this->linenum);
-    for (const auto &iter :this->nodes) {
+    for (const auto &iter : this->nodes) {
         iter->print(space + 2);
     }
-
 }

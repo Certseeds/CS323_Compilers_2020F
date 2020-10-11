@@ -114,17 +114,14 @@ CHAR_16_toolong '\\x{digit_16}{3,}'
     return ILLEGAL_TOKEN;
 }
 {CHAR} {
-    yylval.Node_value = new  Node(yytext[1]);
+    yylval.Node_value = new Node("CHAR",yytext,Node_TYPE::STRING);
+    //yylval.Node_value->print(0);
     return CHAR;
 }
 {CHAR_16} {
-    yytext[1]='0';
-    yytext[yyleng-1]='\0';
-    char* tempstr = new char(yyleng);
-    memcpy(tempstr,yytext+sizeof(char),sizeof(char)*(yyleng-1));
-    tempstr[0]='\\';
-    tempstr[yyleng-1]='\0';
-    yylval.Node_value = new Node("CHAR",tempstr,Node_TYPE::STRING);
+    //std::cout << yyleng << std::endl;
+    yylval.Node_value = new Node("CHAR",yytext,Node_TYPE::STRING);
+    //yylval.Node_value->print(0);
     return CHAR;
 }
 {CHAR_16_more0} {

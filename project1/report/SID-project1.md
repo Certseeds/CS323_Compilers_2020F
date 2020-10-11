@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-10-08 11:01:33
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-08 12:21:37
+ * @LastEditTime: 2020-10-11 12:29:47
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -12,37 +12,80 @@
 
 ## <div> Project1-Lexer and Parser</div>
 
-**SID**:  \*\*\*\*\*\*\*\*
+**SID**:  $********$
 
 **Name**:  nanoseeds  
 
 ### Lexer-词法分析部分
 
-在词法分析部分,我们就引入了一个新的结构,Node,其中
+在词法分析部分,我们就引入了一个新的类,Node,其中
 
-``` c
-struct Node {
-    char *name;
-    int nodes_num;
+``` cpp
+enum class Node_TYPE {
+    LINE,
+    NAME,
+    STRING,
+    CHAR,
+    INT,
+    FLOAT,
+    NOTHING
+};
+
+class Node {
+public:
+    std::string name;
+    std::string string_value;
+    Node_TYPE TYPE;
+    int nodes_num = 0;
     union {
         int linenum;
         char char_value;
         int int_value;
         float float_value;
-        char *string_value;
     };
-    struct Node **nodes;
-    void (*print)(int, struct Node *);
+    std::vector<Node *> nodes;
+
+    //void (*print)(int, Node *);
+    Node();
+
+    explicit Node(Node_TYPE type);
+    Node(std::string nam);
+    explicit Node(float value);
+    explicit Node(int  value);
+    explicit Node(char value);
+    Node(std::string nam, int line_nu);
+    explicit Node(std::string nam, Node_TYPE type);
+    Node(std::string nam, int line_nu, Node_TYPE type);
+    Node(std::string nam,std::string value, Node_TYPE type);
+
+    ~Node() = default;
+
+    void print(int space);
+
+    void node_set_sub(Node *subnode) {
+        this->nodes_num++;
+        this->nodes.push_back(subnode);
+    }
+
+    template<typename T, typename... Args>
+    void node_set_sub(T subnode1, Args ... rest) {
+        this->node_set_sub(subnode1);
+        this->node_set_sub(rest ...);
+    }
+
+private:
+    void print_n_space(int space);
+    void print_line(int space);
 };
 ```
 
-的主要亮点之处在于其内部内置了一个函数指针,从而一个struct使用可以通过node->print(space,node)来调用其自身的print函数,而不需要对struct做判断.
+的主要亮点之处在于其内部的print函数,从而令其在运行时动态决定调用print函数的操作,而不需要对struct做判断.
 
-词法分析部分,主要是将使用正则表达式捕获的yytext加以分析之后,赋给union部分不同的值,并给予不同的`Node`以不同的函数指针.
+词法分析部分,主要是将使用正则表达式捕获的yytext加以分析之后,通过class的,并给予不同的`Node`以不同的类参数.
 
 这其中的难点主要在于
 
-+ 有关字符串的部分里,C语言并不会给字符串的最后加`\0`,需要在赋值的时候手动加上去.
++ 有关字符串的部分里,C语言并不会给字符串的最后加`\0`,需要在赋值的时候手动加上去.这个难点通过更换到C++的方式解决.
 
 + 在错误处理部分,如何令其既能判断出错误,在判断出错误之后又能继续做词法分析?
   - 如果是在出错后不返回Token的话,显然,bison那一边会忽略掉这一个,然后拿下一个的和上一个进行shift/reduce,后果一般是不匹配,之后会一路不匹配到失败.
@@ -60,15 +103,16 @@ struct Node {
 
 错误恢复部分并没有做太多额外的工作,这一部分定义了另外一个辅助的模块`yyerror_myself`,使用枚举来决定输出什么,这一部分主要困惑在于,`yyerror(const char const *s)`函数明明有传入值,但是无法直接决定传入值,其传入值总是一个意义不明的`syntax error`,导致需要自定义函数来输出错误.
 
-对语法解析树的建立,一方面通过`Node`内的二级指针来管理`Node`之间的关系,另一方面使用了可变参数函数`void node_set_sub(struct Node *node, int num, ...)`来简化加入Node的步骤.
+对语法解析树的建立,一方面通过`Node`内的$vector<Node*>$来管理`Node`之间的关系,
+另一方面使用了可变参数函数模板`template<typename T, typename... Args> void node_set_sub(T subnode1, Args ... rest)`来简化加入Node的步骤.
 
-于此同时,为了print处最终的语法解析树,将`Program`节点赋给一个root_node的指针,并在主函数中调用其`print(int space,Node* node)`方法即可.
+于此同时,为了print处最终的语法解析树,将`Program`节点赋给一个root_node的指针,并在主函数中调用其`print(int space)`方法即可.
 
 这一部分的难点主要在于错误恢复部分,由于`error`实质上属于通配符,所以添加`error`后出现的二义性问题非常严重,最终没有为所有的错误都添加错误恢复,只在保证冲突尽可能少的情况下尽可能多的加入了错误的处理.
 
 ### Makefile-整体组织方面
 
-整体上,编译所需要的文件有`lex.l`,`main.c`,`node.c,node.h`,`yyerror_myself.c,yyerror_myself.h`,`syntax.y`.这七个.其中有五个辅助的文件. 主要是为了简化整体的结构所创建.
+整体上,编译所需要的文件有`lex.l`,`main.cpp`,`node.cpp,node.hpp`,`yyerror_myself.cpp,yyerror_myself.hpp`,`syntax.y`.这七个.其中有五个辅助的文件. 主要是为了简化整体的结构所创建.
 
 在Makefile的组织方面,主要难点在于遇到了动态库无法链接的问题,这个问题没有得到解决,反而是通过使用静态库解决了编译通过的问题.
 

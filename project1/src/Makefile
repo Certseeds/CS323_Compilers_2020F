@@ -23,6 +23,6 @@ CFLAGS = -O0 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 	$(CPP) $(CFLAGS) -c syntax.tab.c -o parser.o  -lfl -ly
 	@ar -rc libparser.a parser.o
 splc: .node .yyerror .parser
-	$(CPP) $(CFLAGS) main.c -static -L. -lnode -lyyerror_myself -lparser -o splc
+	$(CPP) $(CFLAGS) main.cpp -static -L. -lnode -lyyerror_myself -lparser -o splc
 clean:
 	@rm -rf $(MAKE_PATH)/ lex.yy.c syntax.tab.* *.out *.o *.a *.so syntax.output splc
