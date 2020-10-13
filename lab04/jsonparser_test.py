@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# coding=utf-8
+'''
+Github: https://github.com/Certseeds/CS323_Compilers_2020F
+Organization: SUSTech
+Author: nanoseeds
+Date: 2020-09-29 20:02:46
+LastEditors: nanoseeds
+LastEditTime: 2020-09-30 01:07:40
+'''
 import pathlib
 import re
 import subprocess
@@ -12,7 +22,7 @@ def jsonparser_output(json_file):
 
 
 def check_jsonchecker_fail_withlexical():
-    data = DATA/'jsonchecker'
+    data = DATA
     for failjson in data.glob('fail*.json'):
         out = jsonparser_output(failjson)
         if ('lexical error' not in out) or ('_EXCLUDE' in failjson.name):
@@ -23,7 +33,7 @@ def check_jsonchecker_fail_withlexical():
 
 
 def check_jsonchecker_fail_syntaxonly():
-    data = DATA/'jsonchecker'
+    data = DATA
     recovered, total = 0, 0
     for failjson in data.glob('fail*.json'):
         out = jsonparser_output(failjson)
