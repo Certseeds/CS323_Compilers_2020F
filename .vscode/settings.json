@@ -4,7 +4,7 @@
         "language": {
             "gitattributes": {
                 "head": "### ",
-                "middle": "# @",
+                "middle": "##@",
                 "end": "### "
             },
             "gitignore": {

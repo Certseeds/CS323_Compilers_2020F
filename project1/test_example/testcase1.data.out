@@ -1,0 +1,20 @@
+TYPE int
+ID test_spl
+LP
+RP
+LC
+TYPE int
+ID i
+ASSIGN
+INT 0
+COMMA
+ID j
+ASSIGN
+INT 1
+SEMI
+TYPE float
+ID i
+ASSIGN
+INT 1
+SEMI
+RC
