@@ -7,22 +7,22 @@ CXXDEBUG = -g -Wall
 SRC_PATH=src
 CXXWARN = -Wall -Wextra
 MAKE_PATH=./make-build-dir
-CFLAGS = -O0 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
+CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 
 .lex:lex.l
 	$(FLEX) lex.l
 .syntax:syntax.y
 	$(BISON) -t -d -v syntax.y
 .node: .lex .syntax
-	$(CPP) $(CFLAGS) -c node.cpp -o node.o
+	$(CPP) $(CXXFLAGS) -c node.cpp -o node.o
 	@ar -rc libnode.a node.o
 .yyerror: .lex .syntax
-	$(CPP) $(CFLAGS) -c yyerror_myself.cpp -o yyerror_myself.o
+	$(CPP) $(CXXFLAGS) -c yyerror_myself.cpp -o yyerror_myself.o
 	@ar -rc libyyerror_myself.a yyerror_myself.o
 .parser: .lex .syntax
-	$(CPP) $(CFLAGS) -c syntax.tab.c -o parser.o  -lfl -ly
+	$(CPP) $(CXXFLAGS) -c syntax.tab.c -o parser.o  -lfl -ly
 	@ar -rc libparser.a parser.o
 splc: .node .yyerror .parser
-	$(CPP) $(CFLAGS) main.cpp -static -L. -lnode -lyyerror_myself -lparser -o splc
+	$(CPP) $(CXXFLAGS) main.cpp -static -L. -lnode -lyyerror_myself -lparser -o splc
 clean:
 	@rm -rf $(MAKE_PATH)/ lex.yy.c syntax.tab.* *.out *.o *.a *.so syntax.output splc
