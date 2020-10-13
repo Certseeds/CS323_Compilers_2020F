@@ -38,14 +38,9 @@
 
 配置脚本为[enviroment.sh](./enviorment.sh)
 
-<<<<<<< HEAD
-#### 虚拟机部分
-虚拟机可以在[this](http://10.20.38.233:2333/course/CS323_Compilers_2020F/)下载,login as `student:compiler`
-=======
 ### 虚拟机部分
 
 虚拟机可以在[this](http://10.20.38.233:2333/course/cs323-compilers/)下载,login as `student:compiler`
->>>>>>> project1
 
 ## Part 3: 词法分析中的Flex
 

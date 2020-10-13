@@ -2,11 +2,7 @@
 cmake_minimum_required(VERSION 3.16.6)
 project(CS323_Compilers_lab02_wc LANGUAGES C)
 
-<<<<<<< HEAD
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lfl ")
-=======
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lfl -std=c11 -Wall -Wextra")
->>>>>>> project1
 # only works in terminal
 FIND_PACKAGE(FLEX REQUIRED)
 SET(FlexOutput ./lex.yy.c)
