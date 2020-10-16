@@ -7,10 +7,12 @@ import random
 import string
 import unittest
 
+
 class SymbolTable(ctypes.Structure):
     cwd = os.getcwd()
     lib_path = os.path.join(cwd, 'libsymtab.so')
     lib = ctypes.CDLL(lib_path)
+
     def __init__(self):
         self.lib.symtab_init.restype = ctypes.POINTER(SymbolTable)
         self.lib.symtab_insert.restype = ctypes.c_int32

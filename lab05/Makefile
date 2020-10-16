@@ -1,5 +1,8 @@
 CC=gcc
-CFLAGS=-I. --shared -fPIC -o libsymtab.so
+
+CWARM= -Wall -Wextra
+CSTANDARD=-std=c11
+CFLAGS= $(CWARM) $(CSTANDARD) -I. --shared -fPIC -o libsymtab.so
 
 lltest: clean
 	$(CC) symtab_ll.c $(CFLAGS)
