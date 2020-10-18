@@ -1,12 +1,12 @@
-<!-- 
+<!--
  * @Github: https://github.com/Certseeds/CS323_Compilers_2020F
  * @Organization: SUSTech
  * @Author: nanoseeds
- * @Date: 2020-10-17 17:51:12
+ * @Date: 2020-10-18 20:22:02
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-18 20:16:21
+ * @LastEditTime: 2020-10-18 20:49:06
  * @License: CC-BY-NC-SA_V4_0 or any later version 
--->
+ -->
 
 # CS323 Assignment 3
 
@@ -47,6 +47,7 @@ $$S \to aS'$$
 $$S' \to S+S'\mid S*S'\mid \epsilon$$
 
 ## Question 2 (Top-Down Parsing):
+
 Consider the following grammar $G$:
 $$S \to aB$$
 $$B \to S+B \mid  \epsilon$$
@@ -156,6 +157,35 @@ so it is a $LL(1)$ grammar.
 | aaaa+++  |         $\$$         |    $\$$     |   $\epsilon$ to empty   |
 
 so $LL(1)$ parser accept the input string $aaaa+++$
+
+
+## Question 3 (Bonus):
+
+Consider the following context-free grammar:
+
+$$短语 \to 人 \mid 短语 动词 短语$$
+$$动词 \to 喜欢 \mid 讨厌$$
+$$人 \to 你 \mid 我 \mid 他$$
+
+The grammar can produce sentences such as “我喜欢你”. Is the grammar ambiguous? If yes, please give one sentence and its multiple parse trees. If no, state
+the reason. [5 points for the yes/no answer and 15 points for the justification]
+
+## Answer_of_Question3
+
+For example, the sentence "他讨厌你喜欢我"
+
+<div>
+  <img src="./Question_bonus1.png"><br />
+  <div>parser tree 1st for "他讨厌你喜欢我"</div>
+</div>
+</br>
+</br>
+<div>
+  <img src="./Question_bonus2.png"><br />
+  <div>parser tree 2nd for "他讨厌你喜欢我"</div>
+</div>
+
+the grammer is ambiguous, and the graph shows double trees.
 
 <style type="text/css">
 h1,h2,h3,div,table{

@@ -1,0 +1,49 @@
+/*
+ * @Github: https://github.com/Certseeds/CS323_Compilers_2020F
+ * @Organization: SUSTech
+ * @Author: nanoseeds
+ * @Date: 2020-10-18 20:39:57
+ * @LastEditors: nanoseeds
+ * @LastEditTime: 2020-10-18 20:41:45
+ */
+digraph G {
+    node[shape=none];
+    edge[dir=none,];
+
+    短语1[label="短语"];
+    
+    短语2[label="短语"];
+    动词1[label="动词"];
+    短语3[label="短语"];
+    
+    人1[label="人"];
+
+    短语4[label="短语"];
+
+    动词2[label="动词"];
+    
+    短语5[label="短语"];
+
+    人2[label="人"];
+    人3[label="人"];
+
+    短语1->短语2;
+    短语1->动词1;
+    短语1->短语3;
+
+    短语2->短语4;
+    短语2->动词2;
+    短语2->短语5;
+    
+    短语4->人2;
+    动词2->讨厌;
+    短语5->人3;
+
+    人2->他;
+    人3->你;
+
+        
+    短语3->人1;
+    人1->我;
+    动词1->喜欢;
+}
