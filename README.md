@@ -4,25 +4,31 @@
  * @Author: nanoseeds
  * @Date: 2020-09-15 19:11:58
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-13 19:06:19
+ * @LastEditTime: 2020-10-20 19:06:30
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
+
 # CS323_Compilers_2020F
 
 Coursework of SUSTech CS323_Compilers_2020F (2020fall)
 
 ## Lab Schedule
 
-|       | Date    | Description              | Highlight                              |
-| :---: | ------- | ------------------------ | -------------------------------------- |
-| Lab1  | Sept.8  | C language tutorial      | Project 1 release (due: Oct.11)        |
-| Lab2  | Sept.15 | Flex tutorial            |                                        |
-| Lab3  | Sept.22 | Bison tutorial           | Check the "project1-output_format.pdf" |
-| Lab4  | Sept.29 | Error recovery in Bison  |                                        |
-|   -   | Oct.6   | -                        | National Day & Golden week             |
-| Lab5  | Oct.13  | Maintaining symbol table | Project 2 release (due: Nov.15)        |
-| Lab6  | Oct.20  | Type checking            |                                        |
-| Lab7  | Oct.27  | (TBU)                    |                                        |
+|       | Date    | Description                    | Highlight                              |
+| :---: | ------- | ------------------------------ | -------------------------------------- |
+| Lab1  | Sept.8  | C language tutorial            | Project 1 release (due: Oct.11)        |
+| Lab2  | Sept.15 | Flex tutorial                  |                                        |
+| Lab3  | Sept.22 | Bison tutorial                 | Check the "project1-output_format.pdf" |
+| Lab4  | Sept.29 | Error recovery in Bison        |                                        |
+|   -   | Oct.6   | -                              | National Day & Golden week             |
+| Lab5  | Oct.13  | Maintaining symbol table       | Project 2 release (due: Nov.15)        |
+| Lab6  | Oct.20  | **LR parsing** & Type checking |                                        |
+| Lab7  | Oct.27  | Scope checking                 |                                        |
+| Lab8  | Nov.3   | (TBU)                          |                                        |
+
++ The bold contents are theoretical sessions
+
+---
 
 ## Useful Resources
 
