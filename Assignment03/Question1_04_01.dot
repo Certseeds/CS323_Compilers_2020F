@@ -1,0 +1,38 @@
+digraph G {
+    node[shape=none];
+    edge[dir=none];
+    S0[label="S"];
+    S1[label="S"];
+    S2[label="S"];
+    star1[label="*"];
+
+    S3[label="S"];
+    S4[label="S"];
+    star2[label="*"];
+
+    S5[label="S"];
+    S6[label="S"];
+    plus[label="+"];
+
+    a1[label="a"];
+    a2[label="a"];
+    a3[label="a"];
+    a4[label="a"];
+
+    S0->S1;
+    S0->S2;
+    S0->star1;
+
+    S1->S3;
+    S1->S4;
+    S1->star2;
+
+    S2->S5;
+    S2->S6;
+    S2->plus;
+
+    S3->a1;
+    S4->a2;
+    S5->a3;
+    S6->a4;
+}
