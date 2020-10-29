@@ -97,5 +97,11 @@
             "icon": "flame",
             "iconColour": "#f06292"
         }
+    },
+    "files.associations": {
+        "ios": "c",
+        "xiosbase": "c",
+        "system_error": "cpp",
+        "xlocale": "cpp"
     }
 }
