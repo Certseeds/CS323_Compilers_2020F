@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-10-30 22:42:41
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-31 18:48:23
+ * @LastEditTime: 2020-11-01 00:02:04
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -48,7 +48,7 @@ $GOTO(I_0,+)$ can  not produce new item set.
 
 In $I_1$, there do not have any next to accept except $\$$, so do not need to calclute the next.
 
-$I_3 = GOTO(I_2,S) = CLOSURE(\{B \to S \cdot + B \}) =\{B \to S \cdot + B \}$ 
+$I_3 = GOTO(I_2,S) = CLOSURE(\{B \to S \cdot +B \}) =\{B \to S \cdot +B \}$ 
 
 $GOTO(I_2,a) = CLOSURE(\{S \to \alpha \cdot B\}) = I_2$
 
@@ -124,7 +124,104 @@ now we use the Item set specification family ,GOTO() and FOLLOW functions to pro
 | (22)  |     0 2 4     |   aB   |    $     |    Reduce by $S \to aB$    |
 | (23)  |      0 1      |   S    |    $     |            acc             |
 
+## Question 2 (Canonical LR)
 
+Consider the following  grammar $G$:
+$$S \to {\alpha}B$$
+$$B \to S+B \mid \epsilon$$
+
+1. Construct the CLR(1) parsing table for $G$(same as Question 1). Please put down the detailed steps, including the calculation of LR(1) item sets. [20 points]
+
+2. Can the CLR(1) parser accept the input string aaaa+++? If yes, please list the moves
+made by the parser; otherwise, state the reason. Before parsing, please resolve conflicts
+if any. [10 points]
+
+## Answer_of_Question2
+
+1. the augmented grammer of Question 2 is:
+$$1 : S' \to S$$
+$$2 : S \to {\alpha}B$$
+$$3 : B \to S+B $$
+$$4 : B \to \epsilon$$
+
+first:
+
+$CLOSURE(\{S' \to \cdot S,\$\})$, in there, $[A \to \alpha \cdot B \beta,a]$,$A=S',\alpha=\beta=\epsilon,B=S,a=\$$, so for $B \to \gamma$ and b in $FIRST(\beta a)$ which is $S \to \alpha B$  and b can only be $\$$, so add $[S \to \cdot \alpha B,\$]$
+
+$[A \to \alpha \cdot B \beta,a]$ for $[S \to \cdot \alpha B,\$]$, $A=S,\alpha=\epsilon,B=\alpha,\beta = B,a=\$$.in this case, B is a terminal, which can not produce more item.
+
+so $I_0 = \{[S' \to \cdot S,\$],[S \to \cdot \alpha B, \$]\}$
+
+GOTO($I_0$,S) = $CLOSURE(\{[S' \to S \cdot, \$]\}) =  \{[S' \to S \cdot, \$]\} = I_1$
+
+$I_1=\{[S' \to S \cdot, \$]\}$
+
+GOTO($I_0$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B, \$]\})$
+
+in this case $A=S,\alpha = \alpha,B=B,\beta=\epsilon,a=\$$ so $B \to \gamma$ include $B \to S+B$ and $B \to \epsilon$. FIRST($\beta a$)=FISRT($) so b is just $\$$. 
+
+then for$[B \to \cdot S+B,\$]$, $A=B,\alpha = \epsilon,B=S,\beta=+B,a=\$$, so $B \to \gamma$ include $S \to \alpha B$, FIRST($\beta a$)= FIRST($+B\$$)=$+$, so b is $+$
+
+so $I_2 = \{[S \to \alpha \cdot B,\$],[B \to \cdot S+B,\$],[B \to \cdot \epsilon,\$],[S \to \cdot \alpha B,+]\}$
+
+we can not get more item sets from $I_0$
+
+for $I_2$,
+
+GOTO($I_2$,S) = $CLOSURE(\{[B \to S \cdot +B,\$]\})=\{[B \to S \cdot +B,\$]\} = I_3$
+
+GOTO($I_2$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B,+]\})= \{[S \to \alpha \cdot B,+],[B \to \cdot S+B,+],[B \to \cdot \epsilon,+],[S \to \cdot \alpha B,+]\} = I_4$
+
+GOTO($I_2$,B) = $CLOSURE(\{[S \to \alpha B \cdot,\$])\} = \{[S \to \alpha B \cdot,\$] =I_5$
+
+for $I_3$
+
+GOTO($I_3$,$+$) = $CLOSURE(\{[B \to S+ \cdot B,\$]\})$
+
+in this case $A=B,\alpha = S+,B=B,\beta=\epsilon,a=\$$, so FIRST($\beta a$)=FIRST($\$$)=$\$$
+the next is $[B \to \cdot S+B,\$],[B \to \cdot \epsilon,\$]$
+
+so GOTO($I_3$,$+$) = $CLOSURE(\{[B \to S+ \cdot B,\$]\}) = \{[B \to S+ \cdot B,\$],[B \to \cdot S+B,\$],[B \to \cdot \epsilon,\$],[S \to \cdot \alpha B,+]\} = I_6$
+
+for $I_4$
+
+GOTO($I_4$,S) = $CLOSURE(\{[B \to S \cdot +B,+]\}) =\{[B \to S \cdot +B,+]\} = I_7$
+
+GOTO($I_4$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B,+]\}) = I_4$
+
+GOTO($I_4$,B)= $CLOSURE(\{[S \to \alpha B \cdot,+]\}) = \{[S \to \alpha B \cdot,+]\} = I_8$
+
+for $I_5$, no more item sets.
+
+for $I_6$
+
+GOTO($I_6$,S)=$CLOSURE(\{[B \to S \cdot +B,\$]\})=\{[B \to S \cdot +B,\$]\} = I_9$
+
+GOTO($I_6$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B,+]\})=I_4$
+
+GOTO($I_6$,B) = $CLOSURE(\{[B \to S+B \cdot,\$]\})=\{[B \to S+B \cdot,\$]\} = I_{10}$
+
+for $I_7$
+
+GOTO($I_7$,+)=$CLOSURE(\{[B \to S+ \cdot B,+]\})=\{[B \to S+ \cdot B,+],[B \to \cdot S+B,+],[ B \to \cdot \epsilon,+],[S \to \cdot \alpha B,+]\} = I_{11}$
+
+for $I_8$, no more item sets.
+
+for $I_9$
+
+GOTO($I_9$,+)=$CLOSURE(\{[B \to S+ \cdot B,+]\})=I_{11}$
+
+for $I_{10}$, no more item sets.
+
+for $I_{11}$
+
+GOTO($I_{11}$,B) = $CLOSURE(\{[B \to S+B \cdot,+]\}) = \{[B \to S+B \cdot,+]\}=I_{12}$
+
+GOTO($I_{11}$,S) = $CLOSURE(\{[B \to S \cdot +B,+]\})=I_7$
+
+GOTO($I_{11}$,$\alpha$)=$CLOSURE(\{[S \to \alpha \cdot B,+]\})=I_4$
+
+no more item sets for $I_{12}$
 
 <style type="text/css">
 h1,h2,h3,div,table{
