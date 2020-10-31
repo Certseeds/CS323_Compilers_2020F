@@ -1,0 +1,56 @@
+digraph classDiagram {
+  rankdir=TB;
+  fontname="Helvetia";
+  node[shape="record"; fontname="Helvetia"];
+  edge[fontname="Helvetia"; arrowtail=empty;];
+
+  I0 [label = "{
+  I0|
+  S' → ·S |
+  S → ·aB
+  }"]
+
+  I1[label = "{
+  I1|
+  S' → S·
+  }"]
+  I2[label = "{
+  I2|
+  S → a·B|
+  B → ·S+B\l
+  B → · \l
+  S → ·aB \l
+  }"]
+
+  I3[label = "{
+  I3|
+  B → S·+B
+  }"]
+
+  I4[label = "{
+  I4|
+  S → aB·
+  }"]
+
+  I5[label = "{
+  I5 |
+  B → S+·B |
+  B → ·S+B\l
+  B → · \l
+  S → ·aB \l
+  }"]
+  I6[label = "{
+  I6|
+  B → S+B·
+  }"]
+  I0 -> I1[label="S"]
+  I0 -> I2[label="a"]
+  I2 -> I2[label="a"]
+  I2 -> I3[label="S"]
+  I2 -> I4[label="B"]
+  I3 -> I5[label="+"]
+  I5 -> I2[label="a"]
+  I5 -> I3[label="S"]
+  I5 -> I6[label="B"]
+  I6 -> I3[label="S"]
+}
