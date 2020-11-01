@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-10-30 22:42:41
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-01 11:24:55
+ * @LastEditTime: 2020-11-01 11:27:44
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -28,7 +28,7 @@ if any. [10 points]
 
 ## Answer_of_Question1
 
-1. the augmented grammer of Question 1 is 
+1. the augmented grammer of Question 1 is
 $$S' \to S$$
 $$S \to {\alpha}B$$
 $$B \to S+B $$
@@ -98,31 +98,31 @@ now we use the Item set specification family ,GOTO() and FOLLOW functions to pro
 
 3. it can accept input string `aaaa+++`
 
-| order |     stack     | signal |  input   |           action           |
-| :---- | :-----------: | :----: | :------: | :------------------------: |
-| (1)   |       0       |        | aaaa+++$ |           Shift            |
-| (2)   |      0 2      |   a    | aaa+++$  |           Shift            |
-| (3)   |     0 2 2     |   aa   |  aa+++$  |           Shift            |
-| (4)   |    0 2 2 2    |  aaa   |  a+++$   |           Shift            |
-| (5)   |   0 2 2 2 2   |  aaaa  |   +++$   | Reduce by $B \to \epsilon$ |
-| (6)   |   0 2 2 2 2   | aaaaB  |   +++$   |       GOTO state $4$       |
-| (7)   |  0 2 2 2 2 4  | aaaaB  |   +++$   |    Reduce by $S \to aB$    |
-| (8)   |   0 2 2 2 3   |  aaaS  |   +++$   |           Shift            |
-| (9)   |  0 2 2 2 3 5  | aaaS+  |   ++$    | Reduce by $B \to \epsilon$ |
-| (10)  |  0 2 2 2 3 5  | aaaS+B |   ++$    |       GOTO state $6$       |
-| (11)  | 0 2 2 2 3 5 6 | aaaS+B |   ++$    |   Reduce by $B \to S+B$    |
-| (12)  |   0 2 2 2 4   |  aaaB  |   ++$    |    Reduce by $S \to aB$    |
-| (13)  |    0 2 2 3    |  aaS   |   ++$    |           Shift            |
-| (14)  |   0 2 2 3 5   |  aaS+  |    +$    | Reduce by $B \to \epsilon$ |
-| (15)  |   0 2 2 3 5   | aaS+B  |    +$    |       GOTO state $6$       |
-| (16)  |  0 2 2 3 5 6  | aaS+B  |    +$    |   Reduce by $B \to S+B$    |
-| (17)  |    0 2 2 4    |  aaB   |    +$    |    Reduce by $S \to aB$    |
-| (18)  |     0 2 3     |   aS   |    +$    |           Shift            |
-| (19)  |    0 2 3 5    |  aS+   |    $     | Reduce by $B \to \epsilon$ |
-| (20)  |    0 2 3 5    |  aS+B  |    $     |       GOTO state $6$       |
-| (21)  |   0 2 3 5 6   |  aS+B  |    $     |   Reduce by $B \to S+B$    |
-| (22)  |     0 2 4     |   aB   |    $     |    Reduce by $S \to aB$    |
-| (23)  |      0 1      |   S    |    $     |            acc             |
+| order |     stack     | signal |    input    |           action           |
+| :---- | :-----------: | :----: | :---------: | :------------------------: |
+| (1)   |       0       |        | aaaa+++$\$$ |           Shift            |
+| (2)   |      0 2      |   a    | aaa+++$\$$  |           Shift            |
+| (3)   |     0 2 2     |   aa   |  aa+++$\$$  |           Shift            |
+| (4)   |    0 2 2 2    |  aaa   |  a+++$\$$   |           Shift            |
+| (5)   |   0 2 2 2 2   |  aaaa  |   +++$\$$   | Reduce by $B \to \epsilon$ |
+| (6)   |   0 2 2 2 2   | aaaaB  |   +++$\$$   |       GOTO state $4$       |
+| (7)   |  0 2 2 2 2 4  | aaaaB  |   +++$\$$   |    Reduce by $S \to aB$    |
+| (8)   |   0 2 2 2 3   |  aaaS  |   +++$\$$   |           Shift            |
+| (9)   |  0 2 2 2 3 5  | aaaS+  |   ++$\$$    | Reduce by $B \to \epsilon$ |
+| (10)  |  0 2 2 2 3 5  | aaaS+B |   ++$\$$    |       GOTO state $6$       |
+| (11)  | 0 2 2 2 3 5 6 | aaaS+B |   ++$\$$    |   Reduce by $B \to S+B$    |
+| (12)  |   0 2 2 2 4   |  aaaB  |   ++$\$$    |    Reduce by $S \to aB$    |
+| (13)  |    0 2 2 3    |  aaS   |   ++$\$$    |           Shift            |
+| (14)  |   0 2 2 3 5   |  aaS+  |    +$\$$    | Reduce by $B \to \epsilon$ |
+| (15)  |   0 2 2 3 5   | aaS+B  |    +$\$$    |       GOTO state $6$       |
+| (16)  |  0 2 2 3 5 6  | aaS+B  |    +$\$$    |   Reduce by $B \to S+B$    |
+| (17)  |    0 2 2 4    |  aaB   |    +$\$$    |    Reduce by $S \to aB$    |
+| (18)  |     0 2 3     |   aS   |    +$\$$    |           Shift            |
+| (19)  |    0 2 3 5    |  aS+   |    $\$$     | Reduce by $B \to \epsilon$ |
+| (20)  |    0 2 3 5    |  aS+B  |    $\$$     |       GOTO state $6$       |
+| (21)  |   0 2 3 5 6   |  aS+B  |    $\$$     |   Reduce by $B \to S+B$    |
+| (22)  |     0 2 4     |   aB   |    $\$$     |    Reduce by $S \to aB$    |
+| (23)  |      0 1      |   S    |    $\$$     |            acc             |
 
 ## Question 2 (Canonical LR)
 
@@ -239,31 +239,31 @@ no more item sets for $I_{12}$
 | $I_{11}$ |       S4        |     R4     |     R4      | $I_7$  | $I_{12}$ |
 | $I_{12}$ |                 |     R3     |             |        |          |
 
-| order |      stack      | signal |  input   |           action           |
-| :---- | :-------------: | :----: | :------: | :------------------------: |
-| (0)   |        0        |        | aaaa+++$ |           Shift            |
-| (1)   |       0 2       |   a    | aaa+++$  |           Shift            |
-| (2)   |      0 2 4      |   aa   |  aa+++$  |           Shift            |
-| (3)   |     0 2 4 4     |  aaa   |  a+++$   |           Shift            |
-| (4)   |    0 2 4 4 4    |  aaaa  |   +++$   | Reduce by $B \to \epsilon$ |
-| (5)   |    0 2 4 4 4    | aaaaB  |   +++$   |      GOTO state $I_8$      |
-| (6)   |   0 2 4 4 4 8   | aaaaB  |   +++$   | Reduce by $S \to \alpha B$ |
-| (7)   |    0 2 4 4 7    |  aaaS  |   +++$   |           Shift            |
-| (8)   |  0 2 4 4 7 11   | aaaS+  |   ++$    | Reduce by $B \to \epsilon$ |
-| (9)   |  0 2 4 4 7 11   | aaaS+B |   ++$    |    GOTO state $I_{12}$     |
-| (10)  | 0 2 4 4 7 11 12 | aaaS+B |   ++$    |   Reduce by $B \to S+B$    |
-| (11)  |    0 2 4 4 8    |  aaaB  |   ++$    | Reduce by $S \to \alpha B$ |
-| (12)  |     0 2 4 7     |  aaS   |   ++$    |           Shift            |
-| (13)  |   0 2 4 7 11    |  aaS+  |    +$    | Reduce by $B \to \epsilon$ |
-| (14)  |   0 2 4 7 11    | aaS+B  |    +$    |    GOTO state $I_{12}$     |
-| (15)  |  0 2 4 7 11 12  | aaS+B  |    +$    |   Reduce by $B \to S+B$    |
-| (16)  |     0 2 4 8     |  aaB   |    +$    | Reduce by $S \to \alpha B$ |
-| (17)  |      0 2 7      |   aS   |    +$    |           Shift            |
-| (18)  |    0 2 7 11     |  aS+   |    $     | Reduce by $B \to \epsilon$ |
-| (19)  |    0 2 7 11     |  aS+B  |    $     |    GOTO statet $I_{12}$    |
-| (20)  |   0 2 7 11 12   |  aS+B  |    $     |   Reduce by $B \to S+B$    |
-| (21)  |      0 2 5      |   aB   |    $     | Reduce by $S \to \alpha B$ |
-| (22)  |       0 1       |   S    |    $     |            acc             |
+| order |      stack      | signal |    input    |           action           |
+| :---- | :-------------: | :----: | :---------: | :------------------------: |
+| (0)   |        0        |        | aaaa+++$\$$ |           Shift            |
+| (1)   |       0 2       |   a    | aaa+++$\$$  |           Shift            |
+| (2)   |      0 2 4      |   aa   |  aa+++$\$$  |           Shift            |
+| (3)   |     0 2 4 4     |  aaa   |  a+++$\$$   |           Shift            |
+| (4)   |    0 2 4 4 4    |  aaaa  |   +++$\$$   | Reduce by $B \to \epsilon$ |
+| (5)   |    0 2 4 4 4    | aaaaB  |   +++$\$$   |      GOTO state $I_8$      |
+| (6)   |   0 2 4 4 4 8   | aaaaB  |   +++$\$$   | Reduce by $S \to \alpha B$ |
+| (7)   |    0 2 4 4 7    |  aaaS  |   +++$\$$   |           Shift            |
+| (8)   |  0 2 4 4 7 11   | aaaS+  |   ++$\$$    | Reduce by $B \to \epsilon$ |
+| (9)   |  0 2 4 4 7 11   | aaaS+B |   ++$\$$    |    GOTO state $I_{12}$     |
+| (10)  | 0 2 4 4 7 11 12 | aaaS+B |   ++$\$$    |   Reduce by $B \to S+B$    |
+| (11)  |    0 2 4 4 8    |  aaaB  |   ++$\$$    | Reduce by $S \to \alpha B$ |
+| (12)  |     0 2 4 7     |  aaS   |   ++$\$$    |           Shift            |
+| (13)  |   0 2 4 7 11    |  aaS+  |    +$\$$    | Reduce by $B \to \epsilon$ |
+| (14)  |   0 2 4 7 11    | aaS+B  |    +$\$$    |    GOTO state $I_{12}$     |
+| (15)  |  0 2 4 7 11 12  | aaS+B  |    +$\$$    |   Reduce by $B \to S+B$    |
+| (16)  |     0 2 4 8     |  aaB   |    +$\$$    | Reduce by $S \to \alpha B$ |
+| (17)  |      0 2 7      |   aS   |    +$\$$    |           Shift            |
+| (18)  |    0 2 7 11     |  aS+   |    $\$$     | Reduce by $B \to \epsilon$ |
+| (19)  |    0 2 7 11     |  aS+B  |    $\$$     |    GOTO statet $I_{12}$    |
+| (20)  |   0 2 7 11 12   |  aS+B  |    $\$$     |   Reduce by $B \to S+B$    |
+| (21)  |      0 2 5      |   aB   |    $\$$     | Reduce by $S \to \alpha B$ |
+| (22)  |       0 1       |   S    |    $\$$     |            acc             |
 
 so the CLR(1) parse can accept the input string `aaaa+++`.
 
