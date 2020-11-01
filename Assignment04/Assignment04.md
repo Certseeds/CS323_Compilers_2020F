@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-10-30 22:42:41
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-01 11:27:44
+ * @LastEditTime: 2020-11-01 12:05:04
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -124,21 +124,11 @@ now we use the Item set specification family ,GOTO() and FOLLOW functions to pro
 | (22)  |     0 2 4     |   aB   |    $\$$     |    Reduce by $S \to aB$    |
 | (23)  |      0 1      |   S    |    $\$$     |            acc             |
 
-## Question 2 (Canonical LR)
-
-Consider the following  grammar $G$:
-$$S \to {\alpha}B$$
-$$B \to S+B \mid \epsilon$$
-
-1. Construct the CLR(1) parsing table for $G$(same as Question 1). Please put down the detailed steps, including the calculation of LR(1) item sets. [20 points]
-
-2. Can the CLR(1) parser accept the input string aaaa+++? If yes, please list the moves
-made by the parser; otherwise, state the reason. Before parsing, please resolve conflicts
-if any. [10 points]
-
 ## Answer_of_Question2
 
-1. the augmented grammer of Question 2 is:
+### SubQuestion 1
+
+the augmented grammer of Question 2 is:
 $$1 : S' \to S$$
 $$2 : S \to {\alpha}B$$
 $$3 : B \to S+B $$
@@ -195,33 +185,29 @@ for $I_5$, no more item sets.
 
 for $I_6$
 
-GOTO($I_6$,S)=$CLOSURE(\{[B \to S \cdot +B,\$]\})=\{[B \to S \cdot +B,\$]\} = I_9$
+GOTO($I_6$,S)=$CLOSURE(\{[B \to S \cdot +B,\$]\})=\{[B \to S \cdot +B,\$]\} = I_3$
 
 GOTO($I_6$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B,+]\})=I_4$
 
-GOTO($I_6$,B) = $CLOSURE(\{[B \to S+B \cdot,\$]\})=\{[B \to S+B \cdot,\$]\} = I_{10}$
+GOTO($I_6$,B) = $CLOSURE(\{[B \to S+B \cdot,\$]\})=\{[B \to S+B \cdot,\$]\} = I_9$
 
 for $I_7$
 
-GOTO($I_7$,+)=$CLOSURE(\{[B \to S+ \cdot B,+]\})=\{[B \to S+ \cdot B,+],[B \to \cdot S+B,+],[ B \to \cdot \epsilon,+],[S \to \cdot \alpha B,+]\} = I_{11}$
+GOTO($I_7$,+)=$CLOSURE(\{[B \to S+ \cdot B,+]\})=\{[B \to S+ \cdot B,+],[B \to \cdot S+B,+],[ B \to \cdot \epsilon,+],[S \to \cdot \alpha B,+]\} = I_{10}$
 
 for $I_8$, no more item sets.
 
-for $I_9$
+for $I_9$, no more item sets.
 
-GOTO($I_9$,+)=$CLOSURE(\{[B \to S+ \cdot B,+]\})=I_{11}$
+for $I_{10}$
 
-for $I_{10}$, no more item sets.
+GOTO($I_{10}$,B) = $CLOSURE(\{[B \to S+B \cdot,+]\}) = \{[B \to S+B \cdot,+]\}=I_{11}$
 
-for $I_{11}$
+GOTO($I_{10}$,S) = $CLOSURE(\{[B \to S \cdot +B,+]\})=I_7$
 
-GOTO($I_{11}$,B) = $CLOSURE(\{[B \to S+B \cdot,+]\}) = \{[B \to S+B \cdot,+]\}=I_{12}$
+GOTO($I_{10}$,$\alpha$)=$CLOSURE(\{[S \to \alpha \cdot B,+]\})=I_4$
 
-GOTO($I_{11}$,S) = $CLOSURE(\{[B \to S \cdot +B,+]\})=I_7$
-
-GOTO($I_{11}$,$\alpha$)=$CLOSURE(\{[S \to \alpha \cdot B,+]\})=I_4$
-
-no more item sets for $I_{12}$
+no more item sets for $I_{11}$
 
 |  state   | ACTION:$\alpha$ | ACTION:$+$ | ACTION:$\$$ | GOTO:S |  GOTO:B  |
 | :------: | :-------------: | :--------: | :---------: | :----: | :------: |
@@ -231,13 +217,16 @@ no more item sets for $I_{12}$
 |  $I_3$   |                 |     S4     |             |        |          |
 |  $I_4$   |       S4        |     R4     |     R4      | $I_7$  |  $I_8$   |
 |  $I_5$   |                 |            |     R2      |        |          |
-|  $I_6$   |       S4        |     R4     |     R4      | $I_9$  | $I_{10}$ |
-|  $I_7$   |                 |    S11     |             |        |          |
+|  $I_6$   |       S4        |     R4     |     R4      | $I_3$  |  $I_9$   |
+|  $I_7$   |                 |    S10     |             |        |          |
 |  $I_8$   |                 |     R2     |             |        |          |
-|  $I_9$   |                 |    S11     |             |        |          |
-| $I_{10}$ |                 |            |     R3      |        |          |
-| $I_{11}$ |       S4        |     R4     |     R4      | $I_7$  | $I_{12}$ |
-| $I_{12}$ |                 |     R3     |             |        |          |
+|  $I_9$   |                 |            |     R3      |        |          |
+| $I_{10}$ |       S4        |     R4     |     R4      | $I_7$  | $I_{11}$ |
+| $I_{11}$ |                 |     R3     |             |        |          |
+
+### SubQuestion 2
+
+Yes, it can
 
 | order |      stack      | signal |    input    |           action           |
 | :---- | :-------------: | :----: | :---------: | :------------------------: |
@@ -249,26 +238,62 @@ no more item sets for $I_{12}$
 | (5)   |    0 2 4 4 4    | aaaaB  |   +++$\$$   |      GOTO state $I_8$      |
 | (6)   |   0 2 4 4 4 8   | aaaaB  |   +++$\$$   | Reduce by $S \to \alpha B$ |
 | (7)   |    0 2 4 4 7    |  aaaS  |   +++$\$$   |           Shift            |
-| (8)   |  0 2 4 4 7 11   | aaaS+  |   ++$\$$    | Reduce by $B \to \epsilon$ |
-| (9)   |  0 2 4 4 7 11   | aaaS+B |   ++$\$$    |    GOTO state $I_{12}$     |
-| (10)  | 0 2 4 4 7 11 12 | aaaS+B |   ++$\$$    |   Reduce by $B \to S+B$    |
+| (8)   |  0 2 4 4 7 10   | aaaS+  |   ++$\$$    | Reduce by $B \to \epsilon$ |
+| (9)   |  0 2 4 4 7 10   | aaaS+B |   ++$\$$    |    GOTO state $I_{11}$     |
+| (10)  | 0 2 4 4 7 10 11 | aaaS+B |   ++$\$$    |   Reduce by $B \to S+B$    |
 | (11)  |    0 2 4 4 8    |  aaaB  |   ++$\$$    | Reduce by $S \to \alpha B$ |
 | (12)  |     0 2 4 7     |  aaS   |   ++$\$$    |           Shift            |
-| (13)  |   0 2 4 7 11    |  aaS+  |    +$\$$    | Reduce by $B \to \epsilon$ |
-| (14)  |   0 2 4 7 11    | aaS+B  |    +$\$$    |    GOTO state $I_{12}$     |
-| (15)  |  0 2 4 7 11 12  | aaS+B  |    +$\$$    |   Reduce by $B \to S+B$    |
+| (13)  |   0 2 4 7 10    |  aaS+  |    +$\$$    | Reduce by $B \to \epsilon$ |
+| (14)  |   0 2 4 7 10    | aaS+B  |    +$\$$    |    GOTO state $I_{11}$     |
+| (15)  |  0 2 4 7 10 11  | aaS+B  |    +$\$$    |   Reduce by $B \to S+B$    |
 | (16)  |     0 2 4 8     |  aaB   |    +$\$$    | Reduce by $S \to \alpha B$ |
 | (17)  |      0 2 7      |   aS   |    +$\$$    |           Shift            |
-| (18)  |    0 2 7 11     |  aS+   |    $\$$     | Reduce by $B \to \epsilon$ |
-| (19)  |    0 2 7 11     |  aS+B  |    $\$$     |    GOTO statet $I_{12}$    |
-| (20)  |   0 2 7 11 12   |  aS+B  |    $\$$     |   Reduce by $B \to S+B$    |
+| (18)  |    0 2 7 10     |  aS+   |    $\$$     | Reduce by $B \to \epsilon$ |
+| (19)  |    0 2 7 10     |  aS+B  |    $\$$     |    GOTO statet $I_{11}$    |
+| (20)  |   0 2 7 10 11   |  aS+B  |    $\$$     |   Reduce by $B \to S+B$    |
 | (21)  |      0 2 5      |   aB   |    $\$$     | Reduce by $S \to \alpha B$ |
 | (22)  |       0 1       |   S    |    $\$$     |            acc             |
 
 so the CLR(1) parse can accept the input string `aaaa+++`.
 
+
+
+## Question 3 (Lookahead LR)
+
+Consider the following  grammar $G$:
+$$S \to {\alpha}B$$
+$$B \to S+B \mid \epsilon$$
+
+1. Construct the LALR(1) parsing table for G. Please put down the detailed steps,
+including the merging of LR(1) item sets. [20 points]
+
+2. Can the LALR(1) parser accept the input string aaaa+++? If yes, please list the
+moves made by the parser; otherwise, state the reason. Before parsing, please resolve
+conflicts if any. [10 points]
+
+## Answer_of_Question3
+
+### FIRST STEP: Build the item set family
+
+this step is the same as what CLR(1) step do, so in this step we just copy what we had done in Question 2
+
+In conclusion:
+
+$I_0$=$CLOSURE({[S' \to \cdot S,\$]})$  
+$I_1$=$CLOSURE({[S' \to S \cdot,\$]})$  
+$I_2$=$CLOSURE({[S \to \alpha \cdot B,\$]})$  
+$I_3$=$CLOSURE({[B \to S \cdot +B,\$]})$  
+$I_4$=$CLOSURE({[S \to \alpha \cdot B,+]})$  
+$I_5$=$CLOSURE({[S \to \alpha B \cdot,\$]})$  
+$I_6$=$CLOSURE({[B \to S+ \cdot B,\$]})$  
+$I_7$=$CLOSURE({[B \to S \cdot +B,+]})$  
+$I_8$=$CLOSURE({[S \to \alpha B \cdot,+]})$  
+$I_9$=$CLOSURE({[B \to S+B \cdot,\$]})$  
+$I_{10}$=$CLOSURE({[B \to S+ \cdot B,+]})$  
+$I_{11}$=$CLOSURE({[B \to S+B \cdot,+]})$
+
 <style type="text/css">
-h1,h2,h3,div,table{
+h1,h2,div,table{
   text-align: center;
 }
 div>div {
