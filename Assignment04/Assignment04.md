@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-10-30 22:42:41
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-01 12:05:04
+ * @LastEditTime: 2020-11-01 13:10:25
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -214,7 +214,7 @@ no more item sets for $I_{11}$
 |  $I_0$   |       S2        |            |             | $I_1$  |          |
 |  $I_1$   |                 |            |     acc     |        |          |
 |  $I_2$   |       S4        |     R4     |     R4      | $I_3$  |  $I_5$   |
-|  $I_3$   |                 |     S4     |             |        |          |
+|  $I_3$   |                 |     S6     |             |        |          |
 |  $I_4$   |       S4        |     R4     |     R4      | $I_7$  |  $I_8$   |
 |  $I_5$   |                 |            |     R2      |        |          |
 |  $I_6$   |       S4        |     R4     |     R4      | $I_3$  |  $I_9$   |
@@ -273,9 +273,90 @@ conflicts if any. [10 points]
 
 ## Answer_of_Question3
 
-### FIRST STEP: Build the item set family
+### SubQuestion 1: LALR(1) parsing table
 
 this step is the same as what CLR(1) step do, so in this step we just copy what we had done in Question 2
+
+the augmented grammer of Question 3 is:
+$$1 : S' \to S$$
+$$2 : S \to {\alpha}B$$
+$$3 : B \to S+B $$
+$$4 : B \to \epsilon$$
+
+first:
+
+$CLOSURE(\{S' \to \cdot S,\$\})$, in there, $[A \to \alpha \cdot B \beta,a]$,$A=S',\alpha=\beta=\epsilon,B=S,a=\$$, so for $B \to \gamma$ and b in $FIRST(\beta a)$ which is $S \to \alpha B$  and b can only be $\$$, so add $[S \to \cdot \alpha B,\$]$
+
+$[A \to \alpha \cdot B \beta,a]$ for $[S \to \cdot \alpha B,\$]$, $A=S,\alpha=\epsilon,B=\alpha,\beta = B,a=\$$.in this case, B is a terminal, which can not produce more item.
+
+so $I_0 = \{[S' \to \cdot S,\$],[S \to \cdot \alpha B, \$]\}$
+
+GOTO($I_0$,S) = $CLOSURE(\{[S' \to S \cdot, \$]\}) =  \{[S' \to S \cdot, \$]\} = I_1$
+
+$I_1=\{[S' \to S \cdot, \$]\}$
+
+GOTO($I_0$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B, \$]\})$
+
+in this case $A=S,\alpha = \alpha,B=B,\beta=\epsilon,a=\$$ so $B \to \gamma$ include $B \to S+B$ and $B \to \epsilon$. FIRST($\beta a$)=FISRT($) so b is just $\$$. 
+
+then for$[B \to \cdot S+B,\$]$, $A=B,\alpha = \epsilon,B=S,\beta=+B,a=\$$, so $B \to \gamma$ include $S \to \alpha B$, FIRST($\beta a$)= FIRST($+B\$$)=$+$, so b is $+$
+
+so $I_2 = \{[S \to \alpha \cdot B,\$],[B \to \cdot S+B,\$],[B \to \cdot \epsilon,\$],[S \to \cdot \alpha B,+]\}$
+
+we can not get more item sets from $I_0$
+
+for $I_2$,
+
+GOTO($I_2$,S) = $CLOSURE(\{[B \to S \cdot +B,\$]\})=\{[B \to S \cdot +B,\$]\} = I_3$
+
+GOTO($I_2$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B,+]\})= \{[S \to \alpha \cdot B,+],[B \to \cdot S+B,+],[B \to \cdot \epsilon,+],[S \to \cdot \alpha B,+]\} = I_4$
+
+GOTO($I_2$,B) = $CLOSURE(\{[S \to \alpha B \cdot,\$])\} = \{[S \to \alpha B \cdot,\$] =I_5$
+
+for $I_3$
+
+GOTO($I_3$,$+$) = $CLOSURE(\{[B \to S+ \cdot B,\$]\})$
+
+in this case $A=B,\alpha = S+,B=B,\beta=\epsilon,a=\$$, so FIRST($\beta a$)=FIRST($\$$)=$\$$
+the next is $[B \to \cdot S+B,\$],[B \to \cdot \epsilon,\$]$
+
+so GOTO($I_3$,$+$) = $CLOSURE(\{[B \to S+ \cdot B,\$]\}) = \{[B \to S+ \cdot B,\$],[B \to \cdot S+B,\$],[B \to \cdot \epsilon,\$],[S \to \cdot \alpha B,+]\} = I_6$
+
+for $I_4$
+
+GOTO($I_4$,S) = $CLOSURE(\{[B \to S \cdot +B,+]\}) =\{[B \to S \cdot +B,+]\} = I_7$
+
+GOTO($I_4$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B,+]\}) = I_4$
+
+GOTO($I_4$,B)= $CLOSURE(\{[S \to \alpha B \cdot,+]\}) = \{[S \to \alpha B \cdot,+]\} = I_8$
+
+for $I_5$, no more item sets.
+
+for $I_6$
+
+GOTO($I_6$,S)=$CLOSURE(\{[B \to S \cdot +B,\$]\})=\{[B \to S \cdot +B,\$]\} = I_3$
+
+GOTO($I_6$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B,+]\})=I_4$
+
+GOTO($I_6$,B) = $CLOSURE(\{[B \to S+B \cdot,\$]\})=\{[B \to S+B \cdot,\$]\} = I_9$
+
+for $I_7$
+
+GOTO($I_7$,+)=$CLOSURE(\{[B \to S+ \cdot B,+]\})=\{[B \to S+ \cdot B,+],[B \to \cdot S+B,+],[ B \to \cdot \epsilon,+],[S \to \cdot \alpha B,+]\} = I_{10}$
+
+for $I_8$, no more item sets.
+
+for $I_9$, no more item sets.
+
+for $I_{10}$
+
+GOTO($I_{10}$,B) = $CLOSURE(\{[B \to S+B \cdot,+]\}) = \{[B \to S+B \cdot,+]\}=I_{11}$
+
+GOTO($I_{10}$,S) = $CLOSURE(\{[B \to S \cdot +B,+]\})=I_7$
+
+GOTO($I_{10}$,$\alpha$)=$CLOSURE(\{[S \to \alpha \cdot B,+]\})=I_4$
+
+no more item sets for $I_{11}$
 
 In conclusion:
 
@@ -291,6 +372,54 @@ $I_8$=$CLOSURE({[S \to \alpha B \cdot,+]})$
 $I_9$=$CLOSURE({[B \to S+B \cdot,\$]})$  
 $I_{10}$=$CLOSURE({[B \to S+ \cdot B,+]})$  
 $I_{11}$=$CLOSURE({[B \to S+B \cdot,+]})$
+
+1. $I_2$ and $I_4$ should merge to $I_{24}$
+2. $I_3$ and $I_7$ should merge to $I_{37}$
+3. $I_5$ and $I_8$ should merge to $I_{58}$
+4. $I_6$ and $I_{10}$ should merge to $I_{6\&{10}}$
+5. $I_9$ and $I_{11}$ should merge to $I_{9\&{11}}$
+
+so the table is 
+
+|     state     | ACTION:$\alpha$ | ACTION:$+$  | ACTION:$\$$ |  GOTO:S  |    GOTO:B     |
+| :-----------: | :-------------: | :---------: | :---------: | :------: | :-----------: |
+|     $I_0$     |    $S_{24}$     |             |             |  $I_1$   |               |
+|     $I_1$     |                 |             |     acc     |          |               |
+|   $I_{24}$    |    $S_{24}$     |     R4      |     R4      | $I_{37}$ |   $I_{58}$    |
+|   $I_{37}$    |                 | $S_{6\&10}$ |             |          |               |
+|   $I_{58}$    |                 |     R2      |     R2      |          |               |
+| $I_{6\&{10}}$ |    $S_{24}$     |     R4      |     R4      | $I_{37}$ | $I_{9\&{11}}$ |
+| $I_{9\&{11}}$ |                 |     R3      |     R3      |          |               |
+
+### SubQuestion 2: parsing steps
+
+yes , it can accept `aaaa+++`
+
+| order |                       stack                        | signal |    input    |           action           |
+| :---- | :------------------------------------------------: | :----: | :---------: | :------------------------: |
+| (0)   |                         0                          |        | aaaa+++$\$$ |           Shift            |
+| (1)   |                     0 $_{24}$                      |   a    | aaa+++$\$$  |           Shift            |
+| (2)   |                  0 $_{24}\ _{24}$                  |   aa   |  aa+++$\$$  |           Shift            |
+| (3)   |              0 $_{24}\ _{24}\ _{24}$               |  aaa   |  a+++$\$$   |           Shift            |
+| (4)   |           0 $_{24}\ _{24}\ _{24}\ _{24}$           |  aaaa  |   +++$\$$   | Reduce by $B \to \epsilon$ |
+| (5)   |           0 $_{24}\ _{24}\ _{24}\ _{24}$           | aaaaB  |   +++$\$$   |     GOTO state $_{58}$     |
+| (6)   |       0 $_{24}\ _{24}\ _{24}\ _{24}\ _{58}$        | aaaaB  |   +++$\$$   | Reduce by $S \to \alpha B$ |
+| (7)   |           0 $_{24}\ _{24}\ _{24}\ _{37}$           |  aaaS  |   +++$\$$   |           Shift            |
+| (8)   |      0 $_{24}\ _{24}\ _{24}\ _{37}\ _{6\&10}$      | aaaS+  |   ++$\$$    | Reduce by $B \to \epsilon$ |
+| (9)   |      0 $_{24}\ _{24}\ _{24}\ _{37}\ _{6\&10}$      | aaaS+B |   ++$\$$    |   GOTO state $_{9\&11}$    |
+| (10)  | 0 $_{24}\ _{24}\ _{24}\ _{37}\ _{6\&10}\ _{9\&11}$ | aaaS+B |   ++$\$$    |   Reduce by $B \to S+B$    |
+| (11)  |           0 $_{24}\ _{24}\ _{24}\ _{58}$           |  aaaB  |   ++$\$$    | Reduce by $S \to \alpha B$ |
+| (12)  |              0 $_{24}\ _{24}\ _{37}$               |  aaS   |   ++$\$$    |           Shift            |
+| (13)  |         0 $_{24}\ _{24}\ _{37}\ _{6\&10}$          |  aaS+  |    +$\$$    | Reduce by $B \to \epsilon$ |
+| (14)  |         0 $_{24}\ _{24}\ _{37}\ _{6\&10}$          | aaS+B  |    +$\$$    |   GOTO state $_{9\&11}$    |
+| (15)  |    0 $_{24}\ _{24}\ _{37}\ _{6\&10} \ _{9\&11}$    | aaS+B  |    +$\$$    |   Reduce by $B \to S+B$    |
+| (16)  |              0 $_{24}\ _{24}\ _{58}$               |  aaB   |    +$\$$    | Reduce by $S \to \alpha B$ |
+| (17)  |                  0 $_{24}\ _{37}$                  |   aS   |    +$\$$    |           Shift            |
+| (18)  |             0 $_{24}\ _{37}\ _{6\&10}$             |  aS+   |    $\$$     | Reduce by $B \to \epsilon$ |
+| (19)  |             0 $_{24}\ _{37}\ _{6\&10}$             |  aS+B  |    $\$$     |   GOTO state $_{9\&11}$    |
+| (20)  |        0 $_{24}\ _{37}\ _{6\&10}\ _{9\&11}$        |  aS+B  |    $\$$     |   Reduce by $B \to S+B$    |
+| (21)  |                  0 $_{24}\ _{58}$                  |   aB   |    $\$$     | Reduce by $S \to \alpha B$ |
+| (22)  |                        0 1                         |   S    |    $\$$     |            acc             |
 
 <style type="text/css">
 h1,h2,div,table{
