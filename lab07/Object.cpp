@@ -4,21 +4,23 @@
  * @Author: nanoseeds
  * @Date: 2020-10-30 11:21:26
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-30 22:33:04
+ * @LastEditTime: 2020-11-02 12:07:27
  */
 #include "Object.hpp"
 
-JsonObject::JsonObject(bool value) : category(CATEGORY::BOOLEAN), value(value) {}
+JsonObject::JsonObject(bool value) : JsonObject(CATEGORY::BOOLEAN, value) {}
 
-JsonObject::JsonObject(std::string value) : category(CATEGORY::STRING), value(value) {}
+JsonObject::JsonObject(std::string value) : JsonObject(CATEGORY::STRING, value) {}
 
-JsonObject::JsonObject(double value) : category(CATEGORY::NUMBER), value(value) {}
+JsonObject::JsonObject(double value) : JsonObject(CATEGORY::NUMBER, value) {}
 
-JsonObject::JsonObject(void *value) : category(CATEGORY::VNULL), value(value) {}
+JsonObject::JsonObject(void *value) : JsonObject(CATEGORY::VNULL, value) {}
 
-JsonObject::JsonObject(ArrayValue *value) : category(CATEGORY::ARRAY), value(value) {}
+JsonObject::JsonObject(ArrayValue *value) : JsonObject(CATEGORY::ARRAY, value) {}
 
-JsonObject::JsonObject(ObjectMember *value) : category(CATEGORY::OBJECT), value(value) {}
+JsonObject::JsonObject(ObjectMember *value) : JsonObject(CATEGORY::OBJECT, value) {}
+
+JsonObject::JsonObject(CATEGORY cate, JSONTYPES value) : category(cate), value(value) {}
 
 void JsonObject::printInside(int space) const {
     std::cout << std::string(space, ' ') << "Type: " << printCate.at(this->category) << '\n';
@@ -61,7 +63,7 @@ void JsonObject::printInside(int space) const {
     }
 }
 
-ObjectMember::ObjectMember() : value(nullptr), next(nullptr) {}
+ObjectMember::ObjectMember() : ObjectMember("", nullptr) {}
 
 ObjectMember::ObjectMember(std::string key, JsonObject *value) : key(key), value(value), next(nullptr) {}
 
@@ -74,13 +76,11 @@ void ObjectMember::printInside(int space) const {
     }
 }
 
-ArrayValue::ArrayValue() : value(nullptr), next(nullptr) {}
+ArrayValue::ArrayValue() : ArrayValue(nullptr, nullptr) {}
+
+ArrayValue::ArrayValue(ArrayValue *next) : ArrayValue(nullptr, next) {}
 
 ArrayValue::ArrayValue(JsonObject *json, ArrayValue *next) : value(json), next(next) {}
-
-ArrayValue::ArrayValue(JsonObject *json) : value(json), next(nullptr) {}
-
-ArrayValue::ArrayValue(ArrayValue *next) : next(next) {}
 
 void ArrayValue::printInside(int space) const {
     std::cout << std::string(space, ' ') << "Type: ArrayValue\n";

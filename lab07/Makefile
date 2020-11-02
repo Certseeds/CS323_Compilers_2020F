@@ -3,8 +3,8 @@ FLEX=flex
 BISON=bison
 CXXSTD = -std=c++17
 
-CXXDEBUG =
-CXXWARN = -Wall -Wextra
+CXXDEBUG = -g
+CXXWARN = -Wall -Wextra  
 CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 
 
