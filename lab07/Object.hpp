@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-10-30 11:00:26
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-30 22:27:23
+ * @LastEditTime: 2020-11-02 12:04:39
  */
 #ifndef CS323_COMPLIERS_LAB07_OBJECT
 #define CS323_COMPLIERS_LAB07_OBJECT
@@ -40,9 +40,11 @@ class ObjectMember;
 class ArrayValue;
 
 class JsonObject {
+    using JSONTYPES = variant<ObjectMember *, ArrayValue *, std::string, double, bool, void *>;
+
 public:
     CATEGORY category;
-    variant<ObjectMember *, ArrayValue *, std::string, double, bool, void *> value;
+    JSONTYPES value;
 
     explicit JsonObject(bool value);
 
@@ -57,6 +59,11 @@ public:
     explicit JsonObject(ObjectMember *value);
 
     void printInside(int space = 0) const;
+
+    ~JsonObject() = default;
+
+private:
+    JsonObject(CATEGORY cate, JSONTYPES value);
 };
 
 class ObjectMember {
@@ -67,9 +74,11 @@ public:
 
     ObjectMember();
 
-    ObjectMember(std::string key,JsonObject* value);
+    ObjectMember(std::string key, JsonObject *value);
 
     void printInside(int space = 0) const;
+
+    ~ObjectMember() = default;
 };
 
 class ArrayValue {
@@ -81,11 +90,11 @@ public:
 
     explicit ArrayValue(ArrayValue *next);
 
-    explicit ArrayValue(JsonObject *json);
-
-    ArrayValue(JsonObject *json, ArrayValue *next);
+    ArrayValue(JsonObject *json, ArrayValue *next = nullptr);
 
     void printInside(int space = 0) const;
+
+    ~ArrayValue() = default;
 };
 
 #endif  //! CS323_COMPLIERS_LAB07_OBJECT
