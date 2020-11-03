@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-09-15 19:11:58
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-20 19:06:30
+ * @LastEditTime: 2020-11-03 19:38:18
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -24,7 +24,8 @@ Coursework of SUSTech CS323_Compilers_2020F (2020fall)
 | Lab5  | Oct.13  | Maintaining symbol table       | Project 2 release (due: Nov.15)        |
 | Lab6  | Oct.20  | **LR parsing** & Type checking |                                        |
 | Lab7  | Oct.27  | Scope checking                 |                                        |
-| Lab8  | Nov.3   | (TBU)                          |                                        |
+| Lab8  | Nov.3   | JSON key checker               | There is a *quiz* in the lab!          |
+| Lab9  | Nov.10  | (TBU)                          |                                        |
 
 + The bold contents are theoretical sessions
 
