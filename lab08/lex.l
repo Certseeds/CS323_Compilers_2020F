@@ -1,5 +1,6 @@
 %{
-    #include"syntax.tab.h"
+    #include "syntax.tab.h"
+    // illgeal_int 0+[1-9][0-9]*
 %}
 %option noyywrap
 
@@ -24,11 +25,30 @@ empty [ \n\r\t]
 ":" { return COLON; }
 "," { return COMMA; }
 
-"true" { return TRUE; }
-"false" { return FALSE; }
-"null" { return VNULL; }
+"true" { 
+    yylval.jsonobject = new JsonObject(true);
+    //yylval.jsonobject = nullptr;
+    return TRUE; 
+}
+"false" {
+    yylval.jsonobject = new JsonObject(false); 
+    return FALSE; 
+}
+"null" {
+    yylval.jsonobject = new JsonObject(static_cast<void*>(nullptr));
+    return VNULL; 
+}
 
-{string} { return STRING; }
-{number} { return NUMBER; }
-
+{string} {
+    yylval.jsonobject = new JsonObject(std::string(yytext).substr(1,yyleng-2));
+    //std::cout << std::get<std::string>(yylval.jsonobject->value) << std::endl;
+    return STRING;
+}
+{number} {
+    yylval.jsonobject = new JsonObject(static_cast<double>(atof(yytext)));
+    //std::cout << std::get<double>(yylval.jsonobject->value) << std::endl;
+    return NUMBER; 
+    }
 {empty} {}
+
+. { printf("lexical error: %s\n", yytext); }

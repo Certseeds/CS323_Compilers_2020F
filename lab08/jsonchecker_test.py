@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# coding=utf-8
+'''
+Github: https://github.com/Certseeds/CS323_Compilers_2020F
+Organization: SUSTech
+Author: nanoseeds
+Date: 2020-11-03 19:37:49
+LastEditors: nanoseeds
+LastEditTime: 2020-11-03 20:24:19
+'''
 import pathlib
 import subprocess
 
@@ -34,5 +44,6 @@ def check_jsonchecker_error():
         print('All success!')
 
 
-# check_jsonchecker_correct()
-check_jsonchecker_error()
+if __name__ == "__main__":
+    check_jsonchecker_error()
+    check_jsonchecker_correct()
