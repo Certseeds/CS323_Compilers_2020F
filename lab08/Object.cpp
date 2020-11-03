@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-10-30 11:21:26
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-02 12:07:27
+ * @LastEditTime: 2020-11-03 20:41:04
  */
 #include "Object.hpp"
 
@@ -23,39 +23,41 @@ JsonObject::JsonObject(ObjectMember *value) : JsonObject(CATEGORY::OBJECT, value
 JsonObject::JsonObject(CATEGORY cate, JSONTYPES value) : category(cate), value(value) {}
 
 void JsonObject::printInside(int space) const {
-    std::cout << std::string(space, ' ') << "Type: " << printCate.at(this->category) << '\n';
-    std::cout << std::string(space, ' ') << "Value: ";
+    // std::cout << std::string(space, ' ') << "Type: " << printCate.at(this->category) << '\n';
+    // std::cout << std::string(space, ' ') << "Value: ";
     switch (this->category) {
         case CATEGORY::STRING: {
-            std::cout << std::get<string>(this->value) << '\n';
+            std::cout <<R"(")" << std::get<string>(this->value) << R"(")";
             break;
         }
         case CATEGORY::NUMBER: {
-            std::cout << std::get<double>(this->value) << '\n';
+            std::cout << std::get<double>(this->value) ;
             break;
         }
         case CATEGORY::BOOLEAN: {
-            std::cout << (std::get<bool>(this->value) ? "true" : "false") << '\n';
+            std::cout << (std::get<bool>(this->value) ? "true" : "false");
             break;
         }
         case CATEGORY::VNULL: {
-            std::cout << "Nullptr\n";
+            std::cout << "null";
             break;
         }
         case CATEGORY::OBJECT: {
-            std::cout << " Object\n";
+            std::cout << "{";
             const auto next = std::get<ObjectMember *>(this->value);
             if (next != nullptr) {
                 next->printInside(space + 2);
             }
+            std::cout << "}\n";
             break;
         }
         case CATEGORY::ARRAY: {
-            std::cout << " Array \n";
+            std::cout << "[\n";
             const auto next = std::get<ArrayValue *>(this->value);
             if (next != nullptr) {
                 next->printInside(space + 2);
             }
+            std::cout << "]\n";
             break;
         }
         default:
@@ -68,10 +70,10 @@ ObjectMember::ObjectMember() : ObjectMember("", nullptr) {}
 ObjectMember::ObjectMember(std::string key, JsonObject *value) : key(key), value(value), next(nullptr) {}
 
 void ObjectMember::printInside(int space) const {
-    std::cout << std::string(space, ' ') << "Type: ObjectMember \n";
-    std::cout << std::string(space, ' ') << "Key: " << this->key << '\n';
+    std::cout << R"(")" << this->key << R"(")" << ':';
     this->value->printInside(space + 2);
     if (next != nullptr) {
+        std::cout << ",";
         this->next->printInside(space);
     }
 }
@@ -83,9 +85,9 @@ ArrayValue::ArrayValue(ArrayValue *next) : ArrayValue(nullptr, next) {}
 ArrayValue::ArrayValue(JsonObject *json, ArrayValue *next) : value(json), next(next) {}
 
 void ArrayValue::printInside(int space) const {
-    std::cout << std::string(space, ' ') << "Type: ArrayValue\n";
     this->value->printInside(space + 2);
     if (next != nullptr) {
+        std::cout << ",";
         this->next->printInside(space);
     }
 }
