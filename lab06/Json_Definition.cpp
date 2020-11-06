@@ -41,15 +41,19 @@ typedef struct Type {
     };  // i dont know the struct need or not store the value's in json object
     // if just need to stroe the struct or type, this union do not need to set.
     // if need to store the details of each primitice element, it can be set.
-    enum { OBJECT,
-           ARRAY,
-           PRIMITIVE } category;
+    enum {
+        OBJECT,
+        ARRAY,
+        PRIMITIVE
+    } category;
     union {
-        enum { STRING,
-               NUMBER,
-               TRUE,
-               FALSE,
-               VNULL } primitive;
+        enum {
+            STRING,
+            NUMBER,
+            TRUE,
+            FALSE,
+            VNULL
+        } primitive;
         struct ArrayList *ARRAYLIST;
         struct KVList *OBJECTLIST;
     };

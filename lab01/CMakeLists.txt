@@ -6,7 +6,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -std=c11 -Wall -Wextra")
 
 add_library(${PROJECT_NAME}_ll
         SHARED
-        linked_list.c)  
+        linked_list.c)
 
 add_executable(${PROJECT_NAME}_hello.out ./hello_world.c)
 

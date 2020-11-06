@@ -10,11 +10,11 @@ void yyerror_myself(enum YYERROR_TYPE type) {
     std::string msg;
     switch (type) {
         case YYERROR_TYPE::LACK_OF_RC: {
-            msg="Missing closing curly braces  \'}\'";
+            msg = "Missing closing curly braces  \'}\'";
             break;
         }
         case YYERROR_TYPE::LACK_OF_RB: {
-            msg="Missing closing bracket \']\'";
+            msg = "Missing closing bracket \']\'";
             break;
         }
         case YYERROR_TYPE::LACK_OF_RP: {
@@ -22,26 +22,26 @@ void yyerror_myself(enum YYERROR_TYPE type) {
             break;
         }
         case YYERROR_TYPE::LACK_OF_LC: {
-            msg="Missing left curly braces  \'{\'";
+            msg = "Missing left curly braces  \'{\'";
             break;
         }
         case YYERROR_TYPE::LACK_OF_LB: {
-            msg="Missing left bracket \'[\'";
+            msg = "Missing left bracket \'[\'";
             break;
         }
         case YYERROR_TYPE::LACK_OF_LP: {
             msg = "Missing left parenthesis \'(\'";
             break;
         }
-        case YYERROR_TYPE::MISS_SPEC:{
-            msg="Missing specifier";
+        case YYERROR_TYPE::MISS_SPEC: {
+            msg = "Missing specifier";
             break;
         }
-        case YYERROR_TYPE::MISS_SEMI:{
+        case YYERROR_TYPE::MISS_SEMI: {
             msg = "Missing semicolon \';\'";
             break;
         }
-        case YYERROR_TYPE::MISS_COMMA:{
+        case YYERROR_TYPE::MISS_COMMA: {
             msg = "Missing COMMA \',\'";
         }
     }
