@@ -1,0 +1,15 @@
+struct queType{};
+struct pri{};
+struct my_struct
+{
+  int code;
+  char data;
+  float sta1;
+  float fst,scd;
+  float tir,fth[1];
+  float sta2[1][2][3],sta3[4][5][6][7];
+  struct queType ques;
+  struct queType ques1,ques2;
+  struct queType ques3,ques4[11];
+  struct pri ques5[8],ques6[9][10];
+};

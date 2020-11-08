@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-10-07 18:48:42
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-06 11:25:16
+ * @LastEditTime: 2020-11-08 23:40:52
  */
 //
 // Created by nanos on 2020/10/7.
@@ -76,12 +76,12 @@ public:
         this->push_back(rest...);
     }
 
-    Node *&get_nodes(int order) {
+    Node *&get_nodes(size_t order) {
         return this->nodes[order];
     }
 
     template<typename T=size_t, typename... Args>
-    Node *&get_nodes(int order, Args... rest) {
+    Node *&get_nodes(size_t order, Args... rest) {
         return this->nodes[order]->get_nodes(rest...);
     }
 

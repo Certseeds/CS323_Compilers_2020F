@@ -13,7 +13,7 @@
 
 using std::string;
 using std::unordered_map;
-extern unordered_map<string,Type*> symbolTable;
+extern unordered_map<string, Type *> symbolTable;
 
 void defVisit(Node *node);
 

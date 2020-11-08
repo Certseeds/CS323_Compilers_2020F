@@ -9,20 +9,22 @@ struct my_struct
   struct queType ques;
   struct pri ques2[2];
 };
+int fst,scd;
 int global;
 int global2[10][20][30];
+int global3[4][5][6],global4[1][2][3];
 struct woma3
 {
     int a;
 }x[10][20];
 struct woma4{
-    struct wona3[10][20];
-}
+    struct wona3 wonaVari[10][20];
+};
 // TODO 全局的pure数组
 // TODO 全局的struct数组
 // TODO 内部的struct数组
 struct woma{};
-struct woma2;
+//struct woma2;
 //struct woma3[10]; can not use
 //struct woma3{}[10][20]; still can not use
 struct my_struct2

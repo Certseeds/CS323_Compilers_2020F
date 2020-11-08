@@ -1,0 +1,23 @@
+struct woma1
+{
+    int a1;
+};
+struct woma2
+{
+    int a2;
+}a3;
+struct woma3
+{
+    int a4;
+}a5;
+struct woma4
+{
+    int a6;
+}a7[1];
+struct woma5
+{
+    int a8;
+}a9,a10[1];
+int x;
+int x1,x2[2];
+struct woma5 a11[3],a12[4];
