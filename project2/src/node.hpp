@@ -47,7 +47,7 @@ public:
 
     explicit Node(string nam);
 
-    explicit Node(const char *const nam);
+    explicit Node(const char *nam);
 
     explicit Node(float value);
 
@@ -63,7 +63,7 @@ public:
 
     ~Node() = default;
 
-    void print(int space);
+    void print(int space = 0);
 
     void push_back(Node *subnode) {
         this->nodes_num++;
@@ -76,8 +76,17 @@ public:
         this->push_back(rest...);
     }
 
+    Node *&get_nodes(int order) {
+        return this->nodes[order];
+    }
+
+    template<typename T=size_t, typename... Args>
+    Node *&get_nodes(int order, Args... rest) {
+        return this->nodes[order]->get_nodes(rest...);
+    }
+
 private:
-    void print_n_space(int space);
+    static void print_n_space(int space);
 
     void print_line(int space);
 

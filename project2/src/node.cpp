@@ -14,6 +14,7 @@
 
 #include <utility>
 
+
 void Node::print(int space) {
     if (this->TYPE == Node_TYPE::NOTHING) {
         return;
@@ -68,11 +69,12 @@ Node::Node(string nam, Node_TYPE type) : Node(std::move(nam), type, 0, 0) {};
 
 Node::Node(string nam, int int_line_value, Node_TYPE type) : Node(std::move(nam), type, 0, int_line_value) {};
 
-Node::Node(string nam, string str_value, Node_TYPE type) : Node(std::move(nam), type, 0, str_value) {};
+Node::Node(string nam, string str_value, Node_TYPE type) : Node(std::move(nam), type, 0, std::move(str_value)) {};
 
-Node::Node(string name, Node_TYPE node_type, int nodes_num, Node_inside_type value) : name(name), TYPE(node_type),
+Node::Node(string name, Node_TYPE node_type, int nodes_num, Node_inside_type value) : name(std::move(name)),
+                                                                                      TYPE(node_type),
                                                                                       nodes_num(nodes_num),
-                                                                                      value(value) {
+                                                                                      value(std::move(value)) {
     this->nodes = std::vector<Node *>(this->nodes_num);
 };
 

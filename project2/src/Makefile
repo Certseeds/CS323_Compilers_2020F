@@ -5,23 +5,31 @@ CXXSTD = -std=c++17
 
 CXXDEBUG = -g
 CXXWARN = -Wall -Wextra
-MAKE_PATH=./make-build-dir
+MAKE_PATH= cmake-build-dir
 CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 
 .lex:lex.l
 	$(FLEX) lex.l
 .syntax:syntax.y
 	$(BISON) -t -d -v syntax.y
-.node: .lex .syntax
+.prepare:.lex .syntax
+.node: .prepare
 	$(CPP) $(CXXFLAGS) -c node.cpp -o node.o
 	@ar -rc libnode.a node.o
-.yyerror: .lex .syntax
+.yyerror: .prepare
 	$(CPP) $(CXXFLAGS) -c yyerror_myself.cpp -o yyerror_myself.o
 	@ar -rc libyyerror_myself.a yyerror_myself.o
-.parser: .lex .syntax
+.parser: .prepare
 	$(CPP) $(CXXFLAGS) -c syntax.tab.c -o parser.o  -lfl -ly
 	@ar -rc libparser.a parser.o
-splc: .node .yyerror .parser
-	$(CPP) $(CXXFLAGS) main.cpp -static -L. -lnode -lyyerror_myself -lparser -o splc
+.type: .prepare
+	$(CPP) $(CXXFLAGS) -c type.cpp -o type.o
+	@ar -rc libtype.a type.o
+.visit: .prepare
+	$(CPP) $(CXXFLAGS) -c visitSyntaxTree2.cpp -o visitSyntaxTree.o
+	@ar -rc libvisitSyntaxTree.a visitSyntaxTree.o
+splc: .node .yyerror .parser .type .visit
+	$(CPP) $(CXXFLAGS) main.cpp -static -L. -lnode -lyyerror_myself -lparser \
+    -lvisitSyntaxTree -ltype  -o splc
 clean:
 	@rm -rf $(MAKE_PATH)/ lex.yy.c syntax.tab.* *.out *.o *.a *.so syntax.output splc

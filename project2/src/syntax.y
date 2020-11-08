@@ -1,13 +1,18 @@
 %{
+    #include <string>
+    #include <unordered_map>
+    #include "type.hpp"
+    #include "visitSyntaxTree.hpp"
+    using std::string;
+    using std::unordered_map;
     #define YY_NO_UNPUT
     #include "lex.yy.c"
     void yyerror(const char *s);
     void lineinfor(void);
     Node* root_node;
+    unordered_map<string,Type*> symbolTable;
     extern int isError;
-    // %language "c++"
     #define PARSER_error_OUTPUT stdout
-    //yydebug = 1;
     #include "yyerror_myself.hpp"
 %}
 %locations
@@ -51,9 +56,21 @@ Program: ExtDefList {
 ExtDefList:{$$=new Node("ExtDefList",@$.first_line,Node_TYPE::NOTHING);}
     | ExtDef ExtDefList {$$=new Node("ExtDefList",@$.first_line); $$->push_back($1,$2);}
     ;
-ExtDef: Specifier ExtDecList SEMI  {$$=new Node("ExtDef",@$.first_line); $$->push_back($1,$2,$3);}
-    | Specifier SEMI {$$=new Node("ExtDef",@$.first_line); $$->push_back($1,$2);}
-    | Specifier FunDec CompSt {$$=new Node("ExtDef",@$.first_line); $$->push_back($1,$2,$3);}
+ExtDef: Specifier ExtDecList SEMI  {
+    $$=new Node("ExtDef",@$.first_line);
+    $$->push_back($1,$2,$3);
+    extDefVisit_SES($$);
+    }
+    | Specifier SEMI {
+    $$=new Node("ExtDef",@$.first_line);
+    $$->push_back($1,$2);
+    extDefVisit_SS($$);
+    }
+    | Specifier FunDec CompSt {
+    $$=new Node("ExtDef",@$.first_line);
+    $$->push_back($1,$2,$3);
+    extDefVisit_SFC($$);
+    }
     | Specifier ExtDecList error  {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
     | Specifier error {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
     ;
@@ -113,7 +130,15 @@ Stmt: Exp SEMI {$$=new Node("Stmt",@$.first_line); $$->push_back($1,$2);}
 DefList: {$$=new Node("DefList",@$.first_line,Node_TYPE::NOTHING);}
     | Def DefList {$$=new Node("DefList",@$.first_line); $$->push_back($1,$2);}
     ;
-Def: Specifier DecList SEMI {$$=new Node("Def",@$.first_line); $$->push_back($1,$2,$3);}
+/*
+// Definition of
+basic  name;
+// */
+Def: Specifier DecList SEMI {
+    $$=new Node("Def",@$.first_line);
+    $$->push_back($1,$2,$3);
+    defVisit($$);
+    }
     | Specifier DecList error {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
     | error DecList SEMI {yyerror_myself(YYERROR_TYPE::MISS_SPEC);}
     ;
