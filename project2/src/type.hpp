@@ -15,7 +15,7 @@ using std::variant;
 using std::vector;
 
 enum class CATEGORY {
-    PRIMITIVE, ARRAY, STRUCTURE
+    PRIMITIVE, ARRAY, STRUCTURE, FUNCTION
 };
 
 class Array;
@@ -26,11 +26,15 @@ class Type {
     using PRIMI = variant<Node_TYPE, Array *, FieldList *>;
 public:
     string name;
-    CATEGORY category;
+    CATEGORY category = CATEGORY::PRIMITIVE;
     PRIMI type;
-    vector<Type *> parms = vector<Type *>(0);
+    bool isFunction = false;
+    Type *returnType = nullptr; // 存储返回值的类型
+    //vector<Type *> parms;
 
     Type() = default;
+
+    explicit Type(bool _isFunction);
 
     Type(string _name, CATEGORY _category, PRIMI _type);
 
@@ -47,8 +51,10 @@ public:
 class FieldList {
 public:
     string name;
-    Type *type;
-    FieldList *next;
+    Type *type = nullptr;
+    FieldList *next = nullptr;
+
+    FieldList() = default;
 
     FieldList(string name, Type *type, FieldList *next);
 

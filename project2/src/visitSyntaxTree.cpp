@@ -3,11 +3,12 @@
 //
 
 #include "visitSyntaxTree.hpp"
+#include "semanticError.hpp"
 
-unordered_map<string, Node_TYPE> snt = {
-        {"int",   Node_TYPE::INT},
-        {"float", Node_TYPE::FLOAT},
-        {"char",  Node_TYPE::CHAR},
+static unordered_map<string, Node_TYPE> snt = {
+        {string("int"),   Node_TYPE::INT},
+        {string("float"), Node_TYPE::FLOAT},
+        {string("char"),  Node_TYPE::CHAR},
 };
 
 void defStructTypeVisit(Node *node);
@@ -26,15 +27,12 @@ void extDefVisit_SES_PureType(Node *node);
 
 void extDefVisit_SES_StructType(Node *node);
 
+Array *getArrayFromVarDec(Node *node, Type *type);
+
 /*
  * When Bison detect a Def, enter this function
  * */
 void defVisit(Node *node) {
-    string name = getStrValueFromDecList(node->get_nodes(1));
-    if (symbolTable.count(name) != 0) {
-        // throw error in there
-        // error type 3: variable is redefined in the same scope
-    }
     if (node->get_nodes(0, 0)->nodes.empty()) {
         defPureTypeVisit(node);
     } else {
@@ -87,15 +85,15 @@ Def
   SEMI
   // DO not forget VarDec can contain array
  * */
-Array *getArrayFromVarDec(Node *node, Type *type);
 
 void defPureTypeVisit(Node *node) {
-    std::cout << "empty\n";
-    ////node->print(0);
     Node *decList = node->get_nodes(1);
     string name = getStrValueFromDecList(decList);
     auto _type = snt[std::get<string>(node->get_nodes(0, 0)->value)];
     do {
+        if (symbolTable.count(name) != 0) {
+            variableRedefined(std::get<int>(node->value), name);
+        }
         if (decList->get_nodes(0, 0)->nodes.size() == 1) {
             symbolTable[name] = new Type(name, CATEGORY::PRIMITIVE, _type);
         } else {
@@ -109,22 +107,6 @@ void defPureTypeVisit(Node *node) {
         decList = decList->get_nodes(2);
         name = getStrValueFromDecList(decList);
     } while (true);
-}
-
-Array *getArrayFromVarDec(Node *node, Type *type) {
-    if (node == nullptr || node->name != "VarDec") {
-        return nullptr;
-    } else {
-        int size = std::get<int>(node->get_nodes(2)->value);
-        //node->print();
-        if (node->get_nodes(0)->nodes.size() == 1) {
-            return new Array(type, size);
-        } else {
-            return new Array(new Type("", CATEGORY::ARRAY,
-                                      getArrayFromVarDec(node->get_nodes(0),
-                                                         type)), size);
-        }
-    }
 }
 
 /*
@@ -141,17 +123,16 @@ Def (9)
   SEMI
  * */
 void defStructTypeVisit(Node *node) {
-    std::cout << "un empty\n";
-    //node->print(0);
     Node *decList = node->get_nodes(1);
     string variableName = getStrValueFromDecList(decList);
     string structName = std::get<string>(node->get_nodes(0, 0, 1)->value);
     if (symbolTable.count(structName) == 0) {
         //TODO error there
+        // WHICH ERROR DID it belong to ?
     } else {
         do {
             if (symbolTable.count(variableName) != 0) {
-                //TODO
+                variableRedefined(std::get<int>(node->value), variableName);
             }
             if (decList->get_nodes(0, 0)->nodes.size() == 1) {
                 symbolTable[variableName] = symbolTable[structName];
@@ -171,6 +152,25 @@ void defStructTypeVisit(Node *node) {
     }
 }
 
+Array *getArrayFromVarDec(Node *node, Type *type) {
+    if (node == nullptr || node->name != "VarDec") {
+        return nullptr;
+    } else {
+        int size = std::get<int>(node->get_nodes(2)->value);
+#ifdef DEBUG
+        node->print();
+#endif
+        if (node->get_nodes(0)->nodes.size() == 1) {
+            return new Array(type, size);
+        } else {
+            return new Array(new Type("", CATEGORY::ARRAY,
+                                      getArrayFromVarDec(node->get_nodes(0),
+                                                         type)), size);
+        }
+    }
+}
+
+
 /*
 ExtDef
   Specifier // this can be type or structSpecifier
@@ -181,7 +181,7 @@ ExtDef
   SEMI*/
 
 void extDefVisit_SES(Node *node) {
-    std::cout << "SES\n";
+    //std::cout << "SES\n";
     if (node->get_nodes(0, 0)->nodes.empty()) {
         // global puretype variables
         extDefVisit_SES_PureType(node);
@@ -190,7 +190,9 @@ void extDefVisit_SES(Node *node) {
         extDefVisit_SES_StructType(node);
         // inside is StructSpecifier
     }
-    //node->print(0);
+#ifdef DEBUG
+    node->print(0);
+#endif
 }
 
 void extDefVisit_SES_PureType(Node *node) {
@@ -198,6 +200,9 @@ void extDefVisit_SES_PureType(Node *node) {
     string name = getStrValueFromExtDecList(extDecList);
     auto _type = snt[std::get<string>(node->get_nodes(0, 0)->value)];
     do {
+        if (symbolTable.count(name) != 0) {
+            variableRedefined(std::get<int>(node->value), name);
+        }
         if (extDecList->get_nodes(0, 0)->nodes.empty()) {
             symbolTable[name] = new Type(name, CATEGORY::PRIMITIVE, _type);
         } else {
@@ -218,10 +223,13 @@ void extDefVisit_SES_StructType(Node *node) {
     Node *extDefList = node->get_nodes(1);
     string variableName = getStrValueFromExtDecList(extDefList);
     extDefVisit_SS(node);
-    if (symbolTable.count(variableName) != 0) {
-        //TODO error type 3
+    if (symbolTable.count(structName) != 0) {
+        //TODO ,BUT WHAT ERROR TYPE it is?
     } else {
         do {
+            if (symbolTable.count(variableName) != 0) {
+                variableRedefined(std::get<int>(node->value), variableName);
+            }
             if (extDefList->get_nodes(0)->nodes.size() == 1) {
                 //Struct with variable definition
                 symbolTable[variableName] = symbolTable[structName];
@@ -260,14 +268,15 @@ ExtDef (2)
   SEMI
 */
 void extDefVisit_SS(Node *node) {
-    std::cout << "SS\n";
+    // definition of Struct
+    //std::cout << "SS\n";
     if (node->get_nodes(0, 0)->name == "TYPE") {
         // ignore the pureType's def likt `float;`
         return;
     }
     string name = std::get<string>(node->get_nodes(0, 0, 1)->value);
     if (symbolTable.count(name) != 0) {
-        //error type 3
+        // what error it is?
     } else {
         if (node->get_nodes(0, 0, 3)->nodes.empty()) {
             symbolTable[name] = new Type(name, CATEGORY::STRUCTURE, static_cast<FieldList *>(nullptr));
@@ -276,16 +285,72 @@ void extDefVisit_SS(Node *node) {
             symbolTable[name] = new Type(name, CATEGORY::STRUCTURE, getFiledListFromDefList(node->get_nodes(0, 0, 3)));
         }
     }
-    //node->print(0);
+#ifdef DEBUG
+    node->print(0);
+#endif
+}
+
+// input is a Specifier Node
+// Return is its Type's string
+Type *getSpecifierType(Node *node) {
+    if (node->name != "Specifier") {
+        return nullptr;
+    }
+    if (node->get_nodes(0)->nodes.empty()) {
+        return new Type(std::get<string>(node->get_nodes(0)->value), CATEGORY::PRIMITIVE,
+                        snt[std::get<string>(node->get_nodes(0)->value)]);
+    } else {
+        return symbolTable[std::get<string>(node->get_nodes(0, 1)->value)];
+    }
 }
 
 void extDefVisit_SFC(Node *node) {
-    std::cout << "SFC\n";
-    //node->print(0);
+    Type *functionType = new Type(true);
+    Node *specifier = node->get_nodes(0);
+    auto specifierType = getSpecifierType(specifier);
+    functionType->category = CATEGORY::FUNCTION;
+    functionType->returnType = specifierType;
+    functionType->name = std::get<string>(node->get_nodes(1, 0)->value);
+    if (symbolTable.count(functionType->name) != 0) {
+        functionRedefined(std::get<int>(node->value), functionType->name);
+        // TODO error
+    } else {
+        if (node->get_nodes(1)->nodes.size() != 4) {
+            // no need to put anything
+        } else {
+            Node *varList = node->get_nodes(1, 2);
+            FieldList fieldList;
+            fieldList.next = new FieldList();
+            FieldList *fieldListPtr = fieldList.next;
+            functionType->type = fieldList.next;
+            do {
+                specifierType = getSpecifierType(varList->get_nodes(0, 0));
+                string paramName = std::get<string>(varList->get_nodes(0, 1, 0)->value);
+                if (specifierType->category == CATEGORY::PRIMITIVE) {
+                    specifierType->name = paramName;
+                }
+                symbolTable[paramName] = specifierType;
+                fieldListPtr->type = symbolTable[paramName];
+                fieldListPtr->next = new FieldList();
+                fieldListPtr = fieldListPtr->next;
+                if (varList->nodes.size() == 1) {
+                    break;
+                }
+                varList = varList->get_nodes(2);
+            } while (true);
+        }
+    }
+    symbolTable[functionType->name] = functionType;
+    //std::cout << "SFC\n";
+#ifdef DEBUG
+    node->print(0);
+#endif
 }
 
 void expVisit(Node *node) {
-    //node->print(0);
+#ifdef DEBUG
+    node->print(0);
+#endif
 }
 
 FieldList *getFiledListFromDefList(Node *node) {

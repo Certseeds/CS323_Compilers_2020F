@@ -25,11 +25,14 @@ CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 .type: .prepare
 	$(CPP) $(CXXFLAGS) -c type.cpp -o type.o
 	@ar -rc libtype.a type.o
+.semanticError: .prepare
+	$(CPP) $(CXXFLAGS) -c semanticError.cpp -o semanticError.o
+	@ar -rc libsemanticError.a semanticError.o
 .visit: .prepare
-	$(CPP) $(CXXFLAGS) -c visitSyntaxTree.cpp -o visitSyntaxTree.o
+	$(CPP) $(CXXFLAGS) -c visitSyntaxTree2.cpp -o visitSyntaxTree.o
 	@ar -rc libvisitSyntaxTree.a visitSyntaxTree.o
-splc: .node .yyerror .parser .type .visit
+splc: .node .yyerror .parser .type .semanticError .visit
 	$(CPP) $(CXXFLAGS) main.cpp -static -L. -lnode -lyyerror_myself -lparser \
-    -lvisitSyntaxTree -ltype  -o splc
+    -lvisitSyntaxTree -lsemanticError -ltype  -o splc
 clean:
 	@rm -rf $(MAKE_PATH)/ lex.yy.c syntax.tab.* *.out *.o *.a *.so syntax.output splc

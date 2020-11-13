@@ -12,7 +12,10 @@ add_library(node
 add_library(yyerror_myself
         STATIC
         yyerror_myself.cpp)
-
+add_library(semanticError
+        STATIC
+        semanticError.cpp
+        )
 set_source_files_properties(syntax.tab.c PROPERTIES LANGUAGE CXX)
 add_library(parser
         STATIC
@@ -31,7 +34,7 @@ add_library(visitSyntaxTree2
         visitSyntaxTree2.cpp)
 add_executable(${PROJECT_NAME}_main main.cpp)
 target_link_libraries(${PROJECT_NAME}_main
-        node yyerror_myself parser visitSyntaxTree type
+        node yyerror_myself parser visitSyntaxTree type semanticError
         )
 SET_TARGET_PROPERTIES(parser PROPERTIES LINKER_LANGUAGE CXX)
 
