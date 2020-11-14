@@ -4,8 +4,6 @@
 
 #include "type.hpp"
 
-#include <utility>
-
 
 Type::Type(string _name, CATEGORY _category, Type::PRIMI _type) :
         name(std::move(_name)),

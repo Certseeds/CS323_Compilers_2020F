@@ -1,11 +1,11 @@
 CPP=g++
 FLEX=flex
 BISON=bison
-CXXSTD = -std=c++17
+MAKE_PATH = bin
 
+CXXSTD= -std=c++17
 CXXDEBUG = -g
 CXXWARN = -Wall -Wextra
-MAKE_PATH= cmake-build-dir
 CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 
 .lex:lex.l
@@ -19,9 +19,6 @@ CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 .yyerror: .prepare
 	$(CPP) $(CXXFLAGS) -c yyerror_myself.cpp -o yyerror_myself.o
 	@ar -rc libyyerror_myself.a yyerror_myself.o
-#.parser: .prepare
-#	$(CPP) $(CXXFLAGS) -c syntax.tab.c -o parser.o  -lfl -ly
-#	@ar -rc libparser.a parser.o
 .type: .prepare
 	$(CPP) $(CXXFLAGS) -c type.cpp -o type.o
 	@ar -rc libtype.a type.o

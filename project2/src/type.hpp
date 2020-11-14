@@ -41,6 +41,7 @@ class Array {
 public:
     Type *base;
     int size;
+
     Array(Type *base, int size);
 };
 

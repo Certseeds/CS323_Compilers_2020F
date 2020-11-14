@@ -3,6 +3,7 @@
 //
 
 #include "visitSyntaxTree.hpp"
+#include "visitSyntaxTree2.hpp"
 #include "semanticError.hpp"
 
 static unordered_map<string, Node_TYPE> snt = {
@@ -47,25 +48,6 @@ void idToExp(Node *exp, Node *id) {
     exp->type = symbolTable[std::get<string>(id->value)];
 }
 
-void defStructTypeVisit(Node *node);
-
-void defPureTypeVisit(Node *node);
-
-string getStrValueFromDecList(Node *node);
-
-void defStructDefinition(Node *node);
-
-void defStructObjectDefinition(Node *node);
-
-FieldList *getFiledListFromDefList(Node *node);
-
-void extDefVisit_SES_PureType(Node *node);
-
-void extDefVisit_SES_StructType(Node *node);
-
-Array *getArrayFromVarDec(Node *node, Type *type);
-
-void checkTypeMatchType(Type *leftType, Type *rightType, int lineNum, const std::function<void(int)> &func);
 
 /*
  * When Bison detect a Def, enter this function
@@ -132,7 +114,6 @@ void defPureTypeVisit(Node *node) {
         if (symbolTable.count(name) != 0) {
             variableRedefined(std::get<int>(node->value), name);
         }
-
         if (decList->get_nodes(0, 0)->nodes.size() == 1) {
             symbolTable[name] = new Type(name, CATEGORY::PRIMITIVE, _type);
             if (decList->get_nodes(0)->nodes.size() == 3) {
@@ -140,7 +121,6 @@ void defPureTypeVisit(Node *node) {
                                    decList->get_nodes(0, 2)->type, std::get<int>(node->value), nonMatchTypeBothSide);
             }
         } else {
-
             symbolTable[name] = new Type(name, CATEGORY::ARRAY,
                                          getArrayFromVarDec(decList->get_nodes(0, 0),
                                                             new Type("", CATEGORY::PRIMITIVE, _type)));
@@ -174,8 +154,7 @@ void defStructTypeVisit(Node *node) {
     string variableName = getStrValueFromDecList(decList);
     string structName = std::get<string>(node->get_nodes(0, 0, 1)->value);
     if (symbolTable.count(structName) == 0) {
-        //TODO error there
-        // WHICH ERROR DID it belong to ?
+        // structNotDefine Do not need to consider
     } else {
         do {
             if (symbolTable.count(variableName) != 0) {
@@ -229,9 +208,7 @@ ExtDef
     VarDec
       ID: global
   SEMI*/
-
 void extDefVisit_SES(Node *node) {
-    //std::cout << "SES\n";
     if (node->get_nodes(0, 0)->nodes.empty()) {
         // global puretype variables
         extDefVisit_SES_PureType(node);
@@ -274,6 +251,7 @@ void extDefVisit_SES_StructType(Node *node) {
     string variableName = getStrValueFromExtDecList(extDefList);
     extDefVisit_SS(node);
     if (symbolTable.count(structName) == 0) {
+        // but this do not need to print, it use to happen is extDefVisit_SS;
         // do not match there
         //structRedefined(std::get<int>(node->value), structName);
     } else {
@@ -408,21 +386,20 @@ FieldList *getFiledListFromDefList(Node *node) {
     if (node == nullptr || node->nodes.empty() || node->name != "DefList") {
         return nullptr;
     }
-    string name;
-    name = getStrValueFromDecList(node->get_nodes(0, 1));
-    if (node->get_nodes(0, 0, 0)->nodes.empty()) {
-        // struct内为normal变量visitSyntaxTree.cpp
-        //if (node->get_nodes(0, 0, 0)->name == "TYPE") {
-        //name = getStrValueFromDecList(node->get_nodes(0, 1));
-        //} else if (node->get_nodes(0, 0, 0)->name == "StructSpecifier") {
-        //}
-        if (symbolTable.count(name) == 0) {
-            // error , 出现未定义变量
-        }
-    } else {
-        // struct内有struct
-        name = name;
-    }
+    string name = getStrValueFromDecList(node->get_nodes(0, 1));
+//    if (node->get_nodes(0, 0, 0)->nodes.empty()) {
+//        // struct内为normal变量visitSyntaxTree.cpp
+//        //if (node->get_nodes(0, 0, 0)->name == "TYPE") {
+//        //name = getStrValueFromDecList(node->get_nodes(0, 1));
+//        //} else if (node->get_nodes(0, 0, 0)->name == "StructSpecifier") {
+//        //}
+//        if (symbolTable.count(name) == 0) {
+//            // error , 出现未定义变量
+//        }
+//    } else {
+//        // struct内有struct
+//        name = name;
+//    }
     return new FieldList(name, symbolTable[name], getFiledListFromDefList(node->get_nodes(1)));
 }
 
@@ -449,7 +426,6 @@ void checkRvalueInLeftSide(Node *node) {
         }
     }
     rvalueLeftSetError(std::get<int>(node->value));
-
 }
 
 void checkIdExists(Node *node, int lineNum) {
@@ -548,46 +524,39 @@ void checkFunctionParams(Node *ID, Node *args, int lineNum) {
     }
     Type *functionType = symbolTable[functionName];
     FieldList *fieldList = functionType->type.index() == 0 ? nullptr : std::get<FieldList *>(functionType->type);
+    auto fieldListFunc = [](FieldList *_field) {
+        int number = 0;
+        while (_field != nullptr) {
+            _field = _field->next;
+            number++;
+        }
+        return number;
+    };
+    auto argsFunc = [](Node *Args_) {
+        int number = 1;
+        while (Args_->nodes.size() != 1) {
+            Args_ = Args_->get_nodes(2);
+            number++;
+        }
+        return number;
+    };
     if (args == nullptr) {
         if (fieldList == nullptr) {
             return;
         } else {
-            int except = 1;
-            while (fieldList->next != nullptr) {
-                fieldList = fieldList->next;
-                except++;
-            }
+            int except = fieldListFunc(fieldList);
             invalidArgumentNumber(lineNum, functionName, except, 0);
         }
     } else {
         if (fieldList == nullptr) {
             // check args的参数数量
-            int actually = 1;
-            Node *tempArgs = args;
-            while (tempArgs->nodes.size() != 1) {
-                tempArgs = tempArgs->get_nodes(2);
-                actually++;
-            }
+            int actually = argsFunc(args);
             invalidArgumentNumber(lineNum, functionName, 0, actually);
             return;
         } else {
             // both check args, but check fieldList
-            int except = 1;
-            int actually = 1;
-            {
-                FieldList *tempFieldList = std::get<FieldList *>(functionType->type);
-                while (tempFieldList->next != nullptr) {
-                    tempFieldList = tempFieldList->next;
-                    except++;
-                }
-            }
-            {
-                Node *tempArgs = args;
-                while (tempArgs->nodes.size() != 1) {
-                    tempArgs = tempArgs->get_nodes(2);
-                    actually++;
-                }
-            }
+            int except = fieldListFunc(fieldList);
+            int actually = argsFunc(args);
             if (except != actually) {
                 invalidArgumentNumber(lineNum, functionName, except, actually);
             }
@@ -609,7 +578,7 @@ void checkFunctionParams(Node *ID, Node *args, int lineNum) {
                     continue;
                 } else {
                     Type *argsType = symbolTable[argsName];
-                    if(argsType->category == CATEGORY::FUNCTION){
+                    if (argsType->category == CATEGORY::FUNCTION) {
                         argsType = argsType->returnType;
                     }
                     if (filed->category != argsType->category) {
@@ -638,22 +607,6 @@ void checkFunctionParams(Node *ID, Node *args, int lineNum) {
                         };
                         std::tie(levelField, baseTypeOfField) = tempFunction(filed);
                         std::tie(levelArgs, baseTypeOfArgs) = tempFunction(argsType);
-//                        {
-//                            Type *tempField = filed;
-//                            while (tempField != nullptr && tempField->type.index() == 1) {
-//                                tempField = std::get<Array *>(tempField->type)->base;
-//                                levelField++;
-//                            }
-//                            baseTypeOfField = tempField;
-//                        }
-//                        {
-//                            Type *tempArgs = argsType;
-//                            while (tempArgs != nullptr && tempArgs->type.index() == 1) {
-//                                tempArgs = std::get<Array *>(tempArgs->type)->base;
-//                                levelArgs++;
-//                            }
-//                            baseTypeOfArgs = tempArgs;
-//                        }
                         if (levelArgs != levelField || baseTypeOfArgs->category != baseTypeOfField->category) {
                             invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
                                                 categoryAndTypeNameFromType(argsType));
@@ -778,7 +731,6 @@ Node_TYPE checkAlrthOperatorType(Node *exp) {
 void getAlrthOperatorType(Node *expOut, Node *expIn1, Node *expIn2) {
     auto check1 = checkAlrthOperatorType(expIn1);
     auto check2 = checkAlrthOperatorType(expIn2);
-
     if (check1 == Node_TYPE::LINE || check2 == Node_TYPE::LINE) {
     } else if (check1 == Node_TYPE::FLOAT || check2 == Node_TYPE::FLOAT) {
         expOut->type = new Type("float", CATEGORY::PRIMITIVE, Node_TYPE::FLOAT);
@@ -845,12 +797,6 @@ void checkTypeMatch(Node *left, Node *right, int lineNum) {
     checkTypeMatchType(leftType, rightType, lineNum, nonMatchTypeBothSide);
 }
 
-void checkReturnValueFromStmtList(Type *type, Node *stmtList);
-
-void checkReturnValueFromStmt(Type *type, Node *stmt);
-
-void checkReturnValueFromCompStmt(Type *type, Node *compStmt);
-
 
 void checkReturnValueMatchDeclaredType(Node *extDefSfc) {
     Type *returnType = symbolTable[std::get<string>(extDefSfc->get_nodes(1, 0)->value)]->returnType;
@@ -871,7 +817,6 @@ void checkReturnValueFromCompStmt(Type *type, Node *compStmt) {
     checkReturnValueFromStmtList(type, compStmt->get_nodes(2));
 }
 
-// TODO Boolean judge in IF/WHILE statement
 void checkReturnValueFromStmt(Type *type, Node *stmt) {
     if (stmt->get_nodes(0)->name == "RETURN") {
         checkTypeMatchType(type, stmt->get_nodes(1)->type, std::get<int>(stmt->value), returnTypeDisMatch);

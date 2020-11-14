@@ -32,6 +32,7 @@ void binaryOperatorNonNumber(int lineNum);
 
 // error type 8
 void returnTypeDisMatch(int lineNum);
+
 // error type 9
 void invalidArgumentNumber(int lineNum, const std::string &name, int expect, int actually);
 
