@@ -21,8 +21,8 @@ compiler() {
   #cd ..
 }
 run_test() {
-  # ./${CMAKE_DIR}/Flex.out ./test/testcase1.in >./test/testcase1.test.out
-  # diff ./test/testcase1.test.out ./test/testcase1.data.out -y --left-column
+  # ./${CMAKE_DIR}/Flex.out ./test_prac/testcase1.in >./test_prac/testcase1.test_prac.out
+  # diff ./test_prac/testcase1.test_prac.out ./test_prac/testcase1.data.out -y --left-column
   able=("01" "02" "05" "09" "12")
   for i in "${able[@]}"; do
     echo "${i}"

@@ -21,14 +21,20 @@ void variableRedefined(int lineNum, const std::string &name);
 // error type 4
 void functionRedefined(int lineNum, const std::string &name);
 
+// error type 5
+void nonMatchTypeBothSide(int lineNum);
+
 // error type 6
 void rvalueLeftSetError(int lineNum);
 
 // error type 7
 void binaryOperatorNonNumber(int lineNum);
 
+// error type 8
+void returnTypeDisMatch(int lineNum);
 // error type 9
 void invalidArgumentNumber(int lineNum, const std::string &name, int expect, int actually);
+
 // error type 9
 void invalidArgumentType(int lineNum, const std::string &name, const std::string &expect, const std::string &actually);
 

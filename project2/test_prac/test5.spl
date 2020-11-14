@@ -6,7 +6,7 @@ struct def{
     int code;
 };
 int parms(){
-    int inscope=1;
+    int inscope = 1;
     float inscopef1,inscopef2 = 2.2;
     char inscopech1,inscopech2='d',inscopeCh3 = 'c',inscopech4;
     int x;

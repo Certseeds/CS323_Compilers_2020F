@@ -34,4 +34,4 @@ for q, a in testcases:
     r = evaluate(q)
     assert r == a, '%s: expect %d; got %d' % (q, a, r)
 else:
-    print('pass all test cases')
+    print('pass all test_prac cases')

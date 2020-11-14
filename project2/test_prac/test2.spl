@@ -20,4 +20,3 @@ struct woma5
 }a9,a10[1];
 int x;
 int x1,x2[2];
-struct woma5 a11[3],a12[4];

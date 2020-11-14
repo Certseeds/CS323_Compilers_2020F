@@ -1,0 +1,24 @@
+int min(int x, int y)
+{
+  if (x > y) {return y;}
+  else if (y > x) {return x;}
+  else {return x;}
+}
+float max(int a, int b)
+{
+  if (b > a) {return -1.0;}
+  if (b == a) {return 0.0;}
+  return 1.0;
+}
+int test_2_r04()
+{
+  return min(7, 8);
+}
+int test_2_r05()
+{
+  float iii = 5.0;
+  float kkk = 1.2;
+  float ttt = max(19,81);
+  ttt = iii * kkk * test_2_r04() *max(41,51);
+  return 0;
+}

@@ -65,6 +65,8 @@ void extDefVisit_SES_StructType(Node *node);
 
 Array *getArrayFromVarDec(Node *node, Type *type);
 
+void checkTypeMatchType(Type *leftType, Type *rightType, int lineNum, const std::function<void(int)> &func);
+
 /*
  * When Bison detect a Def, enter this function
  * */
@@ -130,12 +132,21 @@ void defPureTypeVisit(Node *node) {
         if (symbolTable.count(name) != 0) {
             variableRedefined(std::get<int>(node->value), name);
         }
+
         if (decList->get_nodes(0, 0)->nodes.size() == 1) {
             symbolTable[name] = new Type(name, CATEGORY::PRIMITIVE, _type);
+            if (decList->get_nodes(0)->nodes.size() == 3) {
+                checkTypeMatchType(symbolTable[std::get<string>(decList->get_nodes(0, 0, 0)->value)],
+                                   decList->get_nodes(0, 2)->type, std::get<int>(node->value), nonMatchTypeBothSide);
+            }
         } else {
+
             symbolTable[name] = new Type(name, CATEGORY::ARRAY,
                                          getArrayFromVarDec(decList->get_nodes(0, 0),
                                                             new Type("", CATEGORY::PRIMITIVE, _type)));
+            if (decList->get_nodes(0)->nodes.size() == 3) {
+                nonMatchTypeBothSide(std::get<int>(decList->value));
+            }
         }
         if (decList->nodes.size() == 1) {
             break;
@@ -169,6 +180,9 @@ void defStructTypeVisit(Node *node) {
         do {
             if (symbolTable.count(variableName) != 0) {
                 variableRedefined(std::get<int>(node->value), variableName);
+            }
+            if (decList->get_nodes(0)->nodes.size() == 3) {
+                nonMatchTypeBothSide(std::get<int>(decList->value));
             }
             if (decList->get_nodes(0, 0)->nodes.size() == 1) {
                 symbolTable[variableName] = symbolTable[structName];
@@ -259,8 +273,9 @@ void extDefVisit_SES_StructType(Node *node) {
     Node *extDefList = node->get_nodes(1);
     string variableName = getStrValueFromExtDecList(extDefList);
     extDefVisit_SS(node);
-    if (symbolTable.count(structName) != 0) {
-        structRedefined(std::get<int>(node->value), structName);
+    if (symbolTable.count(structName) == 0) {
+        // do not match there
+        //structRedefined(std::get<int>(node->value), structName);
     } else {
         do {
             if (symbolTable.count(variableName) != 0) {
@@ -379,13 +394,14 @@ void extDefVisit_SFC(Node *node) {
 #ifdef DEBUG
     node->print(0);
 #endif
+    checkReturnValueMatchDeclaredType(node);
 }
 
-void expVisit(Node *node) {
-#ifdef DEBUG
-    node->print(0);
-#endif
-}
+//void expVisit(Node *node) {
+//#ifdef DEBUG
+//    node->print(0);
+//#endif
+//}
 
 
 FieldList *getFiledListFromDefList(Node *node) {
@@ -409,6 +425,7 @@ FieldList *getFiledListFromDefList(Node *node) {
     }
     return new FieldList(name, symbolTable[name], getFiledListFromDefList(node->get_nodes(1)));
 }
+
 
 void checkRvalueInLeftSide(Node *node) {
     if (node->name != "Exp") {
@@ -592,6 +609,9 @@ void checkFunctionParams(Node *ID, Node *args, int lineNum) {
                     continue;
                 } else {
                     Type *argsType = symbolTable[argsName];
+                    if(argsType->category == CATEGORY::FUNCTION){
+                        argsType = argsType->returnType;
+                    }
                     if (filed->category != argsType->category) {
                         invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
                                             categoryAndTypeNameFromType(argsType));
@@ -607,22 +627,33 @@ void checkFunctionParams(Node *ID, Node *args, int lineNum) {
                         int levelArgs = 1;
                         Type *baseTypeOfField;
                         Type *baseTypeOfArgs;
-                        {
-                            Type *tempField = filed;
+                        auto tempFunction = [](Type *_type) {
+                            int returnLevel = 1;
+                            Type *tempField = _type;
                             while (tempField != nullptr && tempField->type.index() == 1) {
                                 tempField = std::get<Array *>(tempField->type)->base;
-                                levelField++;
+                                returnLevel++;
                             }
-                            baseTypeOfField = tempField;
-                        }
-                        {
-                            Type *tempArgs = argsType;
-                            while (tempArgs != nullptr && tempArgs->type.index() == 1) {
-                                tempArgs = std::get<Array *>(tempArgs->type)->base;
-                                levelArgs++;
-                            }
-                            baseTypeOfArgs = tempArgs;
-                        }
+                            return std::tuple(returnLevel, tempField);
+                        };
+                        std::tie(levelField, baseTypeOfField) = tempFunction(filed);
+                        std::tie(levelArgs, baseTypeOfArgs) = tempFunction(argsType);
+//                        {
+//                            Type *tempField = filed;
+//                            while (tempField != nullptr && tempField->type.index() == 1) {
+//                                tempField = std::get<Array *>(tempField->type)->base;
+//                                levelField++;
+//                            }
+//                            baseTypeOfField = tempField;
+//                        }
+//                        {
+//                            Type *tempArgs = argsType;
+//                            while (tempArgs != nullptr && tempArgs->type.index() == 1) {
+//                                tempArgs = std::get<Array *>(tempArgs->type)->base;
+//                                levelArgs++;
+//                            }
+//                            baseTypeOfArgs = tempArgs;
+//                        }
                         if (levelArgs != levelField || baseTypeOfArgs->category != baseTypeOfField->category) {
                             invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
                                                 categoryAndTypeNameFromType(argsType));
@@ -649,7 +680,7 @@ void checkFunctionParams(Node *ID, Node *args, int lineNum) {
 }
 
 void checkArrayExists(Node *Exp) {
-    Node *temp = Exp;
+    //Node *temp = Exp;
     if (Exp->nodes.size() == 1) {
         string arrayName = std::get<string>(Exp->get_nodes(0)->value);
         if (symbolTable.count(arrayName) != 0) {
@@ -669,17 +700,24 @@ void checkArrayExists(Node *Exp) {
     }
 }
 
-void checkIntegerExp(Node *Exp) {
+bool checkIntegerExp(Node *Exp) {
     if (Exp->type == nullptr) {
         nonIntegerTypeIndexing(std::get<int>(Exp->value));
-        return;
+        return false;
     }
     if (Exp->type->category != CATEGORY::PRIMITIVE || std::get<Node_TYPE>(Exp->type->type) != Node_TYPE::INT) {
         nonIntegerTypeIndexing(std::get<int>(Exp->value));
+        return false;
     }
+    return true;
 }
 
-void getArrayType(Node *expOut, Node *expIn) {
+void getArrayType(Node *expOut, Node *expIn, Node *Integer) {
+    bool integerOk = checkIntegerExp(Integer);
+    if (!integerOk) {
+        expOut->type = nullptr;
+        return;
+    }
     if (expOut->nodes.size() == 1) {
         string arrayName = std::get<string>(expOut->get_nodes(0)->value);
         if (symbolTable.count(arrayName) != 0) {
@@ -746,5 +784,107 @@ void getAlrthOperatorType(Node *expOut, Node *expIn1, Node *expIn2) {
         expOut->type = new Type("float", CATEGORY::PRIMITIVE, Node_TYPE::FLOAT);
     } else {
         expOut->type = new Type("int", CATEGORY::PRIMITIVE, Node_TYPE::INT);
+    }
+}
+
+void checkTypeMatchType(Type *leftType, Type *rightType, int lineNum, const std::function<void(int)> &func) {
+    if (leftType == nullptr || rightType == nullptr) {
+        func(lineNum);
+    } else if (leftType->category != rightType->category) {
+        func(lineNum);
+    } else {
+        if (leftType->category == CATEGORY::PRIMITIVE) {
+            if (std::get<Node_TYPE>(leftType->type) != std::get<Node_TYPE>(rightType->type)) {
+                func(lineNum);
+            }
+        } else if (leftType->category == CATEGORY::STRUCTURE &&
+                   symbolTable[leftType->name]->name != symbolTable[rightType->name]->name) {
+            func(lineNum);
+        } else if (leftType->category == CATEGORY::ARRAY) {
+            auto getDemsionOfArray = [](Type *arrayType) {
+                int count = 1;
+                Type *tempArrayType = arrayType;
+                while (tempArrayType->type.index() == 1) {
+                    tempArrayType = std::get<Array *>(tempArrayType->type)->base;
+                    count++;
+                }
+                return std::tuple(count, tempArrayType);
+            };
+            int demensionLeftArray;
+            int demensionRightArray;
+            Type *insideLeftType;
+            Type *insideRightType;
+            std::tie(demensionLeftArray, insideLeftType) = getDemsionOfArray(leftType);
+            std::tie(demensionRightArray, insideRightType) = getDemsionOfArray(rightType);
+            if (demensionLeftArray != demensionRightArray) {
+                func(lineNum);
+            } else {
+                if (insideLeftType == nullptr || insideRightType == nullptr) {
+                    func(lineNum);
+                } else if (insideRightType->category != insideLeftType->category) {
+                    func(lineNum);
+                } else if (insideLeftType->category == CATEGORY::PRIMITIVE) {
+                    if (std::get<Node_TYPE>(insideLeftType->type) != std::get<Node_TYPE>(insideRightType->type)) {
+                        func(lineNum);
+                    }
+                } else if (insideRightType->category == CATEGORY::STRUCTURE) {
+                    if (insideLeftType->name != insideRightType->name) {
+                        func(lineNum);
+                    }
+                }
+            }
+        } else {
+            func(lineNum);
+        }
+    }
+}
+
+void checkTypeMatch(Node *left, Node *right, int lineNum) {
+    Type *leftType = left->type;
+    Type *rightType = right->type;
+    checkTypeMatchType(leftType, rightType, lineNum, nonMatchTypeBothSide);
+}
+
+void checkReturnValueFromStmtList(Type *type, Node *stmtList);
+
+void checkReturnValueFromStmt(Type *type, Node *stmt);
+
+void checkReturnValueFromCompStmt(Type *type, Node *compStmt);
+
+
+void checkReturnValueMatchDeclaredType(Node *extDefSfc) {
+    Type *returnType = symbolTable[std::get<string>(extDefSfc->get_nodes(1, 0)->value)]->returnType;
+    Node *compSt = extDefSfc->get_nodes(2);
+    checkReturnValueFromCompStmt(returnType, compSt);
+}
+
+void checkReturnValueFromStmtList(Type *type, Node *stmtList) {
+    if (stmtList->nodes.empty()) {
+        return;
+    } else {
+        checkReturnValueFromStmt(type, stmtList->get_nodes(0));
+        checkReturnValueFromStmtList(type, stmtList->get_nodes(1));
+    }
+}
+
+void checkReturnValueFromCompStmt(Type *type, Node *compStmt) {
+    checkReturnValueFromStmtList(type, compStmt->get_nodes(2));
+}
+
+// TODO Boolean judge in IF/WHILE statement
+void checkReturnValueFromStmt(Type *type, Node *stmt) {
+    if (stmt->get_nodes(0)->name == "RETURN") {
+        checkTypeMatchType(type, stmt->get_nodes(1)->type, std::get<int>(stmt->value), returnTypeDisMatch);
+    } else if (stmt->nodes.size() == 1 && stmt->get_nodes(0)->name == "CompSt") {
+        checkReturnValueFromCompStmt(type, stmt->get_nodes(0));
+    } else if (stmt->get_nodes(0)->name == "IF") {
+        if (stmt->nodes.size() == 7) {
+            checkReturnValueFromStmt(type, stmt->get_nodes(4));
+            checkReturnValueFromStmt(type, stmt->get_nodes(6));
+        } else if (stmt->nodes.size() == 6) {
+            checkReturnValueFromStmt(type, stmt->get_nodes(4));
+        }
+    } else if (stmt->get_nodes(0)->name == "WHILE") {
+        checkReturnValueFromStmt(type, stmt->get_nodes(4));
     }
 }

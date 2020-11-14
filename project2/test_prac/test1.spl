@@ -2,7 +2,7 @@ struct queType{};
 struct pri{};
 struct my_struct
 {
-  int code;
+  int code1;
   char data;
   float sta[1][2][3];
   float sta2[1][2][3];
@@ -29,14 +29,14 @@ struct woma{};
 //struct woma3{}[10][20]; still can not use
 struct my_struct2
 {
-  int code1;
+  int code2;
   struct my_struct code;
-  char data;
+  char data2;
   struct my_struct codes[10];
 }my_struct2s;
 int test_1_r02()
 {
   struct my_struct obj;
-  obj.code = global;
+  obj.code1 = global;
   global = global + 1;
 }

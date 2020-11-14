@@ -1,0 +1,21 @@
+int compare(int x, int y)
+{
+  return 1;
+  return 2;
+  return 3;
+  return 4;
+  return 5;
+  return 6;
+}
+float compare2(int a, int b){
+  return 1.0;
+  return 2.0;
+  return 3.0;
+  return 4.0;
+  return 5.0;
+  return 6.11;
+}
+int test_2_r04()
+{
+  return compare(7, 8);
+}

@@ -166,6 +166,7 @@ Exp: Exp ASSIGN Exp {
     $$=new Node("Exp",@$.first_line);
     $$->push_back($1,$2,$3);
     checkRvalueInLeftSide($$);
+    checkTypeMatch($1,$3,@2.first_line);
     }
     | Exp AND Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getBoolOperatorType($$,$1,$3);}
     | Exp OR Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getBoolOperatorType($$,$1,$3);}
@@ -204,8 +205,7 @@ Exp: Exp ASSIGN Exp {
         $$->push_back($1,$2,$3,$4);
         // LB is [
         checkArrayExists($1);
-        checkIntegerExp($3);
-        getArrayType($$,$1);
+        getArrayType($$,$1,$3);
     }
     | Exp LB Exp error {yyerror_myself(YYERROR_TYPE::LACK_OF_RB);}
     | Exp DOT ID {

@@ -45,9 +45,9 @@ void checkFunctionParams(Node *ID, Node *args, int lineNum);
 
 void checkArrayExists(Node *Exp);
 
-void checkIntegerExp(Node *Exp);
+//void checkIntegerExp(Node *Exp);
 
-void getArrayType(Node *expOut, Node *expIn);
+void getArrayType(Node *expOut, Node *expIn,Node* Integer);
 
 //bool checkBoolOperatorType(Node *exp);
 //
@@ -56,5 +56,9 @@ Node_TYPE checkAlrthOperatorType(Node *exp);
 void getBoolOperatorType(Node *expOut, Node *expIn1, Node *expIn2);
 
 void getAlrthOperatorType(Node *expOut, Node *expIn1, Node *expIn2);
+
+void checkTypeMatch(Node *left, Node *right, int lineNum);
+
+void checkReturnValueMatchDeclaredType(Node* extDefSfc);
 
 #endif //CS323_COMPLIERS_VISITSYNTAXTREE_HPP
