@@ -8,7 +8,9 @@ typedef struct node {
     };
     struct node *next;
 } node;
+
 node *linked_list_init_value(int value);
+
 /* initialize a linked list, head node is special */
 node *linked_list_init();
 

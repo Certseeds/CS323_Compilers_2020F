@@ -1,0 +1,13 @@
+float returnFloatFunction()
+{
+  return 114.514;
+}
+int test_2_r03()
+{
+  float ttt = 3 *returnFloatFunction();
+  float iii = 0.3 * returnFloatFunction();
+  float kkk = returnFloatFunction() * 1.2;
+  int returnValue = 2;
+  ttt = iii * kkk;
+  return returnValue;
+}

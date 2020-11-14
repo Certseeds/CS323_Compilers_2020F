@@ -1,107 +1,200 @@
 {
-    "fileheader.configObj": {
-        "createFileTime": true,
-        "language": {
-            "gitattributes": {
-                "head": "### ",
-                "middle": "##@",
-                "end": "### "
-            },
-            "gitignore": {
-                "head": "### ",
-                "middle": "## @",
-                "end": "### "
-            },
-            "md": {
-                "head": "<!--",
-                "middle": " * @",
-                "end": " * @License: CC-BY-NC-SA_V4_0 or any later version \n -->"
-            }
-        },
-        "autoAdd": true,
-        "autoAddLine": 100,
-        "autoAlready": true,
-        "annotationStr": {
-            "head": "/*",
-            "middle": "* @",
-            "end": " */",
-            "use": false
-        },
-        "headInsertLine": {
-            "php": 2,
-            "py": 0,
-            "java": 0,
-            "c": 0,
-            "cpp": 0,
-            "sh": 0,
-            "h": 0
-        },
-        "beforeAnnotation": {
-            "py": "#!/usr/bin/env python3\n# coding=utf-8",
-            "sh": "#!/bin/bash\nset -eoux pipefail"
-        },
-        "afterAnnotation": {},
-        "specialOptions": {},
-        "switch": {
-            "newlineAddAnnotation": true
-        },
-        "prohibitAutoAdd": [
-            "json",
-            "md",
-            "wav",
-            "xml"
-        ],
-        "moveCursor": true,
-        "dateFormat": "YYYY-MM-DD HH:mm:ss",
-        "atSymbol": "@",
-        "atSymbolObj": {},
-        "colon": ": ",
-        "colonObj": {},
-        "filePathColon": "路径分隔符替换",
-        "showErrorMessage": false,
-        "wideSame": false,
-        "wideNum": 13,
-        "CheckFileChange": false
+  "fileheader.configObj": {
+    "createFileTime": true,
+    "language": {
+      "gitattributes": {
+        "head": "### ",
+        "middle": "##@",
+        "end": "### "
+      },
+      "gitignore": {
+        "head": "### ",
+        "middle": "## @",
+        "end": "### "
+      },
+      "md": {
+        "head": "<!--",
+        "middle": " * @",
+        "end": " * @License: CC-BY-NC-SA_V4_0 or any later version \n -->"
+      }
     },
-    "fileheader.customMade": {
-        "Github": "https://github.com/Certseeds/CS323_Compilers_2020F",
-        "Organization": "SUSTech",
-        "Author": "nanoseeds",
-        "Date": "Do not edit",
-        "LastEditors": "nanoseeds",
-        "LastEditTime": "Do not edit"
+    "autoAdd": true,
+    "autoAddLine": 100,
+    "autoAlready": true,
+    "annotationStr": {
+      "head": "/*",
+      "middle": "* @",
+      "end": " */",
+      "use": false
     },
-    "git.ignoreLimitWarning": true,
-    "shellcheck.enable": true,
-    "shellcheck.executablePath": "/usr/bin/shellcheck",
-    "shellcheck.run": "onType",
-    "shellcheck.useWSL": true,
-    "shellcheck.enableQuickFix": true,
-    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 0}",
-    "todo-tree.general.tags": [
-        "TODO:",
-        "FIXME:"
+    "headInsertLine": {
+      "php": 2,
+      "py": 0,
+      "java": 0,
+      "c": 0,
+      "cpp": 0,
+      "sh": 0,
+      "h": 0
+    },
+    "beforeAnnotation": {
+      "py": "#!/usr/bin/env python3\n# coding=utf-8",
+      "sh": "#!/bin/bash\nset -eoux pipefail"
+    },
+    "afterAnnotation": {},
+    "specialOptions": {},
+    "switch": {
+      "newlineAddAnnotation": true
+    },
+    "prohibitAutoAdd": [
+      "json",
+      "md",
+      "wav",
+      "xml"
     ],
-    "todo-tree.highlights.defaultHighlight": {
-        "gutterIcon": true
-    },
-    "todo-tree.highlights.customHighlight": {
-        "TODO:": {
-            "foreground": "#fff",
-            "background": "#ffbd2a",
-            "iconColour": "#ffbd2a"
-        },
-        "FIXME:": {
-            "foreground": "#fff",
-            "background": "#f06292",
-            "icon": "flame",
-            "iconColour": "#f06292"
-        }
+    "moveCursor": true,
+    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+    "atSymbol": "@",
+    "atSymbolObj": {},
+    "colon": ": ",
+    "colonObj": {},
+    "filePathColon": "路径分隔符替换",
+    "showErrorMessage": false,
+    "wideSame": false,
+    "wideNum": 13,
+    "CheckFileChange": false
+  },
+  "fileheader.customMade": {
+    "Github": "https://github.com/Certseeds/CS323_Compilers_2020F",
+    "Organization": "SUSTech",
+    "Author": "nanoseeds",
+    "Date": "Do not edit",
+    "LastEditors": "nanoseeds",
+    "LastEditTime": "Do not edit"
+  },
+  "git.ignoreLimitWarning": true,
+  "shellcheck.enable": true,
+  "shellcheck.executablePath": "/usr/bin/shellcheck",
+  "shellcheck.run": "onType",
+  "shellcheck.useWSL": true,
+  "shellcheck.enableQuickFix": true,
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 0}",
+  "todo-tree.general.tags": [
+    "TODO:",
+    "FIXME:"
+  ],
+  "todo-tree.highlights.defaultHighlight": {
+    "gutterIcon": true
+  },
+  "todo-tree.highlights.customHighlight": {
+    "TODO:": {
+      "foreground": "#fff",
+      "background": "#ffbd2a",
+      "iconColour": "#ffbd2a"
     },
     "files.associations": {
         "ios": "c",
         "xiosbase": "c",
         "system_error": "cpp",
-        "xlocale": "cpp"
+        "xlocale": "cpp",
+        "string": "cpp",
+        "algorithm": "cpp",
+        "atomic": "cpp",
+        "cctype": "cpp",
+        "cmath": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "cstddef": "cpp",
+        "cstdint": "cpp",
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "cwchar": "cpp",
+        "exception": "cpp",
+        "functional": "cpp",
+        "initializer_list": "cpp",
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+        "istream": "cpp",
+        "iterator": "cpp",
+        "limits": "cpp",
+        "list": "cpp",
+        "memory": "cpp",
+        "new": "cpp",
+        "ostream": "cpp",
+        "stdexcept": "cpp",
+        "streambuf": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "typeinfo": "cpp",
+        "unordered_map": "cpp",
+        "utility": "cpp",
+        "variant": "cpp",
+        "vector": "cpp",
+        "xfacet": "cpp",
+        "xhash": "cpp",
+        "xlocinfo": "cpp",
+        "xlocnum": "cpp",
+        "xmemory": "cpp",
+        "xstddef": "cpp",
+        "xstring": "cpp",
+        "xtr1common": "cpp",
+        "xutility": "cpp",
+        "map": "cpp",
+        "xtree": "cpp",
+        "deque": "cpp",
+        "stack": "cpp",
+        "unordered_set": "cpp"
     }
+  },
+  "files.associations": {
+    "ios": "c",
+    "xiosbase": "c",
+    "system_error": "cpp",
+    "xlocale": "cpp",
+    "string": "cpp",
+    "algorithm": "cpp",
+    "atomic": "cpp",
+    "cctype": "cpp",
+    "cmath": "cpp",
+    "compare": "cpp",
+    "concepts": "cpp",
+    "cstddef": "cpp",
+    "cstdint": "cpp",
+    "cstdio": "cpp",
+    "cstdlib": "cpp",
+    "cstring": "cpp",
+    "cwchar": "cpp",
+    "exception": "cpp",
+    "functional": "cpp",
+    "initializer_list": "cpp",
+    "iosfwd": "cpp",
+    "iostream": "cpp",
+    "istream": "cpp",
+    "iterator": "cpp",
+    "limits": "cpp",
+    "list": "cpp",
+    "memory": "cpp",
+    "new": "cpp",
+    "ostream": "cpp",
+    "stdexcept": "cpp",
+    "streambuf": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "typeinfo": "cpp",
+    "unordered_map": "cpp",
+    "utility": "cpp",
+    "variant": "cpp",
+    "vector": "cpp",
+    "xfacet": "cpp",
+    "xhash": "cpp",
+    "xlocinfo": "cpp",
+    "xlocnum": "cpp",
+    "xmemory": "cpp",
+    "xstddef": "cpp",
+    "xstring": "cpp",
+    "xtr1common": "cpp",
+    "xutility": "cpp",
+    "map": "cpp",
+    "xtree": "cpp"
+  }
 }

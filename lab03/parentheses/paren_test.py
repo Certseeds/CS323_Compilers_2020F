@@ -8,7 +8,7 @@ Date: 2020-09-22 19:17:24
 LastEditors: nanoseeds
 LastEditTime: 2020-09-23 02:00:41
 '''
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 # encoding: utf-8
 
 import ctypes

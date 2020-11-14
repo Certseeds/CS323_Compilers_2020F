@@ -1,0 +1,42 @@
+struct queType{};
+struct pri{};
+struct my_struct
+{
+  int code1;
+  char data;
+  float sta[1][2][3];
+  float sta2[1][2][3];
+  struct queType ques;
+  struct pri ques2[2];
+};
+int fst,scd;
+int global;
+int global2[10][20][30];
+int global3[4][5][6],global4[1][2][3];
+struct woma3
+{
+    int a;
+}x[10][20];
+struct woma4{
+    struct wona3 wonaVari[10][20];
+};
+// TODO 全局的pure数组
+// TODO 全局的struct数组
+// TODO 内部的struct数组
+struct woma{};
+//struct woma2;
+//struct woma3[10]; can not use
+//struct woma3{}[10][20]; still can not use
+struct my_struct2
+{
+  int code2;
+  struct my_struct code;
+  char data2;
+  struct my_struct codes[10];
+}my_struct2s;
+int test_1_r02()
+{
+  struct my_struct obj;
+  obj.code1 = global;
+  global = global + 1;
+}

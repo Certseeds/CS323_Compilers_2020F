@@ -1,0 +1,16 @@
+{
+  "text": "This is the text",
+  "color": "dark_red",
+  "bold": "true",
+  "strikethough": "true",
+  "clickEvent": {
+    "action": "open_url",
+    "value": "zh.wikipedia.org"
+  },
+  "hoverEvent": {
+    "action": "show_text",
+    "value": {
+      "extra": "something"
+    }
+  }
+}

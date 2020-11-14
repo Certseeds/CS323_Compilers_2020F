@@ -1,0 +1,18 @@
+int min(int x, int y)
+{
+  if (x > y) {return x;}
+  else if (y >= x) {return y;}
+}
+float max(int a, int b)
+{
+  if (b >= a) {return a*1.0;}
+  if (b < a) {return 1.0*b;}
+}
+float test_2_r08(int i, int m, int n)
+{
+   if(n == 0){
+     return max(i,m);
+   }else{
+     return max(min(i,n),min(m,i));
+   }
+}
