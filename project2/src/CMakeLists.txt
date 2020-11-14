@@ -17,9 +17,10 @@ add_library(semanticError
         semanticError.cpp
         )
 set_source_files_properties(syntax.tab.c PROPERTIES LANGUAGE CXX)
-add_library(parser
-        STATIC
-        ./syntax.tab.c)
+#add_library(parser
+#        STATIC
+#        )
+#SET_TARGET_PROPERTIES(parser PROPERTIES LINKER_LANGUAGE CXX)
 
 add_library(type
         STATIC
@@ -32,10 +33,9 @@ add_library(visitSyntaxTree
 add_library(visitSyntaxTree2
         STATIC
         visitSyntaxTree2.cpp)
-add_executable(${PROJECT_NAME}_main main.cpp)
+add_executable(${PROJECT_NAME}_main main.cpp )
 target_link_libraries(${PROJECT_NAME}_main
-        node yyerror_myself parser visitSyntaxTree type semanticError
+        node yyerror_myself visitSyntaxTree type semanticError
         )
-SET_TARGET_PROPERTIES(parser PROPERTIES LINKER_LANGUAGE CXX)
 
 # this file just work for clion's identify, do not use it compiler files

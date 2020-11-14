@@ -20,7 +20,12 @@ FieldList *getFiledListFromDefList(Node *node);
  * When Bison detect a Def, enter this function
  * */
 void defVisit(Node *node) {
-    node->print();
+    //node->print();
+}
+
+void checkRvalueInLeftSide(Node *node) {
+    std::cout << "RValue" << std::endl;
+    //node->print();
 }
 
 /*
@@ -31,7 +36,8 @@ DecList
       ID: code
  * */
 string getStrValueFromDecList(Node *node) {
-    node->print();
+    //node->print();
+    return "";
 }
 
 /*
@@ -46,7 +52,7 @@ Def
   SEMI
  * */
 void defPureTypeVisit(Node *node) {
-    node->print();
+    //node->print();
 }
 
 /*
@@ -63,7 +69,7 @@ Def (9)
   SEMI
  * */
 void defStructTypeVisit(Node *node) {
-    node->print();
+    //node->print();
 }
 
 /*
@@ -111,6 +117,7 @@ void extDefVisit_SFC(Node *node) {
 void expVisit(Node *node) {
     node->print();
 }
+
 
 FieldList *getFiledListFromDefList(Node *node) {
 }

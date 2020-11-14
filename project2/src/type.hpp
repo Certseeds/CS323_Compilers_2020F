@@ -28,13 +28,10 @@ public:
     string name;
     CATEGORY category = CATEGORY::PRIMITIVE;
     PRIMI type;
-    bool isFunction = false;
     Type *returnType = nullptr; // 存储返回值的类型
     //vector<Type *> parms;
 
     Type() = default;
-
-    explicit Type(bool _isFunction);
 
     Type(string _name, CATEGORY _category, PRIMI _type);
 
@@ -44,7 +41,6 @@ class Array {
 public:
     Type *base;
     int size;
-
     Array(Type *base, int size);
 };
 

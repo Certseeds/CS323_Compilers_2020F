@@ -1,0 +1,24 @@
+struct str_a1 {
+    int int_a1;
+};
+struct str_a2{
+    int int_a2;
+    struct str_a1 instr_a2;
+};
+struct str_a3{
+    int int_a3;
+    struct str_a2 instr_a3;
+};
+int global;
+int inc(){return 0;}
+float noparam(){
+    struct str_a1 scope_a1;
+    struct str_a2 scope_a2;
+    struct str_a3 scope_a3;
+    scope_a1.int_a1 =1;
+    //scope_a1.int_a1.int_a1 =1; // Error type 13
+    scope_a2.int_a2 = 114;
+    scope_a2.instr_a2.int_a1 = 514;
+    ((scope_a2).instr_a2).int_a1 = 514;
+    global = inc();
+}

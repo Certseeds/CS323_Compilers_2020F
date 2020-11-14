@@ -93,8 +93,8 @@ VarDec: ID {$$=new Node("VarDec",@$.first_line);$$->push_back($1);}
     $$=new Node("VarDec",@$.first_line); $$->push_back($1,$2,$3,$4);}
     | VarDec LB INT error %prec LOWER_ERROR {yyerror_myself(YYERROR_TYPE::LACK_OF_RB);}
 FunDec: ID LP VarList RP {
-    $$=new Node("FunDec",@$.first_line); $$->push_back($1,$2,$3,$4);}
-    | ID LP RP  {$$=new Node("FunDec",@$.first_line); $$->push_back($1,$2,$3);}
+    $$=new Node("FunDec",@$.first_line); $$->push_back($1,$2,$3,$4);funDecVisit($$);}
+    | ID LP RP  {$$=new Node("FunDec",@$.first_line); $$->push_back($1,$2,$3);funDecVisit($$);}
     | ID LP VarList error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
     | ID LP error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
     ;
@@ -140,21 +140,33 @@ Def: Specifier DecList SEMI {
     defVisit($$);
     }
     | Specifier DecList error {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
-    | error DecList SEMI {yyerror_myself(YYERROR_TYPE::MISS_SPEC);}
+    | error DecList SEMI {
+    yyerror_myself(YYERROR_TYPE::MISS_SPEC);
+    printf("error\n");
+    $$->print();
+    $2->print();
+    }
     ;
 DecList: Dec {$$=new Node("DecList",@$.first_line);$$->push_back($1);}
     | Dec COMMA DecList {$$=new Node("DecList",@$.first_line); $$->push_back($1,$2,$3);}
     | Dec  DecList error {yyerror_myself(YYERROR_TYPE::MISS_COMMA);}
 ;
 Dec: VarDec {$$=new Node("Dec",@$.first_line); $$->push_back($1);}
-    | VarDec ASSIGN Exp {$$=new Node("Dec",@$.first_line); $$->push_back($1,$2,$3);}
+    | VarDec ASSIGN Exp {
+    $$=new Node("Dec",@$.first_line); $$->push_back($1,$2,$3);
+    // 声明时初始化
+    }
     ;
 /* Expression */
 Args: Exp COMMA Args  {$$=new Node("Args",@$.first_line); $$->push_back($1,$2,$3);}
     | Exp {$$=new Node("Args",@$.first_line);$$->push_back($1);}
 /*TODO the lack of COMMA in exp and Args*/
     ;
-Exp: Exp ASSIGN Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
+Exp: Exp ASSIGN Exp {
+    $$=new Node("Exp",@$.first_line);
+    $$->push_back($1,$2,$3);
+    checkRvalueInLeftSide($$);
+    }
     | Exp AND Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
     | Exp OR Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
     | Exp LT Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
@@ -167,28 +179,52 @@ Exp: Exp ASSIGN Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
     | Exp MINUS Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
     | Exp MUL Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
     | Exp DIV Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | LP Exp RP {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
+    | LP Exp RP {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);$$->type=$2->type;} // lp is (
     | LP Exp error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
     | MINUS Exp %prec LOWER_MINUS {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);}
     | NOT Exp {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);}
-    | ID LP Args RP {$$=new Node("Exp",@$.first_line);
-        $$->push_back($1,$2,$3,$4);}
+    | ID LP Args RP {
+      checkInvokeExist($1,@1.first_line);
+      checkFunctionParams($1,$3,@3.first_line);
+      $$=new Node("Exp",@$.first_line);
+      $$->push_back($1,$2,$3,$4);
+      getReturnTypeOfFunction($$,$1);
+      }
     | ID LP Args error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
-    | ID LP RP {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
+    | ID LP RP {
+      checkInvokeExist($1,@1.first_line);
+      checkFunctionParams($1,nullptr,@3.first_line);
+      $$=new Node("Exp",@$.first_line);
+      $$->push_back($1,$2,$3);
+      getReturnTypeOfFunction($$,$1);
+    }
     | ID LP error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
     | Exp LB Exp RB{
         $$=new Node("Exp",@$.first_line);
         $$->push_back($1,$2,$3,$4);
+        // LB is [
     }
     | Exp LB Exp error {yyerror_myself(YYERROR_TYPE::LACK_OF_RB);}
     | Exp DOT ID {
         $$=new Node("Exp",@$.first_line);
         $$->push_back($1,$2,$3);
+        checkNoSuchMember($$);
+        searchAndPutTypeOfDot($$,$1,$3);
     }
-    | ID {$$=new Node("Exp",@$.first_line);$$->push_back($1);}
-    | INT {$$=new Node("Exp",@$.first_line);$$->push_back($1);}
-    | FLOAT {$$=new Node("Exp",@$.first_line);$$->push_back($1);}
-    | CHAR {$$=new Node("Exp",@$.first_line);$$->push_back($1);}
+    | ID {
+    $$=new Node("Exp",@$.first_line);$$->push_back($1);
+    checkIdExists($1,@1.first_line);
+    idToExp($$,$1);
+    }
+    | INT {
+    $$=new Node("Exp",@$.first_line);$$->push_back($1);
+    $$->type = new Type("", CATEGORY::PRIMITIVE,Node_TYPE::INT);
+    }
+    | FLOAT {$$=new Node("Exp",@$.first_line);$$->push_back($1);
+        $$->type = new Type("", CATEGORY::PRIMITIVE,Node_TYPE::FLOAT);
+        }
+    | CHAR {$$=new Node("Exp",@$.first_line);$$->push_back($1);
+            $$->type = new Type("", CATEGORY::PRIMITIVE,Node_TYPE::CHAR);}
     | Exp ILLEGAL_TOKEN Exp {}
     | ILLEGAL_TOKEN {}
     ;

@@ -11,3 +11,7 @@ int test_1_r02(int a,float b,char c,struct pri d)
   global = global + 1;
 }
 struct pri test_return_struct(){}
+int main(){
+    int x = test_1_r02(global,global,global);
+    return 0;
+}

@@ -19,9 +19,9 @@ CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 .yyerror: .prepare
 	$(CPP) $(CXXFLAGS) -c yyerror_myself.cpp -o yyerror_myself.o
 	@ar -rc libyyerror_myself.a yyerror_myself.o
-.parser: .prepare
-	$(CPP) $(CXXFLAGS) -c syntax.tab.c -o parser.o  -lfl -ly
-	@ar -rc libparser.a parser.o
+#.parser: .prepare
+#	$(CPP) $(CXXFLAGS) -c syntax.tab.c -o parser.o  -lfl -ly
+#	@ar -rc libparser.a parser.o
 .type: .prepare
 	$(CPP) $(CXXFLAGS) -c type.cpp -o type.o
 	@ar -rc libtype.a type.o
@@ -29,10 +29,10 @@ CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 	$(CPP) $(CXXFLAGS) -c semanticError.cpp -o semanticError.o
 	@ar -rc libsemanticError.a semanticError.o
 .visit: .prepare
-	$(CPP) $(CXXFLAGS) -c visitSyntaxTree2.cpp -o visitSyntaxTree.o
+	$(CPP) $(CXXFLAGS) -c visitSyntaxTree.cpp -o visitSyntaxTree.o
 	@ar -rc libvisitSyntaxTree.a visitSyntaxTree.o
-splc: .node .yyerror .parser .type .semanticError .visit
-	$(CPP) $(CXXFLAGS) main.cpp -static -L. -lnode -lyyerror_myself -lparser \
+splc: .node .yyerror .type .semanticError .visit
+	$(CPP) $(CXXFLAGS) main.cpp -static -L. -lnode -lyyerror_myself  \
     -lvisitSyntaxTree -lsemanticError -ltype  -o splc
 clean:
 	@rm -rf $(MAKE_PATH)/ lex.yy.c syntax.tab.* *.out *.o *.a *.so syntax.output splc

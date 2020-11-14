@@ -8,15 +8,40 @@
 #include <string>
 #include <unordered_map>
 
-enum class semanticError {
-    variableRedefined = 3,
-};
 
+// error type 1
+void variableNoDefinition(int lineNum, const std::string &name);
+
+// error type 2
+void functionNoDefinition(int lineNum, const std::string &name);
+
+// error type 3
 void variableRedefined(int lineNum, const std::string &name);
 
+// error type 4
 void functionRedefined(int lineNum, const std::string &name);
 
-void semanticErrorOut(semanticError type, int lineNum, const std::string &name = "");
+// error type 6
+void rvalueLeftSetError(int lineNum);
+
+
+// error type 9
+void invalidArgumentNumber(int lineNum, const std::string &name, int expect, int actually);
+// error type 9
+void invalidArgumentType(int lineNum, const std::string &name, const std::string &expect, const std::string &actually);
+
+//error type 11
+void invokeNonFunctionVariable(int lineNum, const std::string &name);
+
+// error type 13
+void nonStructFVariable(int lineNum);
+
+// error type 14
+void noSuchMember(int lineNum, const std::string &name);
+
+
+// error type 15
+void structRedefined(int lineNum, const std::string &name);
 
 
 #endif //! CS323_COMPLIERS_PROJECT2_SRC_SEMANTICERROR_HPP

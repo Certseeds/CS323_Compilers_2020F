@@ -10,6 +10,42 @@ static unordered_map<string, Node_TYPE> snt = {
         {string("float"), Node_TYPE::FLOAT},
         {string("char"),  Node_TYPE::CHAR},
 };
+static unordered_map<Node_TYPE, string> tns = {
+        {Node_TYPE::INT,   string("int")},
+        {Node_TYPE::FLOAT, string("float")},
+        {Node_TYPE::CHAR,  string("char")},
+};
+
+string categoryAndTypeNameFromType(Type *type) {
+    static const unordered_map<CATEGORY, string> ca_st = {
+            {CATEGORY::PRIMITIVE, ""},
+            {CATEGORY::ARRAY,     "array"},
+            {CATEGORY::STRUCTURE, "struct"},
+            {CATEGORY::FUNCTION,  "function"}
+    };
+    const string &categoryStr = ca_st.at(type->category);
+    string typeName;
+    switch (type->category) {
+        case CATEGORY::PRIMITIVE: {
+            typeName = tns[std::get<Node_TYPE>(type->type)];
+            break;
+        }
+        case CATEGORY::ARRAY:
+        case CATEGORY::STRUCTURE:
+        case CATEGORY::FUNCTION: {
+            typeName = symbolTable[type->name]->name;
+            break;
+        }
+    }
+    return string("").append(categoryStr).append(" ").append(typeName);
+}
+
+void idToExp(Node *exp, Node *id) {
+    if (exp->name != "Exp" || id->name != "ID") {
+        return;
+    }
+    exp->type = symbolTable[std::get<string>(id->value)];
+}
 
 void defStructTypeVisit(Node *node);
 
@@ -224,7 +260,7 @@ void extDefVisit_SES_StructType(Node *node) {
     string variableName = getStrValueFromExtDecList(extDefList);
     extDefVisit_SS(node);
     if (symbolTable.count(structName) != 0) {
-        //TODO ,BUT WHAT ERROR TYPE it is?
+        structRedefined(std::get<int>(node->value), structName);
     } else {
         do {
             if (symbolTable.count(variableName) != 0) {
@@ -274,9 +310,9 @@ void extDefVisit_SS(Node *node) {
         // ignore the pureType's def likt `float;`
         return;
     }
-    string name = std::get<string>(node->get_nodes(0, 0, 1)->value);
+    string name = std::get<string>(node->get_nodes(0, 0, 1)->value); // this is structName
     if (symbolTable.count(name) != 0) {
-        // what error it is?
+        structRedefined(std::get<int>(node->value), name);
     } else {
         if (node->get_nodes(0, 0, 3)->nodes.empty()) {
             symbolTable[name] = new Type(name, CATEGORY::STRUCTURE, static_cast<FieldList *>(nullptr));
@@ -305,7 +341,7 @@ Type *getSpecifierType(Node *node) {
 }
 
 void extDefVisit_SFC(Node *node) {
-    Type *functionType = new Type(true);
+    Type *functionType = new Type();
     Node *specifier = node->get_nodes(0);
     auto specifierType = getSpecifierType(specifier);
     functionType->category = CATEGORY::FUNCTION;
@@ -313,30 +349,28 @@ void extDefVisit_SFC(Node *node) {
     functionType->name = std::get<string>(node->get_nodes(1, 0)->value);
     if (symbolTable.count(functionType->name) != 0) {
         functionRedefined(std::get<int>(node->value), functionType->name);
-        // TODO error
+        return;
     } else {
         if (node->get_nodes(1)->nodes.size() != 4) {
             // no need to put anything
+            functionType->type = static_cast<FieldList *>(nullptr);
         } else {
-            Node *varList = node->get_nodes(1, 2);
+            Node *funDec = node->get_nodes(1);
+            Node *varList = funDec->get_nodes(2);
             FieldList fieldList;
             fieldList.next = new FieldList();
             FieldList *fieldListPtr = fieldList.next;
             functionType->type = fieldList.next;
             do {
-                specifierType = getSpecifierType(varList->get_nodes(0, 0));
                 string paramName = std::get<string>(varList->get_nodes(0, 1, 0)->value);
-                if (specifierType->category == CATEGORY::PRIMITIVE) {
-                    specifierType->name = paramName;
-                }
-                symbolTable[paramName] = specifierType;
+                fieldListPtr->name = paramName;
                 fieldListPtr->type = symbolTable[paramName];
-                fieldListPtr->next = new FieldList();
-                fieldListPtr = fieldListPtr->next;
                 if (varList->nodes.size() == 1) {
                     break;
                 }
                 varList = varList->get_nodes(2);
+                fieldListPtr->next = new FieldList();
+                fieldListPtr = fieldListPtr->next;
             } while (true);
         }
     }
@@ -352,6 +386,7 @@ void expVisit(Node *node) {
     node->print(0);
 #endif
 }
+
 
 FieldList *getFiledListFromDefList(Node *node) {
     if (node == nullptr || node->nodes.empty() || node->name != "DefList") {
@@ -373,4 +408,238 @@ FieldList *getFiledListFromDefList(Node *node) {
         name = name;
     }
     return new FieldList(name, symbolTable[name], getFiledListFromDefList(node->get_nodes(1)));
+}
+
+void checkRvalueInLeftSide(Node *node) {
+    if (node->name != "Exp") {
+        // error
+    }
+    Node *leftExpNode = node->get_nodes(0);
+    switch (leftExpNode->nodes.size()) {
+        case 1: {
+            if (leftExpNode->get_nodes(0)->name == "ID") { return; }
+            break;
+        }
+        case 3: {
+            if (leftExpNode->get_nodes(0)->name == "Exp" && leftExpNode->get_nodes(2)->name == "ID" &&
+                leftExpNode->get_nodes(1)->name == "DOT") { return; }
+            break;
+        }
+        case 4: {
+            if (leftExpNode->get_nodes(0)->name == "Exp" && leftExpNode->get_nodes(2)->name == "Exp" &&
+                leftExpNode->get_nodes(1)->name == "LB" && leftExpNode->get_nodes(3)->name == "RB") { return; }
+            break;
+        }
+    }
+    rvalueLeftSetError(std::get<int>(node->value));
+
+}
+
+void checkIdExists(Node *node, int lineNum) {
+    if (node->name != "ID") {
+        return;
+    }
+    string idName = std::get<string>(node->value);
+    if (symbolTable.count(idName) == 0) {
+        variableNoDefinition(lineNum, idName);
+    }
+}
+
+void funDecVisit(Node *node) {
+    if (node->nodes.size() == 3) {
+        return;
+    }
+    Node *varList = node->get_nodes(2);
+    do {
+        Node *specifier = varList->get_nodes(0, 0);
+        auto specifierType = getSpecifierType(specifier);
+        string paramName = std::get<string>(varList->get_nodes(0, 1, 0)->value);
+        if (symbolTable.count(paramName) != 0) {
+            variableRedefined(std::get<int>(varList->value), paramName);
+        }
+        if (specifierType->category == CATEGORY::PRIMITIVE) {
+            specifierType->name = paramName;
+        }
+        symbolTable[paramName] = specifierType;
+        if (varList->nodes.size() == 1) {
+            break;
+        }
+        varList = varList->get_nodes(2);
+    } while (true);
+}
+
+void checkNoSuchMember(Node *node) {
+    /* Exp
+     *   Exp
+     *   DOT
+     *   ID
+     */
+    if (node->name != "Exp") {
+        return;
+    }
+    if (node->get_nodes(0)->type == nullptr) {
+        return;
+    }
+    if (node->get_nodes(0)->type->category != CATEGORY::STRUCTURE) {
+        nonStructFVariable(std::get<int>(node->value));
+    }
+}
+
+void searchAndPutTypeOfDot(Node *expOut, Node *expIn, Node *ID) {
+    if (expIn->type->type.index() != 2) {
+        return;
+    }
+    FieldList *fieldList = std::get<FieldList *>(expIn->type->type);
+    string idName = std::get<string>(ID->value);
+    while (fieldList != nullptr) {
+        if (fieldList->name == idName) {
+            expOut->type = symbolTable[idName];
+            return;
+        }
+        fieldList = fieldList->next;
+    }
+    noSuchMember(std::get<int>(expOut->value), idName);
+}
+
+
+void checkInvokeExist(Node *node, int lineNum) {
+    string functionName = std::get<string>(node->value);
+    if (symbolTable.count(functionName) == 0) {
+        functionNoDefinition(lineNum, functionName);
+    } else if (symbolTable[functionName]->category != CATEGORY::FUNCTION) {
+        invokeNonFunctionVariable(lineNum, functionName);
+    }
+}
+
+void getReturnTypeOfFunction(Node *expOut, Node *ID) {
+    string functionName = std::get<string>(ID->value);
+    if (symbolTable.count(functionName) == 0 || symbolTable[functionName]->category != CATEGORY::FUNCTION) {
+        return;
+    }
+    Type *returnType = symbolTable[functionName]->returnType;
+    expOut->type = returnType;
+}
+
+void checkFunctionParams(Node *ID, Node *args, int lineNum) {
+    string functionName = std::get<string>(ID->value);
+    if (symbolTable.count(functionName) == 0 || symbolTable[functionName]->category != CATEGORY::FUNCTION) {
+        return;
+    }
+    Type *functionType = symbolTable[functionName];
+    FieldList *fieldList = functionType->type.index() == 0 ? nullptr : std::get<FieldList *>(functionType->type);
+    if (args == nullptr) {
+        if (fieldList == nullptr) {
+            return;
+        } else {
+            int except = 1;
+            while (fieldList->next != nullptr) {
+                fieldList = fieldList->next;
+                except++;
+            }
+            invalidArgumentNumber(lineNum, functionName, except, 0);
+        }
+    } else {
+        if (fieldList == nullptr) {
+            // check args的参数数量
+            int actually = 1;
+            Node *tempArgs = args;
+            while (tempArgs->nodes.size() != 1) {
+                tempArgs = tempArgs->get_nodes(2);
+                actually++;
+            }
+            invalidArgumentNumber(lineNum, functionName, 0, actually);
+            return;
+        } else {
+            // both check args, but check fieldList
+            int except = 1;
+            int actually = 1;
+            {
+                FieldList *tempFieldList = std::get<FieldList *>(functionType->type);
+                while (tempFieldList->next != nullptr) {
+                    tempFieldList = tempFieldList->next;
+                    except++;
+                }
+            }
+            {
+                Node *tempArgs = args;
+                while (tempArgs->nodes.size() != 1) {
+                    tempArgs = tempArgs->get_nodes(2);
+                    actually++;
+                }
+            }
+            if (except != actually) {
+                invalidArgumentNumber(lineNum, functionName, except, actually);
+            }
+            int count = 0;
+            while (count < std::min(except, actually)) {
+                count++;
+                Type *filed = fieldList->type;
+                string argsName;
+                if (args->get_nodes(0, 0)->value.index() != 0) {
+                    if (filed->category != CATEGORY::PRIMITIVE ||
+                        std::get<Node_TYPE>(filed->type) != args->get_nodes(0, 0)->TYPE) {
+                        invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
+                                            tns[args->get_nodes(0, 0)->TYPE]);
+                    }
+                } else {
+                    argsName = std::get<string>(args->get_nodes(0, 0)->value);
+                }
+                if (symbolTable.count(argsName) == 0) {
+                    continue;
+                } else {
+                    Type *argsType = symbolTable[argsName];
+                    if (filed->category != argsType->category) {
+                        invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
+                                            categoryAndTypeNameFromType(argsType));
+                    } else if (filed->category == CATEGORY::PRIMITIVE &&
+                               std::get<Node_TYPE>(filed->type) != std::get<Node_TYPE>(argsType->type)) {
+                        invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
+                                            categoryAndTypeNameFromType(argsType));
+                    } else if (filed->category == CATEGORY::STRUCTURE && filed->name != argsType->name) {
+                        invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
+                                            categoryAndTypeNameFromType(argsType));
+                    } else if (filed->category == CATEGORY::ARRAY) {
+                        int levelField = 1;
+                        int levelArgs = 1;
+                        Type *baseTypeOfField;
+                        Type *baseTypeOfArgs;
+                        {
+                            Type *tempField = filed;
+                            while (tempField != nullptr && tempField->type.index() == 1) {
+                                tempField = std::get<Array *>(tempField->type)->base;
+                                levelField++;
+                            }
+                            baseTypeOfField = tempField;
+                        }
+                        {
+                            Type *tempArgs = argsType;
+                            while (tempArgs != nullptr && tempArgs->type.index() == 1) {
+                                tempArgs = std::get<Array *>(tempArgs->type)->base;
+                                levelArgs++;
+                            }
+                            baseTypeOfArgs = tempArgs;
+                        }
+                        if (levelArgs != levelField || baseTypeOfArgs->category != baseTypeOfField->category) {
+                            invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
+                                                categoryAndTypeNameFromType(argsType));
+                        } else if (baseTypeOfField->category == CATEGORY::PRIMITIVE) {
+                            if (std::get<Node_TYPE>(baseTypeOfField->type) !=
+                                std::get<Node_TYPE>(baseTypeOfArgs->type)) {
+                                invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
+                                                    categoryAndTypeNameFromType(argsType));
+                            }
+                        } else if (baseTypeOfField->category == CATEGORY::STRUCTURE) {
+                            if (baseTypeOfArgs->name != baseTypeOfField->name) {
+                                invalidArgumentType(lineNum, functionName, categoryAndTypeNameFromType(filed),
+                                                    categoryAndTypeNameFromType(argsType));
+                            }
+                        }
+                    }
+                }
+                fieldList = fieldList->next;
+                args = args->get_nodes(2);
+            }
+        }
+    }
+
 }

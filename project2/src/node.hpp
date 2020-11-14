@@ -17,7 +17,7 @@
 #include <iostream>
 #include <string>
 #include <variant>
-
+class Type;
 using std::string;
 
 enum class Node_TYPE {
@@ -39,7 +39,7 @@ public:
     int nodes_num = 0;
     Node_inside_type value;
     std::vector<Node *> nodes;
-
+    Type *type = nullptr;
     //void (*print)(int, Node *);
     Node();
 

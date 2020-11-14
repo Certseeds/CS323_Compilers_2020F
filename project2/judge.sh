@@ -26,12 +26,12 @@ test_1() {
   done
 }
 test_2() {
-  able=("01" "02" "05" "09" "12" "03" "04" "06" "07" "08" "10" "11" "13" "14" "15")
+  able=("01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" "13" "14" "15")
   for i in "${able[@]}"; do
     echo "${i}"
     ./splc.out ./test_2/test_2_r"${i}".spl >./test_2/test_2_r"${i}".test 2>&1
     diff ./test_2/test_2_r"${i}".out ./test_2/test_2_r"${i}".test \
-      -y --left-column --suppress-common-lines --suppress-common-lines
+      -y --left-column --suppress-common-lines --suppress-common-lines -W 200
   done
 }
 rm ./splc.out
