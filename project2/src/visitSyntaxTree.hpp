@@ -39,8 +39,22 @@ void searchAndPutTypeOfDot(Node *expOut, Node *expIn, Node *ID);
 
 void checkInvokeExist(Node *node, int lineNum);
 
-void getReturnTypeOfFunction(Node* expOut,Node* ID);
+void getReturnTypeOfFunction(Node *expOut, Node *ID);
 
-void checkFunctionParams(Node* ID,Node* args,int lineNum);
+void checkFunctionParams(Node *ID, Node *args, int lineNum);
+
+void checkArrayExists(Node *Exp);
+
+void checkIntegerExp(Node *Exp);
+
+void getArrayType(Node *expOut, Node *expIn);
+
+//bool checkBoolOperatorType(Node *exp);
+//
+Node_TYPE checkAlrthOperatorType(Node *exp);
+
+void getBoolOperatorType(Node *expOut, Node *expIn1, Node *expIn2);
+
+void getAlrthOperatorType(Node *expOut, Node *expIn1, Node *expIn2);
 
 #endif //CS323_COMPLIERS_VISITSYNTAXTREE_HPP

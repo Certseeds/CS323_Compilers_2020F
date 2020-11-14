@@ -167,22 +167,22 @@ Exp: Exp ASSIGN Exp {
     $$->push_back($1,$2,$3);
     checkRvalueInLeftSide($$);
     }
-    | Exp AND Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp OR Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp LT Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp LE Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp GT Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp GE Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp NE Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp EQ Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp PLUS Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp MINUS Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp MUL Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp DIV Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);}
+    | Exp AND Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getBoolOperatorType($$,$1,$3);}
+    | Exp OR Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getBoolOperatorType($$,$1,$3);}
+    | Exp LT Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
+    | Exp LE Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
+    | Exp GT Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
+    | Exp GE Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
+    | Exp NE Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
+    | Exp EQ Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
+    | Exp PLUS Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
+    | Exp MINUS Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
+    | Exp MUL Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
+    | Exp DIV Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
     | LP Exp RP {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);$$->type=$2->type;} // lp is (
     | LP Exp error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
-    | MINUS Exp %prec LOWER_MINUS {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);}
-    | NOT Exp {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);}
+    | MINUS Exp %prec LOWER_MINUS {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);$$->type=$2->type;checkAlrthOperatorType($2);}
+    | NOT Exp {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);$$->type=$2->type;}
     | ID LP Args RP {
       checkInvokeExist($1,@1.first_line);
       checkFunctionParams($1,$3,@3.first_line);
@@ -203,6 +203,9 @@ Exp: Exp ASSIGN Exp {
         $$=new Node("Exp",@$.first_line);
         $$->push_back($1,$2,$3,$4);
         // LB is [
+        checkArrayExists($1);
+        checkIntegerExp($3);
+        getArrayType($$,$1);
     }
     | Exp LB Exp error {yyerror_myself(YYERROR_TYPE::LACK_OF_RB);}
     | Exp DOT ID {

@@ -486,6 +486,10 @@ void checkNoSuchMember(Node *node) {
 }
 
 void searchAndPutTypeOfDot(Node *expOut, Node *expIn, Node *ID) {
+    if (expIn->type == nullptr) {
+        nonStructFVariable(std::get<int>(expIn->value));
+        return;
+    }
     if (expIn->type->type.index() != 2) {
         return;
     }
@@ -642,4 +646,105 @@ void checkFunctionParams(Node *ID, Node *args, int lineNum) {
         }
     }
 
+}
+
+void checkArrayExists(Node *Exp) {
+    Node *temp = Exp;
+    if (Exp->nodes.size() == 1) {
+        string arrayName = std::get<string>(Exp->get_nodes(0)->value);
+        if (symbolTable.count(arrayName) != 0) {
+            Type *arrayType = symbolTable[arrayName];
+            if (arrayType->category != CATEGORY::ARRAY) {
+                indexOnNonArray(std::get<int>(Exp->value));
+            }
+        } else {
+            indexOnNonArray(std::get<int>(Exp->value));
+        }
+    } else {
+        //
+        Type *arrayType = Exp->type;
+        if (arrayType == nullptr || arrayType->category != CATEGORY::ARRAY) {
+            indexOnNonArray(std::get<int>(Exp->value));
+        }
+    }
+}
+
+void checkIntegerExp(Node *Exp) {
+    if (Exp->type == nullptr) {
+        nonIntegerTypeIndexing(std::get<int>(Exp->value));
+        return;
+    }
+    if (Exp->type->category != CATEGORY::PRIMITIVE || std::get<Node_TYPE>(Exp->type->type) != Node_TYPE::INT) {
+        nonIntegerTypeIndexing(std::get<int>(Exp->value));
+    }
+}
+
+void getArrayType(Node *expOut, Node *expIn) {
+    if (expOut->nodes.size() == 1) {
+        string arrayName = std::get<string>(expOut->get_nodes(0)->value);
+        if (symbolTable.count(arrayName) != 0) {
+            Type *arrayType = symbolTable[arrayName];
+            if (arrayType->category == CATEGORY::ARRAY) {
+                expOut->type = arrayType;
+            }
+        } else {
+        }
+    } else {
+        //
+        Type *arrayType = expIn->type;
+        if (arrayType == nullptr) {
+            expOut->type = static_cast<Type *>( nullptr);
+            return;
+        }
+        if (arrayType->category == CATEGORY::ARRAY) {
+            expOut->type = std::get<Array *>(arrayType->type)->base;
+        }
+    }
+}
+
+
+bool checkBoolOperatorType(Node *exp) {
+    if (exp->type == nullptr) {
+        binaryOperatorNonNumber(std::get<int>(exp->value));
+        return false;
+    }
+    if (exp->type->category != CATEGORY::PRIMITIVE || std::get<Node_TYPE>(exp->type->type) != Node_TYPE::INT) {
+        binaryOperatorNonNumber(std::get<int>(exp->value));
+        return false;
+    }
+    return true;
+}
+
+void getBoolOperatorType(Node *expOut, Node *expIn1, Node *expIn2) {
+    bool check1 = checkBoolOperatorType(expIn1);
+    bool check2 = checkBoolOperatorType(expIn2);
+    if (check1 && check2) {
+        expOut->type = new Type("INT", CATEGORY::PRIMITIVE, Node_TYPE::INT);
+    }
+}
+
+Node_TYPE checkAlrthOperatorType(Node *exp) {
+    if (exp->type == nullptr) {
+        binaryOperatorNonNumber(std::get<int>(exp->value));
+        return Node_TYPE::LINE;
+    }
+    if (exp->type->category != CATEGORY::PRIMITIVE ||
+        (std::get<Node_TYPE>(exp->type->type) != Node_TYPE::INT &&
+         std::get<Node_TYPE>(exp->type->type) != Node_TYPE::FLOAT)) {
+        binaryOperatorNonNumber(std::get<int>(exp->value));
+        return Node_TYPE::LINE;
+    }
+    return std::get<Node_TYPE>(exp->type->type);
+}
+
+void getAlrthOperatorType(Node *expOut, Node *expIn1, Node *expIn2) {
+    auto check1 = checkAlrthOperatorType(expIn1);
+    auto check2 = checkAlrthOperatorType(expIn2);
+
+    if (check1 == Node_TYPE::LINE || check2 == Node_TYPE::LINE) {
+    } else if (check1 == Node_TYPE::FLOAT || check2 == Node_TYPE::FLOAT) {
+        expOut->type = new Type("float", CATEGORY::PRIMITIVE, Node_TYPE::FLOAT);
+    } else {
+        expOut->type = new Type("int", CATEGORY::PRIMITIVE, Node_TYPE::INT);
+    }
 }

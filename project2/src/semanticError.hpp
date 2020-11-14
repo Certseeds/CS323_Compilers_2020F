@@ -24,21 +24,29 @@ void functionRedefined(int lineNum, const std::string &name);
 // error type 6
 void rvalueLeftSetError(int lineNum);
 
+// error type 7
+void binaryOperatorNonNumber(int lineNum);
 
 // error type 9
 void invalidArgumentNumber(int lineNum, const std::string &name, int expect, int actually);
 // error type 9
 void invalidArgumentType(int lineNum, const std::string &name, const std::string &expect, const std::string &actually);
 
+// error type 10
+void indexOnNonArray(int lineNum);
+
+
 //error type 11
 void invokeNonFunctionVariable(int lineNum, const std::string &name);
+
+// error type 12
+void nonIntegerTypeIndexing(int lineNum);
 
 // error type 13
 void nonStructFVariable(int lineNum);
 
 // error type 14
 void noSuchMember(int lineNum, const std::string &name);
-
 
 // error type 15
 void structRedefined(int lineNum, const std::string &name);
