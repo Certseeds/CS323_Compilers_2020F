@@ -1,0 +1,26 @@
+int global;
+int glo2;
+int core;
+int code2;
+struct def{
+    int code;
+};
+int parms(){
+    int inscope = 1;
+    float inscopef1,inscopef2 = 2.2;
+    char inscopech1,inscopech2='d',inscopeCh3 = 'c',inscopech4;
+    int x;
+    int array[3];
+    struct def obj;
+    int higharray[3][2][3];
+    x = 3;
+    //3 = x;
+    array[0]=4;
+    //4 = array[0];
+    obj.code = 5;
+    obj.code.code2 = 5;
+    //5 = obj.code;
+    higharray[0][0][0] = 6;
+    //6 = higharray[0][0][0];
+    ((obj).code).code[0][0][0].core.core[0] = 7;
+}

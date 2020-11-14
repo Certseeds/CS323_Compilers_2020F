@@ -45,14 +45,22 @@ public:
     Node();
 
     explicit Node(Node_TYPE type);
+
     Node(std::string nam);
+
     explicit Node(float value);
-    explicit Node(int  value);
+
+    explicit Node(int value);
+
     explicit Node(char value);
+
     Node(std::string nam, int line_nu);
+
     explicit Node(std::string nam, Node_TYPE type);
+
     Node(std::string nam, int line_nu, Node_TYPE type);
-    Node(std::string nam,std::string value, Node_TYPE type);
+
+    Node(std::string nam, std::string value, Node_TYPE type);
 
     ~Node() = default;
 
@@ -71,6 +79,7 @@ public:
 
 private:
     void print_n_space(int space);
+
     void print_line(int space);
 };
 

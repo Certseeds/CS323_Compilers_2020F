@@ -1,6 +1,6 @@
 #include "linked_list.h"
 
-int main(void){
+int main(void) {
     node *head = linked_list_init();
     char *string;
     printf("%d\n", linked_list_size(head));

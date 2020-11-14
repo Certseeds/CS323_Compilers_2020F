@@ -1,0 +1,7 @@
+int test_SID_01()
+{
+  int x1 = 5;
+  int x2 = 3;
+  int x3 = x1 + x2;
+  return 0;
+}

@@ -1,1 +1,3 @@
-{"Illegal invocation": alert()}
+{
+  "Illegal invocation": alert()
+}

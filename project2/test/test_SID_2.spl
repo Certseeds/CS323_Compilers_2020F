@@ -1,0 +1,15 @@
+int inc(int n)
+{
+  return n + 1;
+}
+int test_2_r02()
+{
+  int k = 4;
+  int r = inc(k);
+  return r;
+}
+int test_SID_03(){
+    int w = 5;
+    int r2 = inc(k)+inc(k);
+    return 0;
+}

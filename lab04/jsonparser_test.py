@@ -12,7 +12,6 @@ import pathlib
 import re
 import subprocess
 
-
 DATA = pathlib.Path('data')
 
 
@@ -29,7 +28,7 @@ def check_jsonchecker_fail_withlexical():
             continue
         print(f'For file {failjson.name}:')
         print(out)
-        print('-'*80)
+        print('-' * 80)
 
 
 def check_jsonchecker_fail_syntaxonly():
@@ -40,16 +39,15 @@ def check_jsonchecker_fail_syntaxonly():
         if ('lexical error' in out) or ('_EXCLUDE' in failjson.name):
             continue
         print(f'For file {failjson.name}:')
-        print('-'*24)
+        print('-' * 24)
         print(open(failjson).read())
-        print('-'*80)
+        print('-' * 80)
         print(out)
-        print('#'*80)
+        print('#' * 80)
         m = re.match(r'^syntax(.*?)recovered$', out)
         recovered += bool(m)
         total += 1
     print(f'Recovered/Total: {recovered}/{total}')
-
 
 
 # check_jsonchecker_fail_withlexical()
