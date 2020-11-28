@@ -10,6 +10,7 @@
 
 # CS323 Assignment 2
 
+**Scores**: 100/120(I do the extra part but do not get it, TODO?)
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 

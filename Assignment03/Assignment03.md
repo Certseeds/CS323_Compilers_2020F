@@ -10,6 +10,7 @@
 
 # CS323 Assignment 3
 
+**Scores**: 120/120
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 

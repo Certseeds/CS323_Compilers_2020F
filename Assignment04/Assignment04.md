@@ -10,6 +10,7 @@
 
 # CS323 Assignment 4: Bottom-Up Parsing Exercises
 
+**Scores**: 100/100
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
