@@ -4,12 +4,12 @@
  * @Author: nanoseeds
  * @Date: 2020-09-19 21:47:34
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-09 10:49:48
+ * @LastEditTime: 2020-11-28 22:16:23
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 <h2 style="text-align:center">CS323 Assignment 1</h2>
 
-**Scores**: 105(only have a few error of Question 2-6)
+**Scores**: 105(only have a few error of Question 2-6)  
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
@@ -165,18 +165,4 @@ Answer is
   <div>Answer</div>
 </div>
 
-<style type="text/css">
-div{
-  text-align: center;
-}
-div>div {
-  text-align: center;
-  border-bottom: 1px solid #d9d9d9;
-  display: inline-block;
-  padding: 2px;
-}
-div>img{
-  border-radius: 0.3125em;
-  box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);
-}
-</style>
+<link rel="stylesheet" type="text/css" href="./../markdown.css">
