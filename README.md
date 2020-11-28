@@ -27,6 +27,8 @@ Coursework of SUSTech CS323_Compilers_2020F (2020fall)
 | Lab8  | Nov.3   | JSON key checker               | There is a *quiz* in the lab!          |
 | Lab9  | Nov.10  |                                |                                        |
 | Lab10 | Nov.17  |                                | Project 3 release (due: Dec.13)        |
+| Lab11 | Nov.24  |                                |                                        |
+| Lab12 | Dec.1   | (TBU)                          |                                        |
 
 + The bold contents are theoretical sessions
 
