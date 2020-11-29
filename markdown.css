@@ -2,7 +2,7 @@ h1, h2, div {
     text-align: center;
 }
 
-table {
+table, object,embed {
     margin: auto;
 }
 

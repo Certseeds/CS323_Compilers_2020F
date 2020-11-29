@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-11-28 21:10:42
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-28 23:04:41
+ * @LastEditTime: 2020-11-29 13:04:33
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -36,6 +36,18 @@ For the SDD in `Figure 1`, give annotated parse trees for the following expressi
 
 ## Answer_of_Question1
 
+### PART1: $(3 + 4) ∗ (5 + 6)n$
+
+<object data="./Question1_01.html" type="text/x-scriptlet" width=100% height=1000></object>
+
+### PART2: $1 ∗ 2 ∗ 3 ∗ (4 + 5)n$
+
+<embed src="./Question1_02.html" type="image/svg+xml" width=125% height=1000 />
+
+
+### PART3: $(9+8*(7+6)+5)*4n$
+
+<embed src="./Question1_03.html" type="image/svg+xml" width=125% height=1250 />
 
 ## Question 2:
 
@@ -60,3 +72,9 @@ $$T \to \textbf{num} \cdot \textbf{num} | \textbf{num}$$
 ## Answer_of_Question3
 
 <link rel="stylesheet" type="text/css" href="./../markdown.css">
+
+<style type="text/css">
+h3{
+  text-align: center;
+}
+</style>
