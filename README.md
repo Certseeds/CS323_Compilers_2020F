@@ -14,21 +14,22 @@ Coursework of SUSTech CS323_Compilers_2020F (2020fall)
 
 ## Lab Schedule
 
-|       | Date    | Description                    | Highlight                              |
-| :---: | ------- | ------------------------------ | -------------------------------------- |
-| Lab1  | Sept.8  | C language tutorial            | Project 1 release (due: Oct.11)        |
-| Lab2  | Sept.15 | Flex tutorial                  |                                        |
-| Lab3  | Sept.22 | Bison tutorial                 | Check the "project1-output_format.pdf" |
-| Lab4  | Sept.29 | Error recovery in Bison        |                                        |
-|   -   | Oct.6   | -                              | National Day & Golden week             |
-| Lab5  | Oct.13  | Maintaining symbol table       | Project 2 release (due: Nov.15)        |
-| Lab6  | Oct.20  | **LR parsing** & Type checking |                                        |
-| Lab7  | Oct.27  | Scope checking                 |                                        |
-| Lab8  | Nov.3   | JSON key checker               | There is a *quiz* in the lab!          |
-| Lab9  | Nov.10  |                                |                                        |
-| Lab10 | Nov.17  |                                | Project 3 release (due: Dec.13)        |
-| Lab11 | Nov.24  |                                |                                        |
-| Lab12 | Dec.1   | (TBU)                          |                                        |
+|      | Date    | Description         | Highlight                       |
+|:----:|---------|---------------------|---------------------------------|
+| Lab1 | Sept.8  | C language tutorial | Project 1 release (due: Oct.11) |
+| Lab2 | Sept.15 | Flex tutorial | |
+| Lab3 | Sept.22 | Bison tutorial | Check the "project1-output_format.pdf" |
+| Lab4 | Sept.29 | Error recovery in Bison | |
+| - | Oct.6 | - | National Day & Golden week |
+| Lab5 | Oct.13 | Maintaining symbol table | Project 2 release (due: Nov.15) |
+| Lab6 | Oct.20 | **LR parsing** & Type checking | |
+| Lab7 | Oct.27 | Scope checking | |
+| Lab8 | Nov.3 | JSON key checker | There is a *quiz* in the lab! |
+| Lab9 | Nov.10 | | |
+| Lab10 | Nov.17 | | Project 3 release (due: Dec.13) |
+| Lab11 | Nov.24 | | |
+| Lab12 | Dec.1 | Binary exploitation on Linux | |
+| Lab13 | Dec.8 | (TBU) | |
 
 + The bold contents are theoretical sessions
 
