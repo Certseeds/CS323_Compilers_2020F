@@ -13,9 +13,9 @@ static unordered_map<string, Node_TYPE> snt = {
         {string("char"),  Node_TYPE::CHAR},
 };
 static unordered_map<Node_TYPE, string> tns = {
-        {Node_TYPE::INT,   string("int")},
-        {Node_TYPE::FLOAT, string("float")},
-        {Node_TYPE::CHAR,  string("char")},
+        {Node_TYPE::INT,   string("INT")},
+        {Node_TYPE::FLOAT, string("FLOAT")},
+        {Node_TYPE::CHAR,  string("CHAR")},
 };
 
 void getNamesOfDefList(Node *node, vector<Node *> &namesofFileds);
@@ -681,16 +681,21 @@ void checkArrayExists(Node *Exp) {
     }
 }
 
-bool checkIntegerExp(Node *Exp) {
-    if (Exp->type == nullptr) {
-        nonIntegerTypeIndexing(std::get<int>(Exp->value));
-        return false;
+bool checkIntegerType(Node *exp, const std::function<void(int)> &func) {
+    bool test1 = (exp->type == nullptr) ||
+                 (exp->type->category != CATEGORY::PRIMITIVE || std::get<Node_TYPE>(exp->type->type) != Node_TYPE::INT);
+    if (test1 != (exp->type != Type::getPrimitiveINT())) {
+        exit(-1);
     }
-    if (Exp->type->category != CATEGORY::PRIMITIVE || std::get<Node_TYPE>(Exp->type->type) != Node_TYPE::INT) {
-        nonIntegerTypeIndexing(std::get<int>(Exp->value));
+    if (exp->type != Type::getPrimitiveINT()) {
+        func(std::get<int>(exp->value));
         return false;
     }
     return true;
+}
+
+bool checkIntegerExp(Node *exp) {
+    return checkIntegerType(exp, nonIntegerTypeIndexing);
 }
 
 void getArrayType(Node *expOut, Node *expIn, Node *Integer) {
@@ -721,17 +726,8 @@ void getArrayType(Node *expOut, Node *expIn, Node *Integer) {
     }
 }
 
-
 bool checkBoolOperatorType(Node *exp) {
-    if (exp->type == nullptr) {
-        binaryOperatorNonNumber(std::get<int>(exp->value));
-        return false;
-    }
-    if (exp->type->category != CATEGORY::PRIMITIVE || std::get<Node_TYPE>(exp->type->type) != Node_TYPE::INT) {
-        binaryOperatorNonNumber(std::get<int>(exp->value));
-        return false;
-    }
-    return true;
+    return checkIntegerType(exp, binaryOperatorNonNumber);
 }
 
 void getBoolOperatorType(Node *expOut, Node *expIn1, Node *expIn2) {

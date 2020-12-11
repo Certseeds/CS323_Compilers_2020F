@@ -221,13 +221,13 @@ Exp: Exp ASSIGN Exp {
     }
     | INT {
     $$=new Node("Exp",@$.first_line);$$->push_back($1);
-    $$->type = new Type("", CATEGORY::PRIMITIVE,Node_TYPE::INT);
+    $$->type = Type::getPrimitiveINT();
     }
     | FLOAT {$$=new Node("Exp",@$.first_line);$$->push_back($1);
-        $$->type = new Type("", CATEGORY::PRIMITIVE,Node_TYPE::FLOAT);
+        $$->type = Type::getPrimitiveFLOAT();
         }
     | CHAR {$$=new Node("Exp",@$.first_line);$$->push_back($1);
-            $$->type = new Type("", CATEGORY::PRIMITIVE,Node_TYPE::CHAR);}
+            $$->type = Type::getPrimitiveCHAR();}
     | Exp ILLEGAL_TOKEN Exp {}
     | ILLEGAL_TOKEN {}
     ;
