@@ -2,6 +2,7 @@
 // Created by nanos on 2020/11/7.
 //
 
+#include <iterator>
 #include "visitSyntaxTree.hpp"
 #include "visitSyntaxTree2.hpp"
 #include "semanticError.hpp"
@@ -16,6 +17,8 @@ static unordered_map<Node_TYPE, string> tns = {
         {Node_TYPE::FLOAT, string("float")},
         {Node_TYPE::CHAR,  string("char")},
 };
+
+void getNamesOfDefList(Node *node, vector<Node *> &namesofFileds);
 
 string categoryAndTypeNameFromType(Type *type) {
     static const unordered_map<CATEGORY, string> ca_st = {
@@ -114,16 +117,16 @@ void defPureTypeVisit(Node *node) {
         if (symbolTable.count(name) != 0) {
             variableRedefined(std::get<int>(node->value), name);
         }
+        const auto &PrimitiveType = Type::getPrimitiveType(_type);
         if (decList->get_nodes(0, 0)->nodes.size() == 1) {
-            symbolTable[name] = new Type(name, CATEGORY::PRIMITIVE, _type);
+            symbolTable[name] = PrimitiveType;
             if (decList->get_nodes(0)->nodes.size() == 3) {
                 checkTypeMatchType(symbolTable[std::get<string>(decList->get_nodes(0, 0, 0)->value)],
                                    decList->get_nodes(0, 2)->type, std::get<int>(node->value), nonMatchTypeBothSide);
             }
         } else {
             symbolTable[name] = new Type(name, CATEGORY::ARRAY,
-                                         getArrayFromVarDec(decList->get_nodes(0, 0),
-                                                            new Type("", CATEGORY::PRIMITIVE, _type)));
+                                         getArrayFromVarDec(decList->get_nodes(0, 0), PrimitiveType));
             if (decList->get_nodes(0)->nodes.size() == 3) {
                 nonMatchTypeBothSide(std::get<int>(decList->value));
             }
@@ -160,9 +163,6 @@ void defStructTypeVisit(Node *node) {
             if (symbolTable.count(variableName) != 0) {
                 variableRedefined(std::get<int>(node->value), variableName);
             }
-            if (decList->get_nodes(0)->nodes.size() == 3) {
-                nonMatchTypeBothSide(std::get<int>(decList->value));
-            }
             if (decList->get_nodes(0, 0)->nodes.size() == 1) {
                 symbolTable[variableName] = symbolTable[structName];
                 // struct Variable without array
@@ -171,6 +171,11 @@ void defStructTypeVisit(Node *node) {
                 symbolTable[variableName] = new Type(variableName, CATEGORY::ARRAY,
                                                      getArrayFromVarDec(decList->get_nodes(0, 0),
                                                                         symbolTable[structName]));
+            }
+            if (decList->get_nodes(0)->nodes.size() == 3) {
+                checkTypeMatchType(symbolTable[variableName], decList->get_nodes(0, 2)->type,
+                                   std::get<int>(decList->value),
+                                   nonMatchTypeBothSide);
             }
             if (decList->nodes.size() == 1) {
                 return;
@@ -230,12 +235,13 @@ void extDefVisit_SES_PureType(Node *node) {
         if (symbolTable.count(name) != 0) {
             variableRedefined(std::get<int>(node->value), name);
         }
+        const auto &PrimitiveType = Type::getPrimitiveType(_type);
         if (extDecList->get_nodes(0, 0)->nodes.empty()) {
-            symbolTable[name] = new Type(name, CATEGORY::PRIMITIVE, _type);
+            symbolTable[name] = PrimitiveType;
         } else {
             symbolTable[name] = new Type(name, CATEGORY::ARRAY,
                                          getArrayFromVarDec(extDecList->get_nodes(0),
-                                                            new Type("", CATEGORY::PRIMITIVE, _type)));
+                                                            PrimitiveType));
         }
         if (extDecList->nodes.size() == 1) {
             break;
@@ -277,6 +283,22 @@ void extDefVisit_SES_StructType(Node *node) {
     }
 }
 
+FieldList *getFiledListFromNodesVector(const vector<Node *> &vec) {
+    if (vec.empty()) {
+        return nullptr;
+    }
+    vector<FieldList *> fieldVec;
+    for (const auto &item : vec) {
+        const auto name = getStrValueFromDecList(item);
+        fieldVec.push_back(new FieldList{name, symbolTable[name], nullptr});
+        symbolTable.erase(name);
+    }
+    for (auto i = static_cast<size_t>(0); i < vec.size() - 1; ++i) {
+        fieldVec[i]->next = fieldVec[i + 1];
+    }
+    return fieldVec.front();
+}
+
 /*
 ExtDef (2)
   Specifier (2)
@@ -304,19 +326,39 @@ void extDefVisit_SS(Node *node) {
         return;
     }
     string name = std::get<string>(node->get_nodes(0, 0, 1)->value); // this is structName
+    vector<Node *> namesofFileds;
+    getNamesOfDefList(node, namesofFileds);
+    auto fieldListOfType = getFiledListFromNodesVector(namesofFileds);
     if (symbolTable.count(name) != 0) {
         structRedefined(std::get<int>(node->value), name);
     } else {
-        if (node->get_nodes(0, 0, 3)->nodes.empty()) {
-            symbolTable[name] = new Type(name, CATEGORY::STRUCTURE, static_cast<FieldList *>(nullptr));
-            return;
-        } else {
-            symbolTable[name] = new Type(name, CATEGORY::STRUCTURE, getFiledListFromDefList(node->get_nodes(0, 0, 3)));
-        }
+        symbolTable[name] = new Type{name, CATEGORY::STRUCTURE, fieldListOfType};
     }
 #ifdef DEBUG
     node->print(0);
 #endif
+}
+
+void getNamesOfDefList(Node *node, vector<Node *> &namesofFileds) {
+    if (!node->get_nodes(0, 0, 3)->nodes.empty()) {
+        auto nodeofField = node->get_nodes(0, 0, 3);
+        while (nodeofField != nullptr && !nodeofField->nodes.empty() && nodeofField->name == "DefList") {
+            auto declistNode = nodeofField->get_nodes(0, 1);
+            while (declistNode != nullptr && declistNode->name == "DecList") {
+                namesofFileds.push_back(declistNode);
+                if (declistNode->nodes.size() == 3) {
+                    declistNode = declistNode->get_nodes(2);
+                } else {
+                    break;
+                }
+            }
+            nodeofField = nodeofField->get_nodes(1);
+        };
+        for (const auto &item : namesofFileds) {
+            std::cout << getStrValueFromDecList(item) << " ";
+        }
+        std::cout << '\n';
+    }
 }
 
 // input is a Specifier Node
@@ -326,8 +368,8 @@ Type *getSpecifierType(Node *node) {
         return nullptr;
     }
     if (node->get_nodes(0)->nodes.empty()) {
-        return new Type(std::get<string>(node->get_nodes(0)->value), CATEGORY::PRIMITIVE,
-                        snt[std::get<string>(node->get_nodes(0)->value)]);
+        const string &pureTypeName = std::get<string>(node->get_nodes(0)->value);
+        return Type::getPrimitiveType(snt[pureTypeName]);
     } else {
         return symbolTable[std::get<string>(node->get_nodes(0, 1)->value)];
     }
@@ -381,25 +423,11 @@ void extDefVisit_SFC(Node *node) {
 //#endif
 //}
 
-
 FieldList *getFiledListFromDefList(Node *node) {
     if (node == nullptr || node->nodes.empty() || node->name != "DefList") {
         return nullptr;
     }
     string name = getStrValueFromDecList(node->get_nodes(0, 1));
-//    if (node->get_nodes(0, 0, 0)->nodes.empty()) {
-//        // struct内为normal变量visitSyntaxTree.cpp
-//        //if (node->get_nodes(0, 0, 0)->name == "TYPE") {
-//        //name = getStrValueFromDecList(node->get_nodes(0, 1));
-//        //} else if (node->get_nodes(0, 0, 0)->name == "StructSpecifier") {
-//        //}
-//        if (symbolTable.count(name) == 0) {
-//            // error , 出现未定义变量
-//        }
-//    } else {
-//        // struct内有struct
-//        name = name;
-//    }
     return new FieldList(name, symbolTable[name], getFiledListFromDefList(node->get_nodes(1)));
 }
 
@@ -490,7 +518,7 @@ void searchAndPutTypeOfDot(Node *expOut, Node *expIn, Node *ID) {
     string idName = std::get<string>(ID->value);
     while (fieldList != nullptr) {
         if (fieldList->name == idName) {
-            expOut->type = symbolTable[idName];
+            expOut->type = fieldList->type;
             return;
         }
         fieldList = fieldList->next;
@@ -710,7 +738,7 @@ void getBoolOperatorType(Node *expOut, Node *expIn1, Node *expIn2) {
     bool check1 = checkBoolOperatorType(expIn1);
     bool check2 = checkBoolOperatorType(expIn2);
     if (check1 && check2) {
-        expOut->type = new Type("INT", CATEGORY::PRIMITIVE, Node_TYPE::INT);
+        expOut->type = Type::getPrimitiveINT();
     }
 }
 
@@ -733,61 +761,57 @@ void getAlrthOperatorType(Node *expOut, Node *expIn1, Node *expIn2) {
     auto check2 = checkAlrthOperatorType(expIn2);
     if (check1 == Node_TYPE::LINE || check2 == Node_TYPE::LINE) {
     } else if (check1 == Node_TYPE::FLOAT || check2 == Node_TYPE::FLOAT) {
-        expOut->type = new Type("float", CATEGORY::PRIMITIVE, Node_TYPE::FLOAT);
+        expOut->type = Type::getPrimitiveFLOAT();
     } else {
-        expOut->type = new Type("int", CATEGORY::PRIMITIVE, Node_TYPE::INT);
+        expOut->type = Type::getPrimitiveINT();
     }
 }
 
 void checkTypeMatchType(Type *leftType, Type *rightType, int lineNum, const std::function<void(int)> &func) {
     if (leftType == nullptr || rightType == nullptr) {
         func(lineNum);
+    } else if (leftType == rightType) {
+
     } else if (leftType->category != rightType->category) {
         func(lineNum);
-    } else {
-        if (leftType->category == CATEGORY::PRIMITIVE) {
-            if (std::get<Node_TYPE>(leftType->type) != std::get<Node_TYPE>(rightType->type)) {
-                func(lineNum);
+    } else if (leftType->category == CATEGORY::STRUCTURE &&
+               symbolTable[leftType->name]->name != symbolTable[rightType->name]->name) {
+        func(lineNum);
+    } else if (leftType->category == CATEGORY::ARRAY) {
+        auto getDemsionOfArray = [](Type *arrayType) {
+            int count = 1;
+            Type *tempArrayType = arrayType;
+            while (tempArrayType->type.index() == 1) {
+                tempArrayType = std::get<Array *>(tempArrayType->type)->base;
+                count++;
             }
-        } else if (leftType->category == CATEGORY::STRUCTURE &&
-                   symbolTable[leftType->name]->name != symbolTable[rightType->name]->name) {
+            return std::tuple(count, tempArrayType);
+        };
+        int demensionLeftArray;
+        int demensionRightArray;
+        Type *insideLeftType;
+        Type *insideRightType;
+        std::tie(demensionLeftArray, insideLeftType) = getDemsionOfArray(leftType);
+        std::tie(demensionRightArray, insideRightType) = getDemsionOfArray(rightType);
+        if (demensionLeftArray != demensionRightArray) {
             func(lineNum);
-        } else if (leftType->category == CATEGORY::ARRAY) {
-            auto getDemsionOfArray = [](Type *arrayType) {
-                int count = 1;
-                Type *tempArrayType = arrayType;
-                while (tempArrayType->type.index() == 1) {
-                    tempArrayType = std::get<Array *>(tempArrayType->type)->base;
-                    count++;
-                }
-                return std::tuple(count, tempArrayType);
-            };
-            int demensionLeftArray;
-            int demensionRightArray;
-            Type *insideLeftType;
-            Type *insideRightType;
-            std::tie(demensionLeftArray, insideLeftType) = getDemsionOfArray(leftType);
-            std::tie(demensionRightArray, insideRightType) = getDemsionOfArray(rightType);
-            if (demensionLeftArray != demensionRightArray) {
-                func(lineNum);
-            } else {
-                if (insideLeftType == nullptr || insideRightType == nullptr) {
-                    func(lineNum);
-                } else if (insideRightType->category != insideLeftType->category) {
-                    func(lineNum);
-                } else if (insideLeftType->category == CATEGORY::PRIMITIVE) {
-                    if (std::get<Node_TYPE>(insideLeftType->type) != std::get<Node_TYPE>(insideRightType->type)) {
-                        func(lineNum);
-                    }
-                } else if (insideRightType->category == CATEGORY::STRUCTURE) {
-                    if (insideLeftType->name != insideRightType->name) {
-                        func(lineNum);
-                    }
-                }
-            }
         } else {
-            func(lineNum);
+            if (insideLeftType == nullptr || insideRightType == nullptr) {
+                func(lineNum);
+            } else if (insideRightType->category != insideLeftType->category) {
+                func(lineNum);
+            } else if (insideLeftType->category == CATEGORY::PRIMITIVE) {
+                if (insideLeftType != insideRightType) {
+                    func(lineNum);
+                }
+            } else if (insideRightType->category == CATEGORY::STRUCTURE) {
+                if (insideLeftType->name != insideRightType->name) {
+                    func(lineNum);
+                }
+            }
         }
+    } else {
+        func(lineNum);
     }
 }
 

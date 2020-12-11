@@ -30,6 +30,13 @@ public:
     PRIMI type;
     Type *returnType = nullptr; // 存储返回值的类型
     //vector<Type *> parms;
+    static Type *getPrimitiveType(Node_TYPE type);
+
+    static Type *getPrimitiveINT();
+
+    static Type *getPrimitiveFLOAT();
+
+    static Type *getPrimitiveCHAR();
 
     Type() = default;
 
