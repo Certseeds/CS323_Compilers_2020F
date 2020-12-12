@@ -39,4 +39,6 @@ void checkReturnValueFromStmt(Type *type, Node *stmt);
 
 void checkReturnValueFromCompStmt(Type *type, Node *compStmt);
 
+void getNamesOfDefList(Node *node, vector<Node *> &namesofFileds);
+
 #endif //CS323_COMPLIERS_VISITSYNTAXTREE_TWO_HPP

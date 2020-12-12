@@ -25,13 +25,15 @@ void extDefVisit_SS(Node *node);
 
 void extDefVisit_SFC(Node *node);
 
+void Specifier_FunDec_Recv_SF(Node *node);
+
 void expVisit(Node *node);
 
 void checkRvalueInLeftSide(Node *node);
 
 void checkIdExists(Node *node, int lineNum);
 
-void funDecVisit(Node *node);
+void funDecVisit(Node *funDec);
 
 void checkNoSuchMember(Node *node);
 

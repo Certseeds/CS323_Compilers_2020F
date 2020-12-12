@@ -17,6 +17,11 @@ using std::vector;
 enum class CATEGORY {
     PRIMITIVE, ARRAY, STRUCTURE, FUNCTION
 };
+enum PRIMI_VALUE {
+    Node_TYPE_VALUE = 0,
+    ARRAY_POINTER_VALUE = 1,
+    FieldList_POINTER_VALUE = 2
+};
 
 class Array;
 

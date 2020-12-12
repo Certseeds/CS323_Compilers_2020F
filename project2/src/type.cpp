@@ -24,6 +24,7 @@ Type *Type::getPrimitive##TYPE() {\
     static auto will_return = new Type{#TYPE, CATEGORY::PRIMITIVE, Node_TYPE::TYPE};\
     return will_return;\
 }
+
 getPrimitive(INT);
 
 getPrimitive(CHAR);
