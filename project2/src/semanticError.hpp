@@ -58,5 +58,8 @@ void noSuchMember(int lineNum, const std::string &name);
 // error type 15
 void structRedefined(int lineNum, const std::string &name);
 
+// error type 16
+void structNoDefinition(int lineNum, const std::string &name);
+
 
 #endif //! CS323_COMPLIERS_PROJECT2_SRC_SEMANTICERROR_HPP

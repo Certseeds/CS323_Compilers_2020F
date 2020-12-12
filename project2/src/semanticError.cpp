@@ -22,7 +22,7 @@ void functionRedefined(int lineNum, const std::string &name) {
 }
 
 void nonMatchTypeBothSide(int lineNum) {
-    printf("Error type 5 at Line %d: unmatching type on both sides of assignment\n", lineNum);
+    printf("Error type 5 at Line %d: unmatching types on both sides of assignment\n", lineNum);
 }
 
 void rvalueLeftSetError(int lineNum) {
@@ -44,7 +44,7 @@ void invalidArgumentNumber(int lineNum, const std::string &name, int expect, int
 
 
 void invalidArgumentType(int lineNum, const std::string &name, const std::string &expect, const std::string &actually) {
-    printf("Error type 9 at Line %d: invalid argument type for %s, expect %s, got %s\n", lineNum, name.c_str(),
+    printf("Error type 9 at Line %d: invalid argument types for %s, expect %s, got %s\n", lineNum, name.c_str(),
            expect.c_str(), actually.c_str());
 }
 
@@ -71,4 +71,8 @@ void noSuchMember(int lineNum, const std::string &name) {
 
 void structRedefined(int lineNum, const std::string &name) {
     printf("Error type 15 at Line %d: redefine struct: %s\n", lineNum, name.c_str());
+}
+
+void structNoDefinition(int lineNum, const std::string &name) {
+    printf("Error type 16 at Line %d: struct %s haven't define\n", lineNum, name.c_str());
 }

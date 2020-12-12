@@ -4,13 +4,14 @@
  * @Author: nanoseeds
  * @Date: 2020-11-14 23:01:33
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-14 23:59:59
+ * @LastEditTime: 2020-12-12 21:46:57
  * @License: CC-BY-NC-SA_V4_0 or any later version 
+ * this used to be as `./src/SID-project2.md`
  -->
 
-# <div> CS323 Compiler</div>
+# <div>CS323 Compiler</div>
 
-## <div> Project2-Semantic Analysis</div>
+## <div> Project2-Semantic Analysis Report</div>
 
 **SID**:  $********$
 
@@ -90,6 +91,80 @@ Bonus内容并没有做多少,没有做关于scope与实等价的内容.
 
 + 1-9无error.
 + 10中存在1-12,一共12种错误.
+
+### Nov.14-2020提交Bug分析 & 不合理样例分析
+
+#### Bug/Feature分析
+
+1. 此日提交(后称Commit)中没有考虑函数数组作为参数的情况.(已修复)
+
+2. Commit中对数组赋值的比较只考虑了维数,没有考虑维数长度(修复为都考虑)
+
+3. Float与Int做运算会自动擢升到Float.(只实现了擢升,没什么影响,不修了)
+
+4. 赋值语句不返回值(合理的设计,应该保留)
+
+5. Commit中struct的声明名字与变量名不可重复,可以索引声明struct的名字当作变量名(设计问题,不予解决)
+
+6. strcut内部的变量名暴露在符号表内(重大Bug,已修复.)
+
+7. 函数调用中对Strcut.variable的变量支持出错(已修复)
+
+8. 没有支持递归(已修正,涉及修改`syntax.y`)
+
+#### 不合理样例
+
+1. 样例中出现了两次struct中包含struct自身的情况,在类C语言中不应该出现.典型案例如下:
+
+``` cpp
+struct AST {//example 1
+    struct AST children[10];
+    int num_children;
+};
+struct node {//example 2
+    struct node value;
+    struct node left;
+    struct node right;
+    struct node parent;
+    int value;
+};
+```
+
+2. 出现多次函数声明中的变量与函数变量重名的情况:不知道是否是设计允许.
+
+3. 重复定义变量 && 非全局作用域报错
+
+``` cpp
+a = 1;
+b = 0.1;
+int c = 20;
+    if (a + b == 0.7) {
+      int c = 10;// TODO,此处重复定义变量
+      int k = 1;
+      b + a = b;
+    }
+c = 1;
+k = c;// TODO,全局作用域的话此处不应报错
+```
+
+4. 同名变量不同类型:
+
+```cpp
+int test1(int a, int b)
+{
+    while(0) {
+        if(a) {
+            int c = 1;
+        } else if (b) {
+            int d = a;
+        }
+        else {
+            float c = 1.1;// TODO, 同名变量类型不同怎么处理?
+        }
+    }
+    return 1;
+}
+```
 
 
 <style type="text/css">

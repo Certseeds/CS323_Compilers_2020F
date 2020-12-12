@@ -1,0 +1,15 @@
+struct AST {
+    int x1;
+    float x2;
+    char x3;
+};
+int intPlusOne(int n) {
+  return n + 1;
+}
+
+int main()
+{
+  struct AST node;
+  node.x1 = 5;
+  return intPlusOne(node.x1) + (0-1);
+}

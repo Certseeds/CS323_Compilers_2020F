@@ -42,7 +42,7 @@
 %token <Node_value> LC RC
 
 %type <Node_value> Program ExtDefList
-%type <Node_value> ExtDef ExtDecList Specifier StructSpecifier VarDec
+%type <Node_value> ExtDef ExtDecList Specifier StructSpecifier VarDec Specifier_FunDec_Recv
 %type <Node_value> FunDec VarList ParamDec CompSt StmtList Stmt DefList
 %type <Node_value> Def DecList Dec Args Exp
 %%
@@ -51,8 +51,7 @@ Program: ExtDefList {
     $$= new Node("Program",@$.first_line);
     $$->push_back($1);
     root_node=$$;
-}
-;
+};
 ExtDefList:{$$=new Node("ExtDefList",@$.first_line,Node_TYPE::NOTHING);}
     | ExtDef ExtDefList {$$=new Node("ExtDefList",@$.first_line); $$->push_back($1,$2);}
     ;
@@ -66,14 +65,19 @@ ExtDef: Specifier ExtDecList SEMI  {
     $$->push_back($1,$2);
     extDefVisit_SS($$);
     }
-    | Specifier FunDec CompSt {
+    | Specifier_FunDec_Recv CompSt {
     $$=new Node("ExtDef",@$.first_line);
-    $$->push_back($1,$2,$3);
+    $$->push_back($1->nodes[0],$1->nodes[1],$2);
     extDefVisit_SFC($$);
     }
     | Specifier ExtDecList error  {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
     | Specifier error {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
     ;
+Specifier_FunDec_Recv:Specifier FunDec{
+    $$=new Node("Specifier_FunDec_Recv",@$.first_line);
+    $$->push_back($1,$2);
+    Specifier_FunDec_Recv_SF($$);
+};
 ExtDecList: VarDec {$$=new Node("ExtDecList",@$.first_line);$$->push_back($1);}
     | VarDec COMMA ExtDecList {$$=new Node("ExtDecList",@$.first_line);$$->push_back($1,$2,$3);}
     | VarDec ExtDecList error {yyerror_myself(YYERROR_TYPE::MISS_COMMA);}
@@ -221,13 +225,13 @@ Exp: Exp ASSIGN Exp {
     }
     | INT {
     $$=new Node("Exp",@$.first_line);$$->push_back($1);
-    $$->type = new Type("", CATEGORY::PRIMITIVE,Node_TYPE::INT);
+    $$->type = Type::getPrimitiveINT();
     }
     | FLOAT {$$=new Node("Exp",@$.first_line);$$->push_back($1);
-        $$->type = new Type("", CATEGORY::PRIMITIVE,Node_TYPE::FLOAT);
+        $$->type = Type::getPrimitiveFLOAT();
         }
     | CHAR {$$=new Node("Exp",@$.first_line);$$->push_back($1);
-            $$->type = new Type("", CATEGORY::PRIMITIVE,Node_TYPE::CHAR);}
+            $$->type = Type::getPrimitiveCHAR();}
     | Exp ILLEGAL_TOKEN Exp {}
     | ILLEGAL_TOKEN {}
     ;
