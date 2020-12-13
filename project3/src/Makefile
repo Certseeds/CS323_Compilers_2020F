@@ -8,6 +8,8 @@ CXXDEBUG = -g
 CXXWARN = -Wall -Wextra
 CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 
+.PHONY: clean 
+
 .lex:lex.l
 	$(FLEX) lex.l
 .syntax:syntax.y

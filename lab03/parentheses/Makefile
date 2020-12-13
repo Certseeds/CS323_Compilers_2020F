@@ -2,7 +2,7 @@ CC=gcc --std=c11
 FLEX=flex
 BISON=bison
 
-
+.PHONY: clean 
 
 .lex: lex.l
 	$(FLEX) lex.l

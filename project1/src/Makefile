@@ -8,7 +8,7 @@ SRC_PATH=src
 CXXWARN = -Wall -Wextra
 MAKE_PATH=./make-build-dir
 CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
-
+.PHONY: clean 
 .lex:lex.l
 	$(FLEX) lex.l
 .syntax:syntax.y
