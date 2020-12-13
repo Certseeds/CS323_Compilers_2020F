@@ -1,6 +1,6 @@
 # header begin
 cmake_minimum_required(VERSION 3.17.2)
-project(CS323_Compilers_project2 LANGUAGES CXX)
+project(CS323_Compilers_project3 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ldl")

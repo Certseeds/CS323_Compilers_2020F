@@ -2,8 +2,9 @@
 // Created by nanos on 2020/11/7.
 //
 
-#ifndef CS323_COMPLIERS_PROJECT2_SRC_TYPE_HPP
-#define CS323_COMPLIERS_PROJECT2_SRC_TYPE_HPP
+#ifndef CS323_COMPLIERS_PROJECT3_SRC_TYPE_HPP
+#define CS323_COMPLIERS_PROJECT3_SRC_TYPE_HPP
+
 #include <string>
 #include <variant>
 #include <vector>
@@ -68,4 +69,4 @@ public:
 
 };
 
-#endif //CS323_COMPLIERS_PROJECT2_SRC_TYPE_HPP
+#endif //! CS323_COMPLIERS_PROJECT3_SRC_TYPE_HPP
