@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-11-14 23:01:33
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-12-12 21:46:57
+ * @LastEditTime: 2020-12-15 21:54:35
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  * this used to be as `./src/SID-project2.md`
  -->
@@ -166,6 +166,10 @@ int test1(int a, int b)
 }
 ```
 
+PS: 因为这个Porject会使用很多同学交的test_case去判题,
+同学们的test_case杂乱无章,会根据自己的假设乱加东西,上面说的struct嵌套,struct是否可重名,array比较的原理等都是如此,所以,问题在于最好在Report里把这些需求里没说,但是大家会按自己想法做的小细节都说个明白,拉个表单把每个都过一遍,讲一下设计思路,对自己的思路和学助判题也有帮助.
+
+注: 本次project评分为手动判分,所以Report里说明思路后可以避免很多问题.
 
 <style type="text/css">
 *{
