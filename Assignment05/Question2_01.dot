@@ -1,0 +1,34 @@
+//  digraph G {
+//   node[shape=record];
+//   T1[label="<name>T | <number>9 | <type>val "];
+//   F1[label="<name>F | <number>3 | <type>val "];
+//   T1DOT[label="<inh>inh|<num>5 |<name>T' | <number>8 | <type>syn "];
+//   T1:name -> F1:number  [style=dotted,dir=none];
+//   T1:name -> T1DOT:name[style=dotted,dir=none];
+//   T1DOT:number -> T1:number;
+//   F1:name -> digit:name[style=dotted,dir=none];
+//   F1:number -> 
+//   digit[label="<name>digit | <number>1 | <type>lexval "];
+
+//   F2[label="F 4 val"];
+//   T2DOT[label="T' 8 syn"];
+
+//   digit:number -> F1:number;
+// }
+
+//          digraph G {
+//   node [shape=none];
+//   size ="4,4";
+//           main -> parse [weight=8];
+//          parse -> execute;
+//           main -> init [style=dotted];
+//          main -> cleanup;
+//           execute -> { make_string; printf}
+//           init -> make_string;
+//          edge [color=red];
+//         // so is this
+//             main -> printf [style=bold,label="100 times"];
+//              make_string [label="make a\nstring"];
+//              node [shape=box,style=filled,color=".7 .3 1.0"];
+//             execute -> compare;
+//         }

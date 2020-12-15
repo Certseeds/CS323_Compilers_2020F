@@ -195,6 +195,14 @@
     "xtr1common": "cpp",
     "xutility": "cpp",
     "map": "cpp",
-    "xtree": "cpp"
+    "xtree": "cpp",
+    "unordered_set": "cpp",
+    "ctime": "cpp",
+    "locale": "cpp",
+    "regex": "cpp",
+    "xlocbuf": "cpp",
+    "xlocmes": "cpp",
+    "xlocmon": "cpp",
+    "xloctime": "cpp"
   }
 }
