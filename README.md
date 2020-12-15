@@ -29,7 +29,8 @@ Coursework of SUSTech CS323_Compilers_2020F (2020fall)
 | Lab10 | Nov.17 | | Project 3 release (due: Dec.13) |
 | Lab11 | Nov.24 | | |
 | Lab12 | Dec.1 | Binary exploitation on Linux | |
-| Lab13 | Dec.8 | (TBU) | |
+| Lab13 | Dec.8 | | Project4 release (due: Jan.8, 2021) |
+| Lab14 | Dec.15 | | |
 
 + The bold contents are theoretical sessions
 
