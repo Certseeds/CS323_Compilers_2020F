@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-09-15 19:11:58
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-03 19:38:18
+ * @LastEditTime: 2020-12-15 21:00:54
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -14,23 +14,23 @@ Coursework of SUSTech CS323_Compilers_2020F (2020fall)
 
 ## Lab Schedule
 
-|      | Date    | Description         | Highlight                       |
-|:----:|---------|---------------------|---------------------------------|
-| Lab1 | Sept.8  | C language tutorial | Project 1 release (due: Oct.11) |
-| Lab2 | Sept.15 | Flex tutorial | |
-| Lab3 | Sept.22 | Bison tutorial | Check the "project1-output_format.pdf" |
-| Lab4 | Sept.29 | Error recovery in Bison | |
-| - | Oct.6 | - | National Day & Golden week |
-| Lab5 | Oct.13 | Maintaining symbol table | Project 2 release (due: Nov.15) |
-| Lab6 | Oct.20 | **LR parsing** & Type checking | |
-| Lab7 | Oct.27 | Scope checking | |
-| Lab8 | Nov.3 | JSON key checker | There is a *quiz* in the lab! |
-| Lab9 | Nov.10 | | |
-| Lab10 | Nov.17 | | Project 3 release (due: Dec.13) |
-| Lab11 | Nov.24 | | |
-| Lab12 | Dec.1 | Binary exploitation on Linux | |
-| Lab13 | Dec.8 | | Project4 release (due: Jan.8, 2021) |
-| Lab14 | Dec.15 | | |
+|       | Date    | Description                    | Highlight                              |
+| :---: | ------- | ------------------------------ | -------------------------------------- |
+| Lab1  | Sept.8  | C language tutorial            | Project 1 release (due: Oct.11)        |
+| Lab2  | Sept.15 | Flex tutorial                  |                                        |
+| Lab3  | Sept.22 | Bison tutorial                 | Check the "project1-output_format.pdf" |
+| Lab4  | Sept.29 | Error recovery in Bison        |                                        |
+|   -   | Oct.6   | -                              | National Day & Golden week             |
+| Lab5  | Oct.13  | Maintaining symbol table       | Project 2 release (due: Nov.15)        |
+| Lab6  | Oct.20  | **LR parsing** & Type checking |                                        |
+| Lab7  | Oct.27  | Scope checking                 |                                        |
+| Lab8  | Nov.3   | JSON key checker               | There is a *quiz* in the lab!          |
+| Lab9  | Nov.10  |                                |                                        |
+| Lab10 | Nov.17  |                                | Project 3 release (due: Dec.27)        |
+| Lab11 | Nov.24  |                                |                                        |
+| Lab12 | Dec.1   | Binary exploitation on Linux   |                                        |
+| Lab13 | Dec.8   |                                | Project4 release (due: Jan.8, 2021)    |
+| Lab14 | Dec.15  |                                |                                        |
 
 + The bold contents are theoretical sessions
 
