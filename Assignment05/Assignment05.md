@@ -4,12 +4,13 @@
  * @Author: nanoseeds
  * @Date: 2020-11-28 21:10:42
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-29 17:39:12
+ * @LastEditTime: 2020-12-15 21:03:58
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
 # CS323 Assignment 5
 
+**Scores**: 100/100  
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
@@ -223,12 +224,12 @@ $$T \to \textbf{num} \cdot \textbf{num} | \textbf{num}$$
 first of all, there just exist double type: int and float.  
 second, each node just need to caclucate `*.type`
 
-| PRODUCTION                    |                        SEMANTIC RULES |
-| :---------------------------- | ------------------------------------: |
-| $1)\space E \to E+T$          | $E.type=(E.type==float?float:F.type)$ |
-| $2)\space E \to T$            |                       $E.type=T.type$ |
-| $4)\space T \to T.T$          |                        $T.type=float$ |
-| $4)\space T \to \textbf{num}$ |                          $T.type=int$ |
+| PRODUCTION                    |                                           SEMANTIC RULES |
+| :---------------------------- | -------------------------------------------------------: |
+| $1)\space E \to E+T$          | $E.type=(E.type==float?float:T.type)\\ (PS:BUG \space FIX)$ |
+| $2)\space E \to T$            |                                          $E.type=T.type$ |
+| $4)\space T \to T.T$          |                                           $T.type=float$ |
+| $4)\space T \to \textbf{num}$ |                                             $T.type=int$ |
 
 
 <link rel="stylesheet" type="text/css" href="./../markdown.css">
