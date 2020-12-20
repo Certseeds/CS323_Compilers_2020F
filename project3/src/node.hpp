@@ -17,6 +17,7 @@
 #include <iostream>
 #include <string>
 #include <variant>
+#include "interCode.hpp"
 
 class Type;
 
@@ -42,6 +43,7 @@ public:
     Node_inside_type value;
     std::vector<Node *> nodes;
     Type *type = nullptr;
+    InterCode * interCode = nullptr;
 
     //void (*print)(int, Node *);
     Node();
@@ -81,12 +83,12 @@ public:
         this->push_back(rest...);
     }
 
-    Node *&get_nodes(size_t order) {
+    [[nodiscard]] Node *const &get_nodes(size_t order) const {
         return this->nodes[order];
     }
 
     template<typename T=size_t, typename... Args>
-    Node *&get_nodes(size_t order, Args... rest) {
+    Node *const &get_nodes(size_t order, Args... rest) const {
         return this->nodes[order]->get_nodes(rest...);
     }
 

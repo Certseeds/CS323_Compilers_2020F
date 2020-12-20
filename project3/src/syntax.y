@@ -3,6 +3,7 @@
     #include <unordered_map>
     #include "type.hpp"
     #include "visitSyntaxTree.hpp"
+    #include "translate.hpp"
     using std::string;
     using std::unordered_map;
     #define YY_NO_UNPUT
@@ -10,11 +11,13 @@
     void yyerror(const char *s);
     void lineinfor(void);
     Node* root_node;
-    unordered_map<string,Type*> symbolTable;
+    unordered_map<string,Type*> symbolTable= initSymBolTable();
+    vector<InterCode*> ircodes;
     extern int isError;
     #define PARSER_error_OUTPUT stdout
     #include "yyerror_myself.hpp"
 %}
+%require "3.0.4"
 %locations
 %union{
     Node* Node_value;
@@ -77,6 +80,7 @@ Specifier_FunDec_Recv:Specifier FunDec{
     $$=new Node("Specifier_FunDec_Recv",@$.first_line);
     $$->push_back($1,$2);
     Specifier_FunDec_Recv_SF($$);
+    translate_enterFunction($$);
 };
 ExtDecList: VarDec {$$=new Node("ExtDecList",@$.first_line);$$->push_back($1);}
     | VarDec COMMA ExtDecList {$$=new Node("ExtDecList",@$.first_line);$$->push_back($1,$2,$3);}
@@ -117,7 +121,10 @@ StmtList:  {$$=new Node("StmtList",@$.first_line,Node_TYPE::NOTHING);}
     ;
 Stmt: Exp SEMI {$$=new Node("Stmt",@$.first_line); $$->push_back($1,$2);}
     | CompSt {$$=new Node("Stmt",@$.first_line);$$->push_back($1);}
-    | RETURN Exp SEMI {$$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3);}
+    | RETURN Exp SEMI {
+    $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3);
+     translate_Return($$);
+    }
     | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {
     $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5);}
     | IF LP Exp RP Stmt ELSE Stmt {
@@ -158,6 +165,7 @@ DecList: Dec {$$=new Node("DecList",@$.first_line);$$->push_back($1);}
 Dec: VarDec {$$=new Node("Dec",@$.first_line); $$->push_back($1);}
     | VarDec ASSIGN Exp {
     $$=new Node("Dec",@$.first_line); $$->push_back($1,$2,$3);
+
     // 声明时初始化
     }
     ;
@@ -171,6 +179,7 @@ Exp: Exp ASSIGN Exp {
     $$->push_back($1,$2,$3);
     checkRvalueInLeftSide($$);
     checkTypeMatch($1,$3,@2.first_line);
+    translate_Exp($$);
     }
     | Exp AND Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getBoolOperatorType($$,$1,$3);}
     | Exp OR Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getBoolOperatorType($$,$1,$3);}
@@ -180,11 +189,24 @@ Exp: Exp ASSIGN Exp {
     | Exp GE Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
     | Exp NE Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
     | Exp EQ Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
-    | Exp PLUS Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
-    | Exp MINUS Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
-    | Exp MUL Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
-    | Exp DIV Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);}
-    | LP Exp RP {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);$$->type=$2->type;} // lp is (
+    | Exp PLUS Exp {
+    $$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);
+    translate_Exp($$);
+    }
+    | Exp MINUS Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);
+        translate_Exp($$);
+    }
+    | Exp MUL Exp {
+    $$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);
+    translate_Exp($$);
+    }
+    | Exp DIV Exp {$$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);getAlrthOperatorType($$,$1,$3);
+            translate_Exp($$);
+    }
+    | LP Exp RP {
+    $$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);$$->type=$2->type;
+    $$->interCode = $2->interCode;
+    } // lp is (
     | LP Exp error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
     | MINUS Exp %prec LOWER_MINUS {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);$$->type=$2->type;checkAlrthOperatorType($2);}
     | NOT Exp {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);$$->type=$2->type;}
@@ -194,6 +216,7 @@ Exp: Exp ASSIGN Exp {
       $$=new Node("Exp",@$.first_line);
       $$->push_back($1,$2,$3,$4);
       getReturnTypeOfFunction($$,$1);
+      translate_functionWithParamInvoke($$);
       }
     | ID LP Args error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
     | ID LP RP {
@@ -202,6 +225,7 @@ Exp: Exp ASSIGN Exp {
       $$=new Node("Exp",@$.first_line);
       $$->push_back($1,$2,$3);
       getReturnTypeOfFunction($$,$1);
+      translate_functionInvoke($$);
     }
     | ID LP error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
     | Exp LB Exp RB{
@@ -226,6 +250,9 @@ Exp: Exp ASSIGN Exp {
     | INT {
     $$=new Node("Exp",@$.first_line);$$->push_back($1);
     $$->type = Type::getPrimitiveINT();
+    translate_Exp($$);
+//    $$->interCode = translate_Exp_INT($1);
+//    $$->interCode->print();
     }
     | FLOAT {$$=new Node("Exp",@$.first_line);$$->push_back($1);
         $$->type = Type::getPrimitiveFLOAT();

@@ -19,6 +19,8 @@ void idToExp(Node *exp, Node *id);
 
 void defVisit(Node *node);
 
+unordered_map<string, Type *> initSymBolTable();
+
 void extDefVisit_SES(Node *node);
 
 void extDefVisit_SS(Node *node);

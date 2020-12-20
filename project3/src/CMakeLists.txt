@@ -23,9 +23,16 @@ add_library(${PROJECT_NAME}_type
         type.cpp
         )
 
+add_library(${PROJECT_NAME}_interCode
+        STATIC
+        ./interCode.cpp)
+add_library(${PROJECT_NAME}_translate
+        STATIC
+        ./translate.cpp)
 add_library(${PROJECT_NAME}_visitSyntaxTree
         STATIC
         visitSyntaxTree.cpp)
+
 add_executable(${PROJECT_NAME}_main main.cpp)
 target_link_libraries(${PROJECT_NAME}_main
         ${PROJECT_NAME}_node
@@ -33,6 +40,8 @@ target_link_libraries(${PROJECT_NAME}_main
         ${PROJECT_NAME}_visitSyntaxTree
         ${PROJECT_NAME}_type
         ${PROJECT_NAME}_semanticError
+        ${PROJECT_NAME}_translate
+        ${PROJECT_NAME}_interCode
         )
 
 # this file just work for clion's identify, do not use it compiler files

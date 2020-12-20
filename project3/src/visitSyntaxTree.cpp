@@ -18,6 +18,17 @@ static unordered_map<Node_TYPE, string> tns = {
         {Node_TYPE::CHAR,  string("CHAR")},
 };
 
+unordered_map<string, Type *> initSymBolTable() {
+    unordered_map<string, Type *> will_return;
+    Type *const readFunctionType = new Type("read", CATEGORY::FUNCTION, static_cast<FieldList *>(nullptr));
+    readFunctionType->returnType = Type::getPrimitiveINT();
+    auto *const writeFunctionParam = new FieldList("readInt", Type::getPrimitiveINT(), nullptr);
+    Type *const writeFunctionType = new Type("write", CATEGORY::FUNCTION, writeFunctionParam);
+    will_return.insert(std::make_pair(string{"read"}, readFunctionType));
+    will_return.insert(std::make_pair(string{"write"}, writeFunctionType));
+    return will_return;
+}
+
 auto getArrayDemensionAndType(Type *_type) {
     vector<int> demensions;
     Type *tempField = _type;
@@ -88,7 +99,7 @@ DecList
  * */
 string getStrValueFromDecList(Node *node) {
     if (node->name == "DecList") {
-        Node *VarDec = node->get_nodes(0, 0);
+        Node * const VarDec = node->get_nodes(0, 0);
         return getStrValueFromVarDec(VarDec);
     } else {
         std::cerr << "Input Node Wrong\n";
@@ -98,7 +109,7 @@ string getStrValueFromDecList(Node *node) {
 
 string getStrValueFromExtDecList(Node *node) {
     if (node->name == "ExtDecList") {
-        Node *VarDec = node->get_nodes(0);
+        Node * const VarDec = node->get_nodes(0);
         return getStrValueFromVarDec(VarDec);
     } else {
         std::cerr << "Input Node Wrong\n";
@@ -120,7 +131,7 @@ Def
  * */
 
 void defPureTypeVisit(Node *node) {
-    Node *decList = node->get_nodes(1);
+    Node * decList = node->get_nodes(1);
     string name = getStrValueFromDecList(decList);
     auto _type = snt[std::get<string>(node->get_nodes(0, 0)->value)];
     do {
@@ -388,8 +399,8 @@ Type *getSpecifierType(Node *node) {
 }
 
 void Specifier_FunDec_Recv_SF(Node *node) {
-    auto name = std::get<string>(node->get_nodes(1, 0)->value);
-    Type *functionType = symbolTable[name];
+    const auto name = std::get<string>(node->get_nodes(1, 0)->value);
+    Type * const functionType = symbolTable[name];
     Node *specifier = node->get_nodes(0);
     auto specifierType = getSpecifierType(specifier);
     functionType->returnType = specifierType;
@@ -453,7 +464,7 @@ void checkIdExists(Node *node, int lineNum) {
 
 
 void funDecVisit(Node *funDec) {
-    Type *functionType = new Type();
+    Type * const functionType = new Type();
     functionType->category = CATEGORY::FUNCTION;
     functionType->name = std::get<string>(funDec->get_nodes(0)->value);
     if (symbolTable.count(functionType->name) != 0) {
@@ -463,11 +474,11 @@ void funDecVisit(Node *funDec) {
     if (funDec->nodes.size() == 3) {
         functionType->type = static_cast<FieldList *>(nullptr);
     } else {
-        Node *varList = funDec->get_nodes(2);
+        const Node *varList = funDec->get_nodes(2);
         do {
             Node *specifier = varList->get_nodes(0, 0);
-            auto specifierType = getSpecifierType(specifier);
-            auto varDec = varList->get_nodes(0, 1);
+            auto* const  specifierType = getSpecifierType(specifier);
+            auto* const varDec = varList->get_nodes(0, 1);
             string paramName = getStrValueFromVarDec(varDec);
             //string paramName = std::get<string>(varList->get_nodes(0, 1, 0)->value);
             if (symbolTable.count(paramName) != 0) {
