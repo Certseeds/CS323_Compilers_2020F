@@ -50,13 +50,23 @@ static const unordered_map<InterCodeType, string> singleElementWords = [] {
     static unordered_map<InterCodeType, string> init;
     init.insert(std::make_pair(InterCodeType::RETURN, "RETURN"));
     init.insert(std::make_pair(InterCodeType::WRITE, "WRITE"));
+    init.insert(std::make_pair(InterCodeType::PARAM, "PARAM"));
+    init.insert(std::make_pair(InterCodeType::FUNCTION, "FUNCTION"));
+    init.insert(std::make_pair(InterCodeType::ARG, "ARG"));
     return init;
 }();
+
 void InterCode::print() const {
     switch (this->interCodeType) {
         case InterCodeType::ASSIGN: {
             this->assign.left->print();
             std::cout << " := ";
+            this->assign.right->print();
+            break;
+        }
+        case InterCodeType::CALL:{
+            this->assign.left->print();
+            std::cout << " := CALL ";
             this->assign.right->print();
             break;
         }
@@ -77,12 +87,14 @@ void InterCode::print() const {
             break;
         }
         case InterCodeType::FUNCTION: {
-            std::cout << "FUNCTION ";
+            std::cout << singleElementWords.at(this->interCodeType) << ' ';
             this->SingleElement->print();
             std::cout << " :";
             break;
         }
+        case InterCodeType::PARAM:
         case InterCodeType::RETURN:
+        case InterCodeType::ARG:
         case InterCodeType::WRITE: {
             std::cout << singleElementWords.at(this->interCodeType) << ' ';
             this->SingleElement->print();
