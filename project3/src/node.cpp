@@ -96,3 +96,9 @@ void Node::print_line(int space) {
         iter->print(space + 2);
     }
 }
+
+void Node::print_vector_intercode() const {
+    std::for_each(this->intercodes.cbegin(), this->intercodes.cend(), [](InterCode *intercode) {
+        intercode->print();
+    });
+}

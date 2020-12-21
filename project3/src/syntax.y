@@ -72,6 +72,8 @@ ExtDef: Specifier ExtDecList SEMI  {
     $$=new Node("ExtDef",@$.first_line);
     $$->push_back($1->nodes[0],$1->nodes[1],$2);
     extDefVisit_SFC($$);
+    translate_functionBodyDefine($$,$1,$2);
+    $$->print_vector_intercode();
     }
     | Specifier ExtDecList error  {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
     | Specifier error {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
@@ -81,6 +83,7 @@ Specifier_FunDec_Recv:Specifier FunDec{
     $$->push_back($1,$2);
     Specifier_FunDec_Recv_SF($$);
     translate_enterFunction($$);
+    //$$->print_vector_intercode();
 };
 ExtDecList: VarDec {$$=new Node("ExtDecList",@$.first_line);$$->push_back($1);}
     | VarDec COMMA ExtDecList {$$=new Node("ExtDecList",@$.first_line);$$->push_back($1,$2,$3);}
@@ -114,12 +117,19 @@ ParamDec: Specifier VarDec {$$=new Node("ParamDec",@$.first_line); $$->push_back
     ;
 /* statement */
 CompSt: LC DefList StmtList RC {
-    $$=new Node("CompSt",@$.first_line); $$->push_back($1,$2,$3,$4);}
+    $$=new Node("CompSt",@$.first_line); $$->push_back($1,$2,$3,$4);
+    translate_CompstMerge($$,$2,$3);
+    }
 ;
 StmtList:  {$$=new Node("StmtList",@$.first_line,Node_TYPE::NOTHING);}
-    |  Stmt StmtList {$$=new Node("StmtList",@$.first_line); $$->push_back($1,$2);}
+    |  Stmt StmtList {$$=new Node("StmtList",@$.first_line); $$->push_back($1,$2);
+        translate_StmtlistMerge($$);
+    }
     ;
-Stmt: Exp SEMI {$$=new Node("Stmt",@$.first_line); $$->push_back($1,$2);}
+Stmt: Exp SEMI {
+    $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2);
+        translate_StmtMergeExp($$);
+    }
     | CompSt {$$=new Node("Stmt",@$.first_line);$$->push_back($1);}
     | RETURN Exp SEMI {
     $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3);
@@ -206,6 +216,7 @@ Exp: Exp ASSIGN Exp {
     | LP Exp RP {
     $$=new Node("Exp",@$.first_line); $$->push_back($1,$2,$3);$$->type=$2->type;
     $$->interCode = $2->interCode;
+    $$->intercodes = $2->intercodes;
     } // lp is (
     | LP Exp error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
     | MINUS Exp %prec LOWER_MINUS {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);$$->type=$2->type;checkAlrthOperatorType($2);}

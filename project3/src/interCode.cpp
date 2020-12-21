@@ -4,7 +4,6 @@
 
 #include "interCode.hpp"
 #include <iostream>
-#include <utility>
 #include <unordered_map>
 
 using std::cout;
@@ -26,6 +25,9 @@ void Operand::print() const {
         }
         case OperandType::JUMP_LABEL: {
             std::cout << this->variName;
+        }
+        default: {
+            break;
         }
     }
 }
@@ -64,7 +66,7 @@ void InterCode::print() const {
             this->assign.right->print();
             break;
         }
-        case InterCodeType::CALL:{
+        case InterCodeType::CALL: {
             this->assign.left->print();
             std::cout << " := CALL ";
             this->assign.right->print();
@@ -98,6 +100,9 @@ void InterCode::print() const {
         case InterCodeType::WRITE: {
             std::cout << singleElementWords.at(this->interCodeType) << ' ';
             this->SingleElement->print();
+            break;
+        }
+        default: {
             break;
         }
     }

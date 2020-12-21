@@ -43,7 +43,8 @@ public:
     Node_inside_type value;
     std::vector<Node *> nodes;
     Type *type = nullptr;
-    InterCode * interCode = nullptr;
+    InterCode *interCode = nullptr;
+    std::vector<InterCode *> intercodes;
 
     //void (*print)(int, Node *);
     Node();
@@ -91,6 +92,8 @@ public:
     Node *const &get_nodes(size_t order, Args... rest) const {
         return this->nodes[order]->get_nodes(rest...);
     }
+
+    void print_vector_intercode() const;
 
 private:
     static void print_n_space(int space);

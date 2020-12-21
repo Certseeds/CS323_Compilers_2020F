@@ -10,14 +10,29 @@
 #include "type.hpp"
 #include "node.hpp"
 #include "interCode.hpp"
+
 using std::string;
 using std::unordered_map;
 extern unordered_map<string, Type *> symbolTable;
 
 InterCode *translate_Exp(Node *exp, string place = "");
+
 InterCode *translate_Stmt(Node *stmt);
-InterCode* translate_functionInvoke(Node *stmt);
-InterCode* translate_functionWithParamInvoke(Node *stmt);
-InterCode* translate_enterFunction(Node *stmt);
-InterCode * translate_Return(Node* stmt);
+
+InterCode *translate_functionInvoke(Node *stmt);
+
+InterCode *translate_functionWithParamInvoke(Node *stmt);
+
+InterCode *translate_enterFunction(Node *stmt);
+
+InterCode *translate_Return(Node *stmt);
+
+void translate_functionBodyDefine(Node *stmt, Node *Specifier_FunDec_Recv, Node *CompSt);
+
+void translate_CompstMerge(Node *CompSt, Node *DefList, Node *StmtList);
+
+void translate_StmtlistMerge(Node *StmtList);
+
+void translate_StmtMergeExp(Node *StmtMergeExp);
+
 #endif //CS323_COMPLIERS_PROJECT3_SRC_TRANSLATE_HPP

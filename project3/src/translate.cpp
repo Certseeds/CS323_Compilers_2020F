@@ -10,7 +10,21 @@ using std::string;
 using std::unordered_map;
 inline static constexpr int32_t begin_sign = 0;
 
-InterCode *translate_Exp_Bio_Exp(Node *exp, string place);
+void nodeInterCodeMerge(Node *firstArg, std::initializer_list<Node *> nodes) {
+    for (const auto &node : nodes) {
+        for (const auto &item : node->intercodes) {
+            firstArg->intercodes.push_back(item);
+        }
+    }
+}
+
+void nodeInterCodeMerge(Node *firstArg, std::vector<Node *> nodes) {
+    for (const auto &node : nodes) {
+        for (const auto &item : node->intercodes) {
+            firstArg->intercodes.push_back(item);
+        }
+    }
+}
 
 static const unordered_map<Node *, InterCodeType> BioOpNodes = [] {
     static unordered_map<Node *, InterCodeType> init;
@@ -58,6 +72,18 @@ InterCode *translate_Exp(Node *exp, string place) {
     return will_return;
 }
 
+InterCode *translate_cond_Exp(Node *exp, string label_true, string label_false) {
+    switch (exp->nodes.size()) {
+        case 3: {
+            auto *const middleSign = exp->get_nodes(1);
+            break;
+        }
+        case 2: {
+            break;
+        }
+    }
+}
+
 string getNameFromANode(Node *exp) {
     if (exp->interCode != nullptr) {
         return exp->interCode->assign.left->variName;
@@ -70,6 +96,7 @@ InterCode *translate_Exp_Bio_Exp(Node *exp, string place) {
     auto *const leftNode = exp->get_nodes(0);
     auto *const bioOp = exp->get_nodes(1);
     auto *const rightNode = exp->get_nodes(2);
+
     auto leftVariName = getNameFromANode(leftNode);
     auto rightExpLeftName = getNameFromANode(rightNode);
     auto *const will_return = new InterCode(BioOpNodes.at(bioOp));
@@ -78,7 +105,8 @@ InterCode *translate_Exp_Bio_Exp(Node *exp, string place) {
     auto *const will_return_op1 = new Operand(OperandType::VARIABLE, rightExpLeftName);
     will_return->bioOp = {will_return_result, will_return_op2, will_return_op1};
     exp->interCode = will_return;
-    will_return->print();
+    nodeInterCodeMerge(exp, {leftNode, rightNode});
+    exp->intercodes.push_back(will_return);
     return will_return;
 }
 
@@ -94,9 +122,9 @@ InterCode *translate_Exp_INT(Node *exp) {
     auto *const will_return = new InterCode(InterCodeType::ASSIGN);
     will_return->assign.left = leftPlace;
     will_return->assign.right = rightValue;
-    will_return->print();
     store_map[intExpValue] = will_return;
     exp->interCode = will_return;
+    exp->intercodes.push_back(will_return);
     return will_return;
 }
 
@@ -111,7 +139,7 @@ InterCode *translate_Exp_RightElement(Node *exp, string place) {
         return will_return;
     }
     //auto variable = symbolTable[stringOfVari];
-    InterCode *const will_return = new InterCode(InterCodeType::ASSIGN);
+    auto *const will_return = new InterCode(InterCodeType::ASSIGN);
     auto *const leftPlace = new Operand(OperandType::VARIABLE);
     leftPlace->variName = place;
     auto *const rightValue = new Operand(OperandType::VARIABLE);
@@ -131,7 +159,7 @@ InterCode *translate_Exp_Assign_Exp(Node *exp, const std::string &place) {
         auto *will_return = new InterCode(InterCodeType::READ);
         will_return->SingleElement = new Operand(OperandType::VARIABLE, leftVariName);
         exp->interCode = will_return;
-        will_return->print();
+        exp->intercodes.push_back(will_return);
         return will_return;
     } else if (rightNode->interCode != nullptr && rightNode->interCode->interCodeType == InterCodeType::CALL) {
         auto *will_return = new InterCode(InterCodeType::CALL);
@@ -140,7 +168,8 @@ InterCode *translate_Exp_Assign_Exp(Node *exp, const std::string &place) {
         auto *const will_return_rightVari = new Operand(OperandType::VARIABLE);
         will_return_rightVari->variName = rightExpLeftName;
         will_return->assign = {will_return_leftVari, will_return_rightVari};
-        will_return->print();
+        nodeInterCodeMerge(exp, {leftNode, rightNode});
+        exp->intercodes.push_back(will_return);
         return will_return;
     }
     auto *will_return = new InterCode(InterCodeType::ASSIGN);
@@ -150,7 +179,8 @@ InterCode *translate_Exp_Assign_Exp(Node *exp, const std::string &place) {
     will_return_rightVari->variName = rightExpLeftName;
     will_return->assign = {will_return_leftVari, will_return_rightVari};
     exp->interCode = will_return;
-    will_return->print();
+    nodeInterCodeMerge(exp, {leftNode, rightNode});
+    exp->intercodes.push_back(will_return);
     return will_return;
 }
 
@@ -187,50 +217,62 @@ InterCode *translate_functionInvoke(Node *stmt) {
 
 // maybe include write
 InterCode *translate_functionWithParamInvoke(Node *stmt) {
+    // 传进来的应该是 'exp'
+    auto getNameFromArgNode = [](Node *node) {
+        if (node->get_nodes(0)->interCode != nullptr) {
+            return node->get_nodes(0)->interCode->assign.left->variName;
+        } else {
+            return std::get<string>(node->get_nodes(0, 0)->value);
+        }
+    };
     auto functionName = std::get<string>(stmt->get_nodes(0)->value);
-    auto const paramName = std::get<string>(stmt->get_nodes(2, 0, 0)->value);
+    auto const paramName = getNameFromArgNode(stmt->get_nodes(2));
     auto *const will_return = new InterCode();
     if (functionName == "write") {
         will_return->interCodeType = InterCodeType::WRITE;
         will_return->SingleElement = new Operand(OperandType::VARIABLE, paramName);
         stmt->interCode = will_return;
-        will_return->print();
+        stmt->intercodes.push_back(will_return);
         return will_return;
     };
     auto *argExp = stmt->get_nodes(2);
     do {
-        auto argName = std::get<string>(argExp->get_nodes(0, 0)->value);
+        auto argName = getNameFromArgNode(argExp);
         auto *const arg_InterCode = new InterCode(InterCodeType::ARG);
         arg_InterCode->SingleElement = new Operand(OperandType::VARIABLE);
         arg_InterCode->SingleElement->variName = argName;
         argExp->interCode = arg_InterCode;
-        arg_InterCode->print();
+        //arg_InterCode->print();
+        stmt->intercodes.push_back(arg_InterCode);
     } while (argExp->nodes.size() != 1);
     will_return->interCodeType = InterCodeType::CALL;
     stmt->interCode = will_return;
-    stmt->interCode->SingleElement = new Operand(OperandType::VARIABLE,functionName);
+    stmt->interCode->SingleElement = new Operand(OperandType::VARIABLE, functionName);
     return will_return;
 }
 
-InterCode *translate_enterFunction(Node *stmt) {
+void translate_functionBodyDefine(Node *stmt, Node *Specifier_FunDec_Recv, Node *CompSt) {
+    nodeInterCodeMerge(stmt, {Specifier_FunDec_Recv, CompSt});
+}
+
+void translate_CompstMerge(Node *CompSt, Node *DefList, Node *StmtList) {
+    nodeInterCodeMerge(CompSt, {DefList, StmtList});
+}
+
+InterCode *translate_enterFunction(Node *const stmt) {
     auto functionName = std::get<string>(stmt->get_nodes(1, 0)->value);
     auto *const functionInterCode = new InterCode(InterCodeType::FUNCTION);
     functionInterCode->labelElement = new Operand(OperandType::JUMP_LABEL, functionName);
     stmt->interCode = functionInterCode;
-    functionInterCode->print();
-
-    vector<InterCode *> intercodes;
+    stmt->intercodes.push_back(functionInterCode);
     auto *const functionType = symbolTable[functionName];
     auto *list = std::get<FieldList *>(functionType->type);
     while (list != nullptr) {
         auto *const will_return = new InterCode(InterCodeType::PARAM);
         will_return->SingleElement = new Operand(OperandType::VARIABLE);
         will_return->SingleElement->variName = list->name;
-        intercodes.push_back(will_return);
+        stmt->intercodes.push_back(will_return);
         list = list->next;
-    }
-    for (const auto &intercode: intercodes) {
-        intercode->print();
     }
     // TODO ,add Params
     return functionInterCode;
@@ -241,8 +283,19 @@ InterCode *translate_Return(Node *stmt) {
     auto *const will_return = new InterCode(InterCodeType::RETURN);
     will_return->SingleElement = new Operand(OperandType::VARIABLE, returnName);
     stmt->interCode = will_return;
-    will_return->print();
+    for (const auto &item : stmt->get_nodes(1)->intercodes) {
+        stmt->intercodes.push_back(item);
+    }
+    stmt->intercodes.push_back(will_return);
     return nullptr;
+}
+
+void translate_StmtlistMerge(Node *StmtList) {
+    nodeInterCodeMerge(StmtList, StmtList->nodes);
+}
+
+void translate_StmtMergeExp(Node *Stmt) {
+    nodeInterCodeMerge(Stmt, {Stmt->nodes[0]});
 }
 
 InterCode *translate_stmt_ifelseifelse(Node *stmt) {
