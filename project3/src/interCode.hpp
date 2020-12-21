@@ -55,7 +55,7 @@ public:
         struct {
             Operand *left;
             Operand *right;
-        } assign; // x := y,x := &y,x := *y, *x := y, x := CALL f
+        } assign; // x := y,x := &y,x := *y, *x := y, x := CALL f, relop
         struct {
             Operand *result;
             Operand *op1;
@@ -72,8 +72,8 @@ public:
             Operand *operation;
             Operand *right;
             Operand *if_label;
-            Operand *else_label;
-        } ifElse{nullptr, nullptr, nullptr, nullptr, nullptr};
+            //Operand *else_label;
+        } ifElse{nullptr, nullptr, nullptr, nullptr};
     };
 
     InterCode() = default;

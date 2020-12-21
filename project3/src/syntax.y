@@ -136,9 +136,12 @@ Stmt: Exp SEMI {
      translate_Return($$);
     }
     | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {
-    $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5);}
+    $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5);
+    }
     | IF LP Exp RP Stmt ELSE Stmt {
-    $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5,$6,$7);}
+    $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5,$6,$7);
+    translate_ifelse($$);
+    }
     | WHILE LP Exp RP Stmt {
     $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5);}
     | WHILE LP Exp error Stmt {yyerror_myself(YYERROR_TYPE::LACK_OF_RP); }
@@ -181,7 +184,10 @@ Dec: VarDec {$$=new Node("Dec",@$.first_line); $$->push_back($1);}
     ;
 /* Expression */
 Args: Exp COMMA Args  {$$=new Node("Args",@$.first_line); $$->push_back($1,$2,$3);}
-    | Exp {$$=new Node("Args",@$.first_line);$$->push_back($1);}
+    | Exp {
+    $$=new Node("Args",@$.first_line);$$->push_back($1);
+    $$->intercodes = $1->intercodes;
+    }
 /*TODO the lack of COMMA in exp and Args*/
     ;
 Exp: Exp ASSIGN Exp {
@@ -219,7 +225,13 @@ Exp: Exp ASSIGN Exp {
     $$->intercodes = $2->intercodes;
     } // lp is (
     | LP Exp error {yyerror_myself(YYERROR_TYPE::LACK_OF_RP);}
-    | MINUS Exp %prec LOWER_MINUS {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);$$->type=$2->type;checkAlrthOperatorType($2);}
+    | MINUS Exp %prec LOWER_MINUS {
+    $$=new Node("Exp",@$.first_line);
+    $$->push_back($1,$2);
+    $$->type=$2->type;
+    checkAlrthOperatorType($2);
+    translate_minus_exp($$);
+    }
     | NOT Exp {$$=new Node("Exp",@$.first_line);$$->push_back($1,$2);$$->type=$2->type;}
     | ID LP Args RP {
       checkInvokeExist($1,@1.first_line);

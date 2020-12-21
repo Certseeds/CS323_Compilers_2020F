@@ -55,6 +55,9 @@ static const unordered_map<InterCodeType, string> singleElementWords = [] {
     init.insert(std::make_pair(InterCodeType::PARAM, "PARAM"));
     init.insert(std::make_pair(InterCodeType::FUNCTION, "FUNCTION"));
     init.insert(std::make_pair(InterCodeType::ARG, "ARG"));
+    init.insert(std::make_pair(InterCodeType::READ, "READ"));
+    init.insert(std::make_pair(InterCodeType::LABEL, "LABEL"));
+    init.insert(std::make_pair(InterCodeType::GOTO, "GOTO"));
     return init;
 }();
 
@@ -72,11 +75,6 @@ void InterCode::print() const {
             this->assign.right->print();
             break;
         }
-        case InterCodeType::READ: {
-            std::cout << "READ ";
-            this->SingleElement->print();
-            break;
-        }
         case InterCodeType::ADD:
         case InterCodeType::SUB:
         case InterCodeType::MUL:
@@ -88,12 +86,15 @@ void InterCode::print() const {
             this->bioOp.op2->print();
             break;
         }
+        case InterCodeType::LABEL:
         case InterCodeType::FUNCTION: {
             std::cout << singleElementWords.at(this->interCodeType) << ' ';
             this->SingleElement->print();
             std::cout << " :";
             break;
         }
+        case InterCodeType::GOTO:
+        case InterCodeType::READ:
         case InterCodeType::PARAM:
         case InterCodeType::RETURN:
         case InterCodeType::ARG:
@@ -101,6 +102,16 @@ void InterCode::print() const {
             std::cout << singleElementWords.at(this->interCodeType) << ' ';
             this->SingleElement->print();
             break;
+        }
+        case InterCodeType::IF_ELSE:{
+            std::cout << "IF ";
+            this->ifElse.left->print();
+            std::cout << ' ';
+            this->ifElse.operation->print();
+            std::cout << ' ';
+            this->ifElse.right->print();
+            std::cout << " GOTO ";
+            this->ifElse.if_label->print();
         }
         default: {
             break;

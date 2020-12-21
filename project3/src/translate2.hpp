@@ -13,6 +13,4 @@ InterCode *translate_Exp_Bio_Exp(Node *exp, string place = "");
 
 InterCode *translate_Exp_Assign_Exp(Node *exp, const std::string &place = "");
 
-InterCode *translate_stmt_ifelseifelse(Node *stmt);
-
 #endif //CS323_COMPLIERS_PROJECT3_SRC_TRANSLATE2_HPP

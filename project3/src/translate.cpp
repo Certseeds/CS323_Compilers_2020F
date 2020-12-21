@@ -5,24 +5,27 @@
 #include "translate.hpp"
 #include "translate2.hpp"
 #include <unordered_set>
+#include <utility>
 
 using std::string;
 using std::unordered_map;
 inline static constexpr int32_t begin_sign = 0;
 
-void nodeInterCodeMerge(Node *firstArg, std::initializer_list<Node *> nodes) {
-    for (const auto &node : nodes) {
-        for (const auto &item : node->intercodes) {
-            firstArg->intercodes.push_back(item);
-        }
+void nodeInterCodeMerge(Node *firstArg, Node *node) {
+    for (const auto &item : node->intercodes) {
+        firstArg->intercodes.push_back(item);
     }
 }
 
-void nodeInterCodeMerge(Node *firstArg, std::vector<Node *> nodes) {
+void nodeInterCodeMerge(Node *firstArg, std::initializer_list<Node *> nodes) {
     for (const auto &node : nodes) {
-        for (const auto &item : node->intercodes) {
-            firstArg->intercodes.push_back(item);
-        }
+        nodeInterCodeMerge(firstArg, node);
+    }
+}
+
+void nodeInterCodeMerge(Node *firstArg, const std::vector<Node *> &nodes) {
+    for (const auto &node : nodes) {
+        nodeInterCodeMerge(firstArg, node);
     }
 }
 
@@ -36,13 +39,13 @@ static const unordered_map<Node *, InterCodeType> BioOpNodes = [] {
 }();
 
 static string new_temp() {
-    static int tempValue = begin_sign;
-    return string("t").append(std::to_string(tempValue++));
+    static int tempValueTemp = begin_sign;
+    return string("t").append(std::to_string(tempValueTemp++));
 }
 
 static string new_label() {
-    static int tempValue = begin_sign;
-    return string("label").append(std::to_string(tempValue++));
+    static int tempValueLabel = begin_sign;
+    return string("label").append(std::to_string(tempValueLabel++));
 }
 
 InterCode *translate_Exp(Node *exp, string place) {
@@ -232,6 +235,7 @@ InterCode *translate_functionWithParamInvoke(Node *stmt) {
         will_return->interCodeType = InterCodeType::WRITE;
         will_return->SingleElement = new Operand(OperandType::VARIABLE, paramName);
         stmt->interCode = will_return;
+        nodeInterCodeMerge(stmt,stmt->get_nodes(2));
         stmt->intercodes.push_back(will_return);
         return will_return;
     };
@@ -298,8 +302,87 @@ void translate_StmtMergeExp(Node *Stmt) {
     nodeInterCodeMerge(Stmt, {Stmt->nodes[0]});
 }
 
-InterCode *translate_stmt_ifelseifelse(Node *stmt) {
-    auto label1 = new_label();
-    auto label2 = new_label();
-    auto label3 = new_label();
+void translate_ifelse(Node *const stmt) {
+    const auto newLabel1 = new_label();
+    const auto newLabel2 = new_label();
+    const auto newLabel3 = new_label();
+    translate_relop(stmt->get_nodes(2), newLabel1, newLabel2);
+    nodeInterCodeMerge(stmt, stmt->get_nodes(2));
+    {
+        auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
+        label1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
+        label1Intercode->labelElement->jumpLabel = newLabel1;
+        stmt->intercodes.push_back(label1Intercode);
+    }
+    nodeInterCodeMerge(stmt, stmt->get_nodes(4));// code2
+    {
+        auto *const gotoLabel3Intercode = new InterCode(InterCodeType::GOTO);
+        gotoLabel3Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
+        gotoLabel3Intercode->labelElement->jumpLabel = newLabel3;
+        stmt->intercodes.push_back(gotoLabel3Intercode);
+    }
+    {
+        auto *const label2InterCode = new InterCode(InterCodeType::LABEL);
+        label2InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
+        label2InterCode->labelElement->jumpLabel = newLabel2;
+        stmt->intercodes.push_back(label2InterCode);
+    }
+    nodeInterCodeMerge(stmt, stmt->get_nodes(6));
+    {
+        auto *const label3InterCode = new InterCode(InterCodeType::LABEL);
+        label3InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
+        label3InterCode->labelElement->jumpLabel = newLabel3;
+        stmt->intercodes.push_back(label3InterCode);
+    }
+    return;
+}
+
+InterCode *translate_minus_exp(Node *const exp) {
+    auto *const minud_exp = exp->get_nodes(1);
+    const auto minud_exp_name = getNameFromANode(minud_exp);
+    const auto newTempName = new_temp();
+    auto *const will_return = new InterCode(InterCodeType::SUB);
+    will_return->bioOp = {
+            new Operand(OperandType::VARIABLE, newTempName),
+            new Operand(OperandType::CONSTANT, 0),
+            new Operand(OperandType::VARIABLE, minud_exp_name)
+    };
+    exp->interCode = will_return;
+    nodeInterCodeMerge(exp,exp->get_nodes(1));
+    exp->intercodes.push_back(will_return);
+    return will_return;
+}
+
+InterCode *translate_relop(Node *const exp, string label_true, string label_false) {
+    Node *const expSubs[3]{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
+    const auto tempName1 = getNameFromANode(expSubs[0]);
+    static const unordered_map<Node *, string> relopNameMap = [] {
+        unordered_map<Node *, string> init;
+        init.insert(std::make_pair(Node::getSingleNameNodePointer("LT"), "<"));
+        init.insert(std::make_pair(Node::getSingleNameNodePointer("LE"), "<="));
+        init.insert(std::make_pair(Node::getSingleNameNodePointer("GT"), ">"));
+        init.insert(std::make_pair(Node::getSingleNameNodePointer("GE"), ">="));
+        init.insert(std::make_pair(Node::getSingleNameNodePointer("NE"), "!="));
+        init.insert(std::make_pair(Node::getSingleNameNodePointer("EQ"), "=="));
+        return init;
+    }();
+    auto opName = relopNameMap.at(expSubs[1]);
+    //const auto op = BioOpNodes.at(expSubs[1]);
+    const auto tempName2 = getNameFromANode(expSubs[2]);
+    auto *const will_return = new InterCode(InterCodeType::IF_ELSE);
+    //nodeInterCodeMerge(exp,expSubs[2]);
+    will_return->ifElse = {
+            new Operand(OperandType::VARIABLE, tempName1),
+            new Operand(OperandType::VARIABLE, opName),
+            new Operand(OperandType::VARIABLE, tempName2),
+            new Operand(OperandType::JUMP_LABEL, std::move(label_true))
+    };
+    exp->interCode = will_return;
+    nodeInterCodeMerge(exp, {expSubs[0], expSubs[2]});
+    exp->intercodes.push_back(will_return);
+    auto *const elsePart = new InterCode(InterCodeType::GOTO);
+    elsePart->labelElement = new Operand(OperandType::JUMP_LABEL);
+    elsePart->labelElement->jumpLabel = label_false;
+    exp->intercodes.push_back(elsePart);
+    return will_return;
 }
