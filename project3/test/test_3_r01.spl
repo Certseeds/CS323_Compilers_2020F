@@ -1,7 +1,7 @@
 int main()
 {
     int a, b, c;
-    int final = 0;//TODO
+    int final = 0;
     a = 5;
     b = a * a * (a + 2);
     write(b);

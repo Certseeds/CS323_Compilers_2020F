@@ -1,4 +1,6 @@
 FUNCTION main :
+t0 := #0
+final := t0
 t1 := #5
 a := t1
 t2 := a * a

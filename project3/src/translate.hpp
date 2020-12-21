@@ -33,11 +33,20 @@ void translate_CompstMerge(Node *CompSt, Node *DefList, Node *StmtList);
 
 void translate_StmtlistMerge(Node *StmtList);
 
+void translate_DeflistMerge(Node *StmtList);
+
 void translate_StmtMergeExp(Node *StmtMergeExp);
 
-void translate_ifelse(Node * stmt);
-void translate_if(Node * stmt);
-InterCode* translate_minus_exp(Node* exp);
+void translate_ifelse(Node *stmt);
 
-InterCode* translate_relop(Node* exp,string label_true,string label_false);
+void translate_if(Node *stmt);
+
+InterCode *translate_minus_exp(Node *exp);
+
+InterCode *translate_relop(Node *exp, string label_true, string label_false);
+
+InterCode *translate_varDecAssign(Node *dec);
+
+void translate_DecListMerge(Node *decList);
+
 #endif //CS323_COMPLIERS_PROJECT3_SRC_TRANSLATE_HPP

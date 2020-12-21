@@ -130,7 +130,10 @@ Stmt: Exp SEMI {
     $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2);
         translate_StmtMergeExp($$);
     }
-    | CompSt {$$=new Node("Stmt",@$.first_line);$$->push_back($1);}
+    | CompSt {
+    $$=new Node("Stmt",@$.first_line);$$->push_back($1);
+      $$->intercodes = $1->intercodes;
+    }
     | RETURN Exp SEMI {
     $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3);
      translate_Return($$);
@@ -153,7 +156,10 @@ Stmt: Exp SEMI {
     ;
 /* local definition */
 DefList: {$$=new Node("DefList",@$.first_line,Node_TYPE::NOTHING);}
-    | Def DefList {$$=new Node("DefList",@$.first_line); $$->push_back($1,$2);}
+    | Def DefList {
+    $$=new Node("DefList",@$.first_line); $$->push_back($1,$2);
+    translate_DeflistMerge($$);
+    }
     ;
 /*
 // Definition of
@@ -163,6 +169,7 @@ Def: Specifier DecList SEMI {
     $$=new Node("Def",@$.first_line);
     $$->push_back($1,$2,$3);
     defVisit($$);
+    $$->intercodes = $2->intercodes;
     }
     | Specifier DecList error {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
     | error DecList SEMI {
@@ -172,15 +179,21 @@ Def: Specifier DecList SEMI {
     $2->print();
     }
     ;
-DecList: Dec {$$=new Node("DecList",@$.first_line);$$->push_back($1);}
-    | Dec COMMA DecList {$$=new Node("DecList",@$.first_line); $$->push_back($1,$2,$3);}
-    | Dec  DecList error {yyerror_myself(YYERROR_TYPE::MISS_COMMA);}
+DecList: Dec {
+    $$=new Node("DecList",@$.first_line);$$->push_back($1);
+    $$->intercodes = $1->intercodes;
+    }
+    | Dec COMMA DecList {
+    $$=new Node("DecList",@$.first_line); $$->push_back($1,$2,$3);
+      translate_DecListMerge($$);
+    }
+    | Dec DecList error {yyerror_myself(YYERROR_TYPE::MISS_COMMA);}
 ;
 Dec: VarDec {$$=new Node("Dec",@$.first_line); $$->push_back($1);}
     | VarDec ASSIGN Exp {
     $$=new Node("Dec",@$.first_line); $$->push_back($1,$2,$3);
-
     // 声明时初始化
+    translate_varDecAssign($$);
     }
     ;
 /* Expression */

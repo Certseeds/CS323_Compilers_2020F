@@ -152,7 +152,7 @@ InterCode *translate_Exp_RightElement(Node *exp, string place) {
     return will_return;
 }
 
-InterCode *translate_Exp_Assign_Exp(Node *exp, const std::string &place) {
+InterCode *translate_Exp_Assign_Exp(Node *const exp, const std::string &place) {
     Node *const subnodes[3]{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
     auto *const leftNode = subnodes[0];
     auto *const rightNode = subnodes[2];
@@ -185,6 +185,15 @@ InterCode *translate_Exp_Assign_Exp(Node *exp, const std::string &place) {
     nodeInterCodeMerge(exp, {leftNode, rightNode});
     exp->intercodes.push_back(will_return);
     return will_return;
+}
+
+
+InterCode *translate_varDecAssign(Node *const dec) {
+    return translate_Exp_Assign_Exp(dec);
+}
+
+void translate_DecListMerge(Node *const decList) {
+    nodeInterCodeMerge(decList, {decList->get_nodes(0), decList->get_nodes(2)});
 }
 
 InterCode *translate_Stmt(Node *stmt) {
@@ -252,7 +261,7 @@ InterCode *translate_functionWithParamInvoke(Node *stmt) {
         arg_InterCode->SingleElement->variName = argName;
         argExp->interCode = arg_InterCode;
         //arg_InterCode->print();
-        nodeInterCodeMerge(stmt, argExp);
+        nodeInterCodeMerge(stmt, argExp->get_nodes(0));
         tempIntercodes.push_back(arg_InterCode);
         if (argExp->nodes.size() == 1) {
             break;
@@ -312,6 +321,10 @@ InterCode *translate_Return(Node *stmt) {
 }
 
 void translate_StmtlistMerge(Node *StmtList) {
+    nodeInterCodeMerge(StmtList, StmtList->nodes);
+}
+
+void translate_DeflistMerge(Node *StmtList) {
     nodeInterCodeMerge(StmtList, StmtList->nodes);
 }
 
