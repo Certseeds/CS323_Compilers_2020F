@@ -11,10 +11,12 @@ FUNCTION main :
 READ a
 WRITE a
 ARG a
-r := CALL sqr
+t3 := CALL sqr
+r := t3
 WRITE r
 ARG a
-r := CALL cbc
+t4 := CALL cbc
+r := t4
 WRITE r
-t3 := #0
-RETURN t3
+t5 := #0
+RETURN t5

@@ -137,6 +137,7 @@ Stmt: Exp SEMI {
     }
     | IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {
     $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5);
+    translate_if($$);
     }
     | IF LP Exp RP Stmt ELSE Stmt {
     $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5,$6,$7);

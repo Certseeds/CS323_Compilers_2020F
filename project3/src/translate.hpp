@@ -36,7 +36,7 @@ void translate_StmtlistMerge(Node *StmtList);
 void translate_StmtMergeExp(Node *StmtMergeExp);
 
 void translate_ifelse(Node * stmt);
-
+void translate_if(Node * stmt);
 InterCode* translate_minus_exp(Node* exp);
 
 InterCode* translate_relop(Node* exp,string label_true,string label_false);
