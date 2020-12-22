@@ -8,7 +8,7 @@ CXXDEBUG = -g
 CXXWARN = -Wall -Wextra
 CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 
-.PHONY: clean 
+.PHONY: clean
 
 .lex:lex.l
 	$(FLEX) lex.l
@@ -30,8 +30,15 @@ CXXFLAGS = -O3 $(CXXDEBUG) $(CXXSTD) $(CXXWARN)
 .visit: .prepare
 	$(CPP) $(CXXFLAGS) -c visitSyntaxTree.cpp -o visitSyntaxTree.o
 	@ar -rc libvisitSyntaxTree.a visitSyntaxTree.o
-splc: .node .yyerror .type .semanticError .visit
+.interCode: .prepare
+	$(CPP) $(CXXFLAGS) -c interCode.cpp -o interCode.o
+	@ar -rc libinterCode.a interCode.o
+.translate: .prepare
+	$(CPP) $(CXXFLAGS) -c translate.cpp -o translate.o
+	@ar -rc libtranslate.a translate.o
+splc: .node .yyerror .type .semanticError .visit .translate .interCode
 	$(CPP) $(CXXFLAGS) main.cpp -static -L. -lnode -lyyerror_myself  \
-    -lvisitSyntaxTree -lsemanticError -ltype  -o splc
+    -lvisitSyntaxTree -lsemanticError -ltype -linterCode -ltranslate -o splc
+
 clean:
 	@rm -rf $(MAKE_PATH)/ lex.yy.c syntax.tab.* *.out *.o *.a *.so syntax.output splc
