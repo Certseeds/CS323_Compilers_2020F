@@ -44,7 +44,7 @@ static string new_temp() {
 }
 
 static string new_label() {
-    static int tempValueLabel = begin_sign+1;
+    static int tempValueLabel = begin_sign + 1;
     return string("label").append(std::to_string(tempValueLabel++));
 }
 
@@ -73,18 +73,6 @@ InterCode *translate_Exp(Node *exp, string place) {
     }
     std::cout.flush();
     return will_return;
-}
-
-InterCode *translate_cond_Exp(Node *exp, string label_true, string label_false) {
-    switch (exp->nodes.size()) {
-        case 3: {
-            auto *const middleSign = exp->get_nodes(1);
-            break;
-        }
-        case 2: {
-            break;
-        }
-    }
 }
 
 string getNameFromANode(Node *exp) {
@@ -335,7 +323,7 @@ void translate_StmtMergeExp(Node *Stmt) {
 void translate_if(Node *const stmt) {
     const auto newLabel1 = new_label();
     const auto newLabel2 = new_label();
-    translate_relop(stmt->get_nodes(2), newLabel1, newLabel2);
+    translate_Cond(stmt->get_nodes(2), newLabel1, newLabel2);
     nodeInterCodeMerge(stmt, stmt->get_nodes(2));
     {
         auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
@@ -353,11 +341,30 @@ void translate_if(Node *const stmt) {
     return;
 }
 
+static const unordered_map<Node *, string> relopNameMap = [] {
+    unordered_map<Node *, string> init;
+    init.insert(std::make_pair(Node::getSingleNameNodePointer("LT"), "<"));
+    init.insert(std::make_pair(Node::getSingleNameNodePointer("LE"), "<="));
+    init.insert(std::make_pair(Node::getSingleNameNodePointer("GT"), ">"));
+    init.insert(std::make_pair(Node::getSingleNameNodePointer("GE"), ">="));
+    init.insert(std::make_pair(Node::getSingleNameNodePointer("NE"), "!="));
+    init.insert(std::make_pair(Node::getSingleNameNodePointer("EQ"), "=="));
+    return init;
+}();
+
+void translate_Cond(Node *const stmt, string label_true, string label_false) {
+    if (relopNameMap.count(stmt->get_nodes(1)) != 0) {
+        translate_relop(stmt, std::move(label_true), label_false);
+    } else if (stmt->get_nodes(1) == Node::getSingleNameNodePointer("OR")) {
+        translate_exp_or_exp(stmt, label_true, label_false);
+    }
+}
+
 void translate_ifelse(Node *const stmt) {
     const auto newLabel1 = new_label();
     const auto newLabel2 = new_label();
     const auto newLabel3 = new_label();
-    translate_relop(stmt->get_nodes(2), newLabel1, newLabel2);
+    translate_Cond(stmt->get_nodes(2), newLabel1, newLabel2);
     nodeInterCodeMerge(stmt, stmt->get_nodes(2));
     {
         auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
@@ -393,7 +400,7 @@ void translate_while(Node *const stmt) {
     const auto newLabel1 = new_label();
     const auto newLabel2 = new_label();
     const auto newLabel3 = new_label();
-    translate_relop(stmt->get_nodes(2), newLabel2, newLabel3);
+    translate_Cond(stmt->get_nodes(2), newLabel2, newLabel3);
     {
         auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
         label1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
@@ -438,19 +445,25 @@ InterCode *translate_minus_exp(Node *const exp) {
     return will_return;
 }
 
+InterCode *translate_exp_or_exp(Node *const exp, const string &label_true, string label_false) {
+    Node *const expSubs[3]{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
+    const auto newLabel1 = new_label();
+    translate_Cond(expSubs[0], label_true, newLabel1);
+    nodeInterCodeMerge(exp, expSubs[0]);
+    {
+        auto *const label1InterCode = new InterCode(InterCodeType::LABEL);
+        label1InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
+        label1InterCode->labelElement->jumpLabel = newLabel1;
+        exp->intercodes.push_back(label1InterCode);
+    }
+    translate_Cond(expSubs[2], label_true, std::move(label_false));
+    nodeInterCodeMerge(exp, expSubs[2]);
+    return nullptr;
+}
+
 InterCode *translate_relop(Node *const exp, string label_true, string label_false) {
     Node *const expSubs[3]{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
     const auto tempName1 = getNameFromANode(expSubs[0]);
-    static const unordered_map<Node *, string> relopNameMap = [] {
-        unordered_map<Node *, string> init;
-        init.insert(std::make_pair(Node::getSingleNameNodePointer("LT"), "<"));
-        init.insert(std::make_pair(Node::getSingleNameNodePointer("LE"), "<="));
-        init.insert(std::make_pair(Node::getSingleNameNodePointer("GT"), ">"));
-        init.insert(std::make_pair(Node::getSingleNameNodePointer("GE"), ">="));
-        init.insert(std::make_pair(Node::getSingleNameNodePointer("NE"), "!="));
-        init.insert(std::make_pair(Node::getSingleNameNodePointer("EQ"), "=="));
-        return init;
-    }();
     auto opName = relopNameMap.at(expSubs[1]);
     //const auto op = BioOpNodes.at(expSubs[1]);
     const auto tempName2 = getNameFromANode(expSubs[2]);

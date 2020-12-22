@@ -9,8 +9,11 @@
 InterCode *translate_Exp_RightElement(Node *exp, string place = "");
 
 InterCode *translate_Exp_INT(Node *intExp);
+
 InterCode *translate_Exp_Bio_Exp(Node *exp, string place = "");
 
 InterCode *translate_Exp_Assign_Exp(Node *exp, const std::string &place = "");
+
+void translate_Cond(Node *const stmt, string label_true, string label_false);
 
 #endif //CS323_COMPLIERS_PROJECT3_SRC_TRANSLATE2_HPP

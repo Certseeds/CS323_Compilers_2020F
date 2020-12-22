@@ -41,10 +41,12 @@ void translate_ifelse(Node *stmt);
 
 void translate_if(Node *stmt);
 
-void translate_while(Node* stmt);
+void translate_while(Node *stmt);
+
 InterCode *translate_minus_exp(Node *exp);
 
 InterCode *translate_relop(Node *exp, string label_true, string label_false);
+InterCode *translate_exp_or_exp(Node *exp, const string& label_true, string label_false);
 
 InterCode *translate_varDecAssign(Node *dec);
 
