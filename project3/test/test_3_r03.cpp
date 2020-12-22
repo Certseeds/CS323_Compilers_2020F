@@ -1,4 +1,4 @@
-#include <iostream>
+#include "read_and_write.hpp"
 
 int main() {
     static constexpr int N = 30;
@@ -10,7 +10,7 @@ int main() {
             i = i + 1;
         }
         if (num == 2) {
-            std::cout << k << std::endl;
+            write(k);
         }
         i = 1;
         num = 0;

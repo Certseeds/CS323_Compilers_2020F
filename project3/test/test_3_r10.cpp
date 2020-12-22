@@ -1,14 +1,14 @@
-#include <iostream>
+#include "read_and_write.hpp"
 
 int main() {
     int n;
-    std::cin >> n;
+    n = read();
     if (n > 0) {
-        std::cout << 1 << std::endl;
+        write(1);
     } else if (n < 0) {
-        std::cout << -1 << std::endl;
+        write(-1);
     } else {
-        std::cout << 0 << std::endl;
+        write(0);
     }
     return 0;
 }

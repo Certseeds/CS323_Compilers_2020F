@@ -1,4 +1,4 @@
-#include <iostream>
+#include "read_and_write.hpp"
 
 int mod(int x, int n) {
     return x - (x / n) * n;
@@ -13,11 +13,11 @@ int DigitSum(int y) {
 
 int main() {
     int num;
-    std::cin >> num;
+    num = read();
     if (num < 0) {
-        std::cout << -1;
+        write(-1);
     } else {
-        std::cout << DigitSum(num);
+        write(DigitSum(sum));
     }
     return 0;
 }

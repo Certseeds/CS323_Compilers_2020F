@@ -1,4 +1,4 @@
-#include <iostreams>
+#include "read_and_write.hpp"
 
 int sqr(int i1) {
     return i1 * i1;
@@ -10,11 +10,11 @@ int cbc(int i2) {
 
 int main() {
     int a, r;
-    std::cin >> a;
-    std::cout << a << std::endl;
+    a = read();
+    write(a);
     r = sqr(a);
-    std::cout << r << std::endl;
-    r = cbc(a);
-    std::cout << r << std::endl;
+    write(r);
+    r = cbc(r);
+    write(r);
     return 0;
 }

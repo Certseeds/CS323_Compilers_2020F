@@ -1,14 +1,14 @@
-#include <iostream>
+#include "read_and_write.hpp"
 
 int main() {
     int a, b, c;
     int final = 0;//TODO
     a = 5;
     b = a * a * (a + 2);
-    std::cout << b << std::endl;
+    write(b);
     c = b / a + 1;
-    std::cout << c << std::endl;
+    write(c);
     final = a + b - c * 3 + (b / a - 4);
-    std::cout << final << std::endl;
+    write(final);
     return 0;
 }
