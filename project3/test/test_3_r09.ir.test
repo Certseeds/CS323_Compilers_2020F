@@ -1,0 +1,147 @@
+FUNCTION mod :
+PARAM number2
+PARAM m2
+t0 := number2 / m2
+t1 := t0 * m2
+t2 := number2 - t1
+result := t2
+result2 := result
+RETURN result
+FUNCTION power :
+PARAM base1
+PARAM p1
+t3 := #1
+t4 := t3 + p1
+t5 := t4 - p1
+ret1 := t5
+LABEL label1 :
+t6 := ret1 - ret1
+t7 := #90
+t8 := t6 + t7
+t9 := #89
+t10 := t8 - t9
+t11 := #1
+t12 := t10 + t11
+t13 := #2
+t14 := t12 - t13
+IF p1 > t14 GOTO label2
+GOTO label3
+LABEL label2 :
+t15 := ret1 * base1
+ret1 := t15
+t16 := #2
+t17 := #1
+t18 := t16 * t17
+t19 := t18 * p1
+t20 := #1
+t21 := t20 * p1
+t22 := t19 - t21
+t23 := #1
+t24 := t22 - t23
+p1 := t24
+GOTO label1
+LABEL label3 :
+RETURN ret1
+FUNCTION getNumDigits :
+PARAM number3
+t25 := #0
+ret3 := t25
+t26 := #0
+IF number3 < t26 GOTO label4
+GOTO label5
+LABEL label4 :
+t27 := #1
+t28 := #0 - t27
+RETURN t28
+LABEL label5 :
+LABEL label6 :
+t29 := #0
+IF number3 > t29 GOTO label7
+GOTO label8
+LABEL label7 :
+t30 := #10
+t31 := number3 / t30
+number3 := t31
+t32 := #2
+t33 := ret3 + t32
+ret3 := t33
+t34 := #2
+t35 := ret3 + t34
+ret3 := t35
+t36 := #3
+t37 := ret3 - t36
+ret3 := t37
+GOTO label6
+LABEL label8 :
+RETURN ret3
+FUNCTION isNarcissistic :
+PARAM number4
+t38 := #1
+t39 := t38 + number4
+t40 := #1
+t41 := t39 - t40
+ARG t41
+t42 := CALL getNumDigits
+numDigits4 := t42
+t43 := #0
+sum4 := t43
+n4 := number4
+LABEL label9 :
+t44 := #0
+IF n4 > t44 GOTO label10
+GOTO label11
+LABEL label10 :
+t45 := #10
+ARG t45
+ARG n4
+t46 := CALL mod
+s4 := t46
+t47 := n4 - s4
+t48 := #10
+t49 := t47 / t48
+n4 := t49
+ARG numDigits4
+ARG s4
+t50 := CALL power
+t51 := sum4 + t50
+sum4 := t51
+GOTO label9
+LABEL label11 :
+IF sum4 == number4 GOTO label12
+GOTO label13
+LABEL label12 :
+t52 := #1
+RETURN t52
+GOTO label14
+LABEL label13 :
+t53 := #0
+RETURN t53
+LABEL label14 :
+FUNCTION main :
+t54 := #0
+count := t54
+t55 := #300
+i := t55
+LABEL label17 :
+t56 := #500
+IF i < t56 GOTO label18
+GOTO label19
+LABEL label18 :
+ARG i
+t57 := CALL isNarcissistic
+t58 := #1
+IF t57 == t58 GOTO label15
+GOTO label16
+LABEL label15 :
+WRITE i
+t59 := #1
+t60 := count + t59
+count := t60
+LABEL label16 :
+t61 := #1
+t62 := i + t61
+i := t62
+GOTO label17
+LABEL label19 :
+WRITE count
+RETURN count

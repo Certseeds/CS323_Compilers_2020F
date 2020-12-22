@@ -8,12 +8,12 @@ RETURN t2
 FUNCTION DigitSum :
 PARAM y
 t3 := #0
-IF y == t3 GOTO label0
-GOTO label1
-LABEL label0 :
+IF y == t3 GOTO label1
+GOTO label2
+LABEL label1 :
 t4 := #0
 RETURN t4
-LABEL label1 :
+LABEL label2 :
 t5 := #10
 ARG t5
 ARG y
@@ -27,17 +27,17 @@ RETURN t10
 FUNCTION main :
 READ num
 t11 := #0
-IF num < t11 GOTO label2
-GOTO label3
-LABEL label2 :
+IF num < t11 GOTO label3
+GOTO label4
+LABEL label3 :
 t12 := #1
 t13 := #0 - t12
 WRITE t13
-GOTO label4
-LABEL label3 :
+GOTO label5
+LABEL label4 :
 ARG num
 t14 := CALL DigitSum
 WRITE t14
-LABEL label4 :
+LABEL label5 :
 t15 := #0
 RETURN t15

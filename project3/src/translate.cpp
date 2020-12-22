@@ -11,19 +11,19 @@ using std::string;
 using std::unordered_map;
 inline static constexpr int32_t begin_sign = 0;
 
-void nodeInterCodeMerge(Node *firstArg, Node *node) {
+inline void nodeInterCodeMerge(Node *firstArg, Node *node) {
     for (const auto &item : node->intercodes) {
         firstArg->intercodes.push_back(item);
     }
 }
 
-void nodeInterCodeMerge(Node *firstArg, std::initializer_list<Node *> nodes) {
+inline void nodeInterCodeMerge(Node *firstArg, std::initializer_list<Node *> nodes) {
     for (const auto &node : nodes) {
         nodeInterCodeMerge(firstArg, node);
     }
 }
 
-void nodeInterCodeMerge(Node *firstArg, const std::vector<Node *> &nodes) {
+inline void nodeInterCodeMerge(Node *firstArg, const std::vector<Node *> &nodes) {
     for (const auto &node : nodes) {
         nodeInterCodeMerge(firstArg, node);
     }
@@ -44,7 +44,7 @@ static string new_temp() {
 }
 
 static string new_label() {
-    static int tempValueLabel = begin_sign;
+    static int tempValueLabel = begin_sign+1;
     return string("label").append(std::to_string(tempValueLabel++));
 }
 
@@ -386,6 +386,40 @@ void translate_ifelse(Node *const stmt) {
         stmt->intercodes.push_back(label3InterCode);
     }
     return;
+}
+
+
+void translate_while(Node *const stmt) {
+    const auto newLabel1 = new_label();
+    const auto newLabel2 = new_label();
+    const auto newLabel3 = new_label();
+    translate_relop(stmt->get_nodes(2), newLabel2, newLabel3);
+    {
+        auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
+        label1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
+        label1Intercode->labelElement->jumpLabel = newLabel1;
+        stmt->intercodes.push_back(label1Intercode);
+    }
+    nodeInterCodeMerge(stmt, stmt->get_nodes(2));
+    {
+        auto *const label2InterCode = new InterCode(InterCodeType::LABEL);
+        label2InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
+        label2InterCode->labelElement->jumpLabel = newLabel2;
+        stmt->intercodes.push_back(label2InterCode);
+    }
+    nodeInterCodeMerge(stmt, stmt->get_nodes(4));// code2
+    {
+        auto *const gotoLabel1Intercode = new InterCode(InterCodeType::GOTO);
+        gotoLabel1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
+        gotoLabel1Intercode->labelElement->jumpLabel = newLabel1;
+        stmt->intercodes.push_back(gotoLabel1Intercode);
+    }
+    {
+        auto *const label3InterCode = new InterCode(InterCodeType::LABEL);
+        label3InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
+        label3InterCode->labelElement->jumpLabel = newLabel3;
+        stmt->intercodes.push_back(label3InterCode);
+    }
 }
 
 InterCode *translate_minus_exp(Node *const exp) {

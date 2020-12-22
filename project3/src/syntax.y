@@ -147,7 +147,9 @@ Stmt: Exp SEMI {
     translate_ifelse($$);
     }
     | WHILE LP Exp RP Stmt {
-    $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5);}
+    $$=new Node("Stmt",@$.first_line); $$->push_back($1,$2,$3,$4,$5);
+    translate_while($$);
+    }
     | WHILE LP Exp error Stmt {yyerror_myself(YYERROR_TYPE::LACK_OF_RP); }
     | Exp error {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
     | RETURN Exp error {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
