@@ -45,6 +45,7 @@ Type *Type::getPrimitiveType(Node_TYPE type) {
             return Type::getPrimitiveCHAR();
         }
         default: {
+            return nullptr;
         }
     }
 }

@@ -30,11 +30,12 @@ inline void nodeInterCodeMerge(Node *firstArg, const std::vector<Node *> &nodes)
 }
 
 static const unordered_map<Node *, InterCodeType> BioOpNodes = [] {
-    static unordered_map<Node *, InterCodeType> init;
-    init.insert(std::make_pair(Node::getSingleNameNodePointer("PLUS"), InterCodeType::ADD));
-    init.insert(std::make_pair(Node::getSingleNameNodePointer("MINUS"), InterCodeType::SUB));
-    init.insert(std::make_pair(Node::getSingleNameNodePointer("MUL"), InterCodeType::MUL));
-    init.insert(std::make_pair(Node::getSingleNameNodePointer("DIV"), InterCodeType::DIV));
+    static const unordered_map<Node *, InterCodeType> init{
+            {Node::getSingleNameNodePointer("PLUS"),  InterCodeType::ADD},
+            {Node::getSingleNameNodePointer("MINUS"), InterCodeType::SUB},
+            {Node::getSingleNameNodePointer("MUL"),   InterCodeType::MUL},
+            {Node::getSingleNameNodePointer("DIV"),   InterCodeType::DIV}
+    };
     return init;
 }();
 
@@ -48,7 +49,7 @@ static string new_label() {
     return string("label").append(std::to_string(tempValueLabel++));
 }
 
-InterCode *translate_Exp(Node *exp, string place) {
+InterCode *translate_Exp(Node *exp, const string &place) {
     InterCode *will_return = nullptr;
     switch (exp->nodes.size()) {
         case 1: {
@@ -83,7 +84,7 @@ string getNameFromANode(Node *exp) {
     }
 }
 
-InterCode *translate_Exp_Bio_Exp(Node *exp, string place) {
+InterCode *translate_Exp_Bio_Exp(Node *exp, const string &place) {
     auto *const leftNode = exp->get_nodes(0);
     auto *const bioOp = exp->get_nodes(1);
     auto *const rightNode = exp->get_nodes(2);
@@ -119,7 +120,7 @@ InterCode *translate_Exp_INT(Node *exp) {
     return will_return;
 }
 
-InterCode *translate_Exp_RightElement(Node *exp, string place) {
+InterCode *translate_Exp_RightElement(Node *exp, const string &place) {
     //先只考虑进来的exp就是ID的情况
     auto stringOfVari = std::get<string>(exp->get_nodes(0)->value);
     if (stringOfVari == "read") {
@@ -182,20 +183,6 @@ InterCode *translate_varDecAssign(Node *const dec) {
 
 void translate_DecListMerge(Node *const decList) {
     nodeInterCodeMerge(decList, {decList->get_nodes(0), decList->get_nodes(2)});
-}
-
-InterCode *translate_Stmt(Node *stmt) {
-    if (stmt->nodes.size() == 7 &&
-        stmt->get_nodes(0) == Node::getSingleNameNodePointer("IF") &&
-        stmt->get_nodes(1) == Node::getSingleNameNodePointer("LP") &&
-        stmt->get_nodes(2)->name == "Exp" &&
-        stmt->get_nodes(3) == Node::getSingleNameNodePointer("RP") &&
-        stmt->get_nodes(4)->name == "Stmt" &&
-        stmt->get_nodes(5) == Node::getSingleNameNodePointer("ELSE") &&
-        stmt->get_nodes(6)->name == "Stmt"
-            ) {
-
-    }
 }
 
 // maybe include read
@@ -320,25 +307,28 @@ void translate_StmtMergeExp(Node *Stmt) {
     nodeInterCodeMerge(Stmt, {Stmt->nodes[0]});
 }
 
+void insertAJumpLabelToExpNode(Node *const exp, string labelName) {
+    auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
+    label1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
+    label1Intercode->labelElement->jumpLabel = std::move(labelName);
+    exp->intercodes.push_back(label1Intercode);
+}
+
+void insertAGotoLabelToExpNode(Node *const exp, string labelName) {
+    auto *const gotoLabel3Intercode = new InterCode(InterCodeType::GOTO);
+    gotoLabel3Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
+    gotoLabel3Intercode->labelElement->jumpLabel = std::move(labelName);
+    exp->intercodes.push_back(gotoLabel3Intercode);
+}
+
 void translate_if(Node *const stmt) {
     const auto newLabel1 = new_label();
     const auto newLabel2 = new_label();
     translate_Cond(stmt->get_nodes(2), newLabel1, newLabel2);
     nodeInterCodeMerge(stmt, stmt->get_nodes(2));
-    {
-        auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
-        label1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        label1Intercode->labelElement->jumpLabel = newLabel1;
-        stmt->intercodes.push_back(label1Intercode);
-    }
+    insertAJumpLabelToExpNode(stmt, newLabel1);
     nodeInterCodeMerge(stmt, stmt->get_nodes(4));// code2
-    {
-        auto *const label2InterCode = new InterCode(InterCodeType::LABEL);
-        label2InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        label2InterCode->labelElement->jumpLabel = newLabel2;
-        stmt->intercodes.push_back(label2InterCode);
-    }
-    return;
+    insertAJumpLabelToExpNode(stmt, newLabel2);
 }
 
 static const unordered_map<Node *, string> relopNameMap = [] {
@@ -360,39 +350,19 @@ void translate_Cond(Node *const stmt, string label_true, string label_false) {
     }
 }
 
+
 void translate_ifelse(Node *const stmt) {
     const auto newLabel1 = new_label();
     const auto newLabel2 = new_label();
     const auto newLabel3 = new_label();
     translate_Cond(stmt->get_nodes(2), newLabel1, newLabel2);
     nodeInterCodeMerge(stmt, stmt->get_nodes(2));
-    {
-        auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
-        label1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        label1Intercode->labelElement->jumpLabel = newLabel1;
-        stmt->intercodes.push_back(label1Intercode);
-    }
+    insertAJumpLabelToExpNode(stmt, newLabel1);
     nodeInterCodeMerge(stmt, stmt->get_nodes(4));// code2
-    {
-        auto *const gotoLabel3Intercode = new InterCode(InterCodeType::GOTO);
-        gotoLabel3Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        gotoLabel3Intercode->labelElement->jumpLabel = newLabel3;
-        stmt->intercodes.push_back(gotoLabel3Intercode);
-    }
-    {
-        auto *const label2InterCode = new InterCode(InterCodeType::LABEL);
-        label2InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        label2InterCode->labelElement->jumpLabel = newLabel2;
-        stmt->intercodes.push_back(label2InterCode);
-    }
+    insertAGotoLabelToExpNode(stmt, newLabel3);
+    insertAJumpLabelToExpNode(stmt, newLabel2);
     nodeInterCodeMerge(stmt, stmt->get_nodes(6));
-    {
-        auto *const label3InterCode = new InterCode(InterCodeType::LABEL);
-        label3InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        label3InterCode->labelElement->jumpLabel = newLabel3;
-        stmt->intercodes.push_back(label3InterCode);
-    }
-    return;
+    insertAJumpLabelToExpNode(stmt, newLabel3);
 }
 
 
@@ -401,32 +371,12 @@ void translate_while(Node *const stmt) {
     const auto newLabel2 = new_label();
     const auto newLabel3 = new_label();
     translate_Cond(stmt->get_nodes(2), newLabel2, newLabel3);
-    {
-        auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
-        label1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        label1Intercode->labelElement->jumpLabel = newLabel1;
-        stmt->intercodes.push_back(label1Intercode);
-    }
+    insertAJumpLabelToExpNode(stmt, newLabel1);
     nodeInterCodeMerge(stmt, stmt->get_nodes(2));
-    {
-        auto *const label2InterCode = new InterCode(InterCodeType::LABEL);
-        label2InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        label2InterCode->labelElement->jumpLabel = newLabel2;
-        stmt->intercodes.push_back(label2InterCode);
-    }
+    insertAJumpLabelToExpNode(stmt, newLabel2);
     nodeInterCodeMerge(stmt, stmt->get_nodes(4));// code2
-    {
-        auto *const gotoLabel1Intercode = new InterCode(InterCodeType::GOTO);
-        gotoLabel1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        gotoLabel1Intercode->labelElement->jumpLabel = newLabel1;
-        stmt->intercodes.push_back(gotoLabel1Intercode);
-    }
-    {
-        auto *const label3InterCode = new InterCode(InterCodeType::LABEL);
-        label3InterCode->labelElement = new Operand(OperandType::JUMP_LABEL);
-        label3InterCode->labelElement->jumpLabel = newLabel3;
-        stmt->intercodes.push_back(label3InterCode);
-    }
+    insertAGotoLabelToExpNode(stmt, newLabel1);
+    insertAJumpLabelToExpNode(stmt, newLabel3);
 }
 
 InterCode *translate_minus_exp(Node *const exp) {
@@ -444,6 +394,7 @@ InterCode *translate_minus_exp(Node *const exp) {
     exp->intercodes.push_back(will_return);
     return will_return;
 }
+
 
 InterCode *translate_exp_or_exp(Node *const exp, const string &label_true, string label_false) {
     Node *const expSubs[3]{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
@@ -464,7 +415,7 @@ InterCode *translate_exp_or_exp(Node *const exp, const string &label_true, strin
 InterCode *translate_relop(Node *const exp, string label_true, string label_false) {
     Node *const expSubs[3]{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
     const auto tempName1 = getNameFromANode(expSubs[0]);
-    auto opName = relopNameMap.at(expSubs[1]);
+    const auto opName = relopNameMap.at(expSubs[1]);
     //const auto op = BioOpNodes.at(expSubs[1]);
     const auto tempName2 = getNameFromANode(expSubs[2]);
     auto *const will_return = new InterCode(InterCodeType::IF_ELSE);
@@ -480,7 +431,7 @@ InterCode *translate_relop(Node *const exp, string label_true, string label_fals
     exp->intercodes.push_back(will_return);
     auto *const elsePart = new InterCode(InterCodeType::GOTO);
     elsePart->labelElement = new Operand(OperandType::JUMP_LABEL);
-    elsePart->labelElement->jumpLabel = label_false;
+    elsePart->labelElement->jumpLabel = std::move(label_false);
     exp->intercodes.push_back(elsePart);
     return will_return;
 }

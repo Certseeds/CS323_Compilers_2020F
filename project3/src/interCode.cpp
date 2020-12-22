@@ -41,23 +41,25 @@ Operand::Operand(OperandType operandEnum, int32_t value) : operandEnum(operandEn
 InterCode::InterCode(InterCodeType interCodeType) : interCodeType(interCodeType) {}
 
 static const unordered_map<InterCodeType, string> BioOpNodes = [] {
-    static unordered_map<InterCodeType, string> init;
-    init.insert(std::make_pair(InterCodeType::ADD, " + "));
-    init.insert(std::make_pair(InterCodeType::SUB, " - "));
-    init.insert(std::make_pair(InterCodeType::MUL, " * "));
-    init.insert(std::make_pair(InterCodeType::DIV, " / "));
+    static const unordered_map<InterCodeType, string> init{
+            {InterCodeType::ADD, " + "},
+            {InterCodeType::SUB, " - "},
+            {InterCodeType::MUL, " * "},
+            {InterCodeType::DIV, " / "},
+    };
     return init;
 }();
 static const unordered_map<InterCodeType, string> singleElementWords = [] {
-    static unordered_map<InterCodeType, string> init;
-    init.insert(std::make_pair(InterCodeType::RETURN, "RETURN"));
-    init.insert(std::make_pair(InterCodeType::WRITE, "WRITE"));
-    init.insert(std::make_pair(InterCodeType::PARAM, "PARAM"));
-    init.insert(std::make_pair(InterCodeType::FUNCTION, "FUNCTION"));
-    init.insert(std::make_pair(InterCodeType::ARG, "ARG"));
-    init.insert(std::make_pair(InterCodeType::READ, "READ"));
-    init.insert(std::make_pair(InterCodeType::LABEL, "LABEL"));
-    init.insert(std::make_pair(InterCodeType::GOTO, "GOTO"));
+    static const unordered_map<InterCodeType, string> init{
+            {InterCodeType::RETURN,   "RETURN"},
+            {InterCodeType::WRITE,    "WRITE"},
+            {InterCodeType::PARAM,    "PARAM"},
+            {InterCodeType::FUNCTION, "FUNCTION"},
+            {InterCodeType::ARG,      "ARG"},
+            {InterCodeType::READ,     "READ"},
+            {InterCodeType::LABEL,    "LABEL"},
+            {InterCodeType::GOTO,     "GOTO"},
+    };
     return init;
 }();
 
@@ -103,7 +105,7 @@ void InterCode::print() const {
             this->SingleElement->print();
             break;
         }
-        case InterCodeType::IF_ELSE:{
+        case InterCodeType::IF_ELSE: {
             std::cout << "IF ";
             this->ifElse.left->print();
             std::cout << ' ';

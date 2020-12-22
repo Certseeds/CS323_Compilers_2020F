@@ -377,9 +377,9 @@ void getNamesOfDefList(Node *node, vector<Node *> &namesofFileds) {
             }
             nodeofField = nodeofField->get_nodes(1);
         };
-        std::for_each(std::cbegin(namesofFileds), std::cend(namesofFileds), [](auto item) {
-            //std::cout << getStrValueFromDecList(item) << " ";
-        });
+//        std::for_each(std::cbegin(namesofFileds), std::cend(namesofFileds), [](auto item) {
+//            //std::cout << getStrValueFromDecList(item) << " ";
+//        });
         //std::cout << '\n';
     }
 }

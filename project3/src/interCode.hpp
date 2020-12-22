@@ -48,9 +48,7 @@ enum class InterCodeType {
 
 class InterCode {
 public:
-
     InterCodeType interCodeType;
-
     union {
         struct {
             Operand *left;
