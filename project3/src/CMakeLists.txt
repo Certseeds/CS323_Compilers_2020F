@@ -5,12 +5,22 @@ project(CS323_Compilers_project3 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ldl")
 
-set_source_files_properties("syntax.tab.c" PROPERTIES GENERATED TRUE)
+add_custom_target(${PROJECT_NAME}_FLEX_BISON
+        COMMAND ls
+        COMMAND pwd
+        COMMAND flex lex.l
+        COMMAND bison -t -d -v syntax.y
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        BYPRODUCTS "syntax.tab.c"
+        COMMENT "This command will be executed before building target ${PROJECT_NAME}_FLEX_BISON")
+
+add_custom_target(${PROJECT_NAME}_empty)
+
+add_dependencies(${PROJECT_NAME}_empty ${PROJECT_NAME}_FLEX_BISON)
 
 add_library(${PROJECT_NAME}_node
         STATIC
         node.cpp)
-
 
 add_library(${PROJECT_NAME}_yyerror_myself
         STATIC
@@ -37,24 +47,15 @@ add_library(${PROJECT_NAME}_visitSyntaxTree
         visitSyntaxTree.cpp)
 
 add_executable(${PROJECT_NAME}_main main.cpp)
-add_custom_command(TARGET ${PROJECT_NAME}_main PRE_BUILD
-        COMMAND ls
-        COMMAND pwd
-        COMMAND flex lex.l
-        COMMAND bison -t -d -v syntax.y
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        BYPRODUCTS "syntax.tab.c"
-        COMMENT "This command will be executed before building target ${PROJECT_NAME}_main"
-        )
 
-target_link_libraries(
-        ${PROJECT_NAME}_main
-        ${PROJECT_NAME}_node
-        ${PROJECT_NAME}_yyerror_myself
-        ${PROJECT_NAME}_visitSyntaxTree
-        ${PROJECT_NAME}_type
-        ${PROJECT_NAME}_semanticError
-        ${PROJECT_NAME}_translate
-        ${PROJECT_NAME}_interCode
-)
+set_source_files_properties("syntax.tab.c" PROPERTIES GENERATED TRUE)
+
+set(dependenciesOfMain node yyerror_myself visitSyntaxTree type semanticError translate interCode)
+
+foreach (elementName IN LISTS dependenciesOfMain)
+    target_link_libraries(${PROJECT_NAME}_main ${PROJECT_NAME}_${elementName})
+    add_dependencies(${PROJECT_NAME}_${elementName} ${PROJECT_NAME}_empty)
+    add_dependencies(${PROJECT_NAME}_main ${PROJECT_NAME}_${elementName})
+endforeach ()
+
 # this file just work for clion's identify, do not use it compiler files
