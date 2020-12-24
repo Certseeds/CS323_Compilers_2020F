@@ -18,41 +18,15 @@ add_custom_target(${PROJECT_NAME}_empty)
 
 add_dependencies(${PROJECT_NAME}_empty ${PROJECT_NAME}_FLEX_BISON)
 
-add_library(${PROJECT_NAME}_node
-        STATIC
-        node.cpp)
+set(dependenciesOfMain node yyerror_myself visitSyntaxTree type semanticError translate interCode)
 
-add_library(${PROJECT_NAME}_yyerror_myself
-        STATIC
-        yyerror_myself.cpp)
-add_library(${PROJECT_NAME}_semanticError
-        STATIC
-        semanticError.cpp
-        )
-set_source_files_properties(syntax.tab.c PROPERTIES LANGUAGE CXX)
-
-add_library(${PROJECT_NAME}_type
-        STATIC
-        type.cpp
-        )
-
-add_library(${PROJECT_NAME}_interCode
-        STATIC
-        ./interCode.cpp)
-add_library(${PROJECT_NAME}_translate
-        STATIC
-        ./translate.cpp)
-add_library(${PROJECT_NAME}_visitSyntaxTree
-        STATIC
-        visitSyntaxTree.cpp)
+set_source_files_properties(syntax.tab.c PROPERTIES LANGUAGE CXX GENERATED TRUE)
 
 add_executable(${PROJECT_NAME}_main main.cpp)
 
-set_source_files_properties("syntax.tab.c" PROPERTIES GENERATED TRUE)
-
-set(dependenciesOfMain node yyerror_myself visitSyntaxTree type semanticError translate interCode)
-
 foreach (elementName IN LISTS dependenciesOfMain)
+    add_library(${PROJECT_NAME}_${elementName} STATIC ${elementName}.cpp)
+    MESSAGE(STATUS "${PROJECT_NAME}_${elementName} from ${elementName}.cpp")
     target_link_libraries(${PROJECT_NAME}_main ${PROJECT_NAME}_${elementName})
     add_dependencies(${PROJECT_NAME}_${elementName} ${PROJECT_NAME}_empty)
     add_dependencies(${PROJECT_NAME}_main ${PROJECT_NAME}_${elementName})
