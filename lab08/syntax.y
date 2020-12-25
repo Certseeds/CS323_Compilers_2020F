@@ -13,13 +13,13 @@
     JsonObject* jsonobject;
     ArrayValue* arrayvalue;
     ObjectMember* objectmember;
+    void * useless;
 }
-%token LC RC 
+%token LC RC
 %token LB RB COLON COMMA
 %token <jsonobject> STRING NUMBER
 %token <jsonobject> TRUE FALSE VNULL
-
-%type LC_Out RC_Out
+%type <useless> LC_Out RC_Out
 %type <jsonobject> Array Object Value PrintOutObject
 %type <arrayvalue> Values
 %type <objectmember> Members Member
@@ -45,7 +45,7 @@ Object:
     | LC_Out Members RC Value error { puts("Extra value after close, recovered");}
     | LC_Out Members COMMA error { puts("extra comma in Object 2, recovered");}
     ;
-    
+
 LC_Out: LC  { keys.push(std::unordered_set<string>());};
 RC_Out: RC { keys.pop();};
 Members:

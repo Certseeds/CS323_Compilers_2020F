@@ -50,5 +50,5 @@ def check_jsonchecker_fail_syntaxonly():
     print(f'Recovered/Total: {recovered}/{total}')
 
 
-# check_jsonchecker_fail_withlexical()
+#check_jsonchecker_fail_withlexical()
 check_jsonchecker_fail_syntaxonly()

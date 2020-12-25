@@ -6,7 +6,6 @@
 #include "visitSyntaxTree.hpp"
 #include "visitSyntaxTree2.hpp"
 #include "semanticError.hpp"
-#include "../../project3/src/visitSyntaxTree.hpp"
 
 
 static unordered_map<string, Node_TYPE> snt = {

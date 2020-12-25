@@ -18,6 +18,7 @@ cmake_ensure_dir() {
 compiler() {
   # still in /lab01
   cd "${CMAKE_DIR}"
+  make clean
   cmake ..
   make -j "$(nproc)"
   ./CS323_Compilers_lab01_hello.out

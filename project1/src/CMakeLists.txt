@@ -1,15 +1,14 @@
 # header begin
 cmake_minimum_required(VERSION 3.17.2)
-project(CS323_Compilers_project3 LANGUAGES CXX)
+project(CS323_Compilers_project1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ldl")
+
 include(./../../cmake/preBuild.cmake)
 FLEX_BISON_PRE_BUILD()
 
-set(dependenciesOfMain node yyerror_myself visitSyntaxTree type semanticError translate interCode)
-
-set_source_files_properties(syntax.tab.c PROPERTIES LANGUAGE CXX GENERATED TRUE)
+set(dependenciesOfMain node yyerror_myself)
 
 add_executable(${PROJECT_NAME}_main main.cpp)
 

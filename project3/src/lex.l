@@ -3,6 +3,7 @@
     int isError = 0;
     #define LEXER_ERROR_OUTPUT stdout
 %}
+%option noyywrap
 %{
     #include"syntax.tab.h"
     /* library inclusions */
