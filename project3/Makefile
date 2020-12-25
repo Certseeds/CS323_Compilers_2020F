@@ -10,6 +10,7 @@ CXX_WARN = -Wall -Wextra
 CXX_HEADERS = -I./include
 CXX_FLAGS = -O3 $(CXX_DEBUG) $(CXX_STD) $(CXX_WARN) $(CXX_HEADERS)
 CPP = $(GPP) $(CXX_FLAGS)
+
 .lex: $(SRC_PATH)/lex.l
 	@cd $(SRC_PATH);$(FLEX) lex.l
 	@cd ./../

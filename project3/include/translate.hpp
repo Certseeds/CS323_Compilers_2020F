@@ -2,8 +2,8 @@
 // Created by nanos on 2020/12/20.
 //
 
-#ifndef CS323_COMPLIERS_PROJECT3_SRC_TRANSLATE_HPP
-#define CS323_COMPLIERS_PROJECT3_SRC_TRANSLATE_HPP
+#ifndef CS323_COMPLIERS_PROJECT3_INCLUDE_TRANSLATE_HPP
+#define CS323_COMPLIERS_PROJECT3_INCLUDE_TRANSLATE_HPP
 
 #include <string>
 #include <unordered_map>
@@ -51,4 +51,4 @@ InterCode *translate_varDecAssign(Node *dec);
 
 void translate_DecListMerge(Node *decList);
 
-#endif //CS323_COMPLIERS_PROJECT3_SRC_TRANSLATE_HPP
+#endif //CS323_COMPLIERS_PROJECT3_INCLUDE_TRANSLATE_HPP
