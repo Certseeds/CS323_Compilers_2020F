@@ -16,6 +16,14 @@ make_steps() {
   make clean
   cd ..
 }
+cmake_steps(){
+  cd "cmake-build-debug" || exit
+  make clean
+  cmake ..
+  make -j "$(nproc)"
+  mv ./CS323_Compilers_project3_main ./../splc.out
+  cd ..
+}
 test() {
   local i=1
   while [[ "${i}" -le "10" ]]; do
@@ -30,7 +38,7 @@ main() {
   if [[ -f "./splc.out" ]]; then
     rm ./splc.out
   fi
-  make_steps
+  cmake_steps
   test
 }
 main
