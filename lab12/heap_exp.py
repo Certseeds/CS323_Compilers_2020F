@@ -4,16 +4,19 @@ context.terminal = ['tmux', 'split', '-h']
 
 r = process('./heap_showcase')
 
+
 def addnote(size, content):
     r.info('Add note of size %d with content: %r', size, content)
     r.sendlineafter("choice: ", "1")
     r.sendlineafter("Note size: ", str(size))
     r.sendlineafter("Content: ", content)
 
+
 def delnote(idx):
     r.info('Delete note at index %d', idx)
     r.sendlineafter("choice: ", "2")
     r.sendlineafter("Index: ", str(idx))
+
 
 def printnote(idx):
     r.info('Print note at index %d', idx)

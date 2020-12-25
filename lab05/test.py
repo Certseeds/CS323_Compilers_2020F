@@ -44,7 +44,8 @@ class SymbolTable(ctypes.Structure):
 
 
 class SymbolTableTest(unittest.TestCase):
-    def setUp(self):
+    @staticmethod
+    def setup():
         random.seed(1307)
 
     def test_01(self):
