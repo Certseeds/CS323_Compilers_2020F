@@ -1,0 +1,10 @@
+struct AST {
+    int x1;
+    float x2;
+    char x3;
+};
+int main(){
+    int x1;
+    float x2;
+    char x3;
+}

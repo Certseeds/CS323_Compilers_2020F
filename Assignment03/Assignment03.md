@@ -4,12 +4,13 @@
  * @Author: nanoseeds
  * @Date: 2020-10-18 20:22:02
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-18 20:49:06
+ * @LastEditTime: 2020-11-28 22:17:03
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
 # CS323 Assignment 3
 
+**Scores**: 120/120  
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
@@ -187,18 +188,4 @@ For example, the sentence "他讨厌你喜欢我"
 
 the grammer is ambiguous, and the graph shows double trees.
 
-<style type="text/css">
-h1,h2,h3,div,table{
-  text-align: center;
-}
-div>div {
-  text-align: center;
-  border-bottom: 1px solid #d9d9d9;
-  display: inline-block;
-  padding: 2px;
-}
-div>img{
-  border-radius: 0.3125em;
-  box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);
-}
-</style>
+<link rel="stylesheet" type="text/css" href="./../markdown.css">

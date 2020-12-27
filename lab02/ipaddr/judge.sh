@@ -16,6 +16,7 @@ cmake_ensure_dir() {
 }
 compiler() {
   cd "${CMAKE_DIR}"
+  make clean
   cmake ..
   make -j "$(nproc)"
   cd ..

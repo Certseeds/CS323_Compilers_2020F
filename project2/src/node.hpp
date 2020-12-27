@@ -10,9 +10,8 @@
 // Created by nanos on 2020/10/7.
 //
 
-#ifndef CS323_COMPLIERS_PROJECT1_NODE_HPP
-#define CS323_COMPLIERS_PROJECT1_NODE_HPP
-
+#ifndef CS323_COMPLIERS_PROJECT2_SRC_NODE_HPP
+#define CS323_COMPLIERS_PROJECT2_SRC_NODE_HPP
 #include <functional>
 #include <iostream>
 #include <string>
@@ -96,4 +95,4 @@ private:
     Node(string name, Node_TYPE node_type, int nodes_num, Node_inside_type value);
 };
 
-#endif  //CS323_COMPLIERS_PROJECT1_NODE_HPP
+#endif  //CS323_COMPLIERS_PROJECT2_SRC_NODE_HPP

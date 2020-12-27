@@ -2,9 +2,8 @@
 // Created by nanos on 2020/11/7.
 //
 
-#ifndef CS323_COMPLIERS_TYPE_HPP
-#define CS323_COMPLIERS_TYPE_HPP
-
+#ifndef CS323_COMPLIERS_PROJECT2_SRC_TYPE_HPP
+#define CS323_COMPLIERS_PROJECT2_SRC_TYPE_HPP
 #include <string>
 #include <variant>
 #include <vector>
@@ -16,6 +15,11 @@ using std::vector;
 
 enum class CATEGORY {
     PRIMITIVE, ARRAY, STRUCTURE, FUNCTION
+};
+enum PRIMI_VALUE {
+    Node_TYPE_VALUE = 0,
+    ARRAY_POINTER_VALUE = 1,
+    FieldList_POINTER_VALUE = 2
 };
 
 class Array;
@@ -30,6 +34,13 @@ public:
     PRIMI type;
     Type *returnType = nullptr; // 存储返回值的类型
     //vector<Type *> parms;
+    static Type *getPrimitiveType(Node_TYPE type);
+
+    static Type *getPrimitiveINT();
+
+    static Type *getPrimitiveFLOAT();
+
+    static Type *getPrimitiveCHAR();
 
     Type() = default;
 
@@ -57,4 +68,4 @@ public:
 
 };
 
-#endif //CS323_COMPLIERS_TYPE_HPP
+#endif //CS323_COMPLIERS_PROJECT2_SRC_TYPE_HPP

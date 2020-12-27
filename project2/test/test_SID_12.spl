@@ -1,0 +1,25 @@
+struct AST {
+    int x1;
+    float x2;
+    char x3;
+};
+
+int pureArray(int a[2], int b[2]) {
+    if (a[0] > b[0]) {
+        return a[0];
+    } else {
+        return b[0];
+    }
+}
+
+struct AST structArray(struct AST left[10], struct AST right[20]) {
+    if (left[0].x1) {
+        return left[0];
+    } else {
+        return right[2];
+    }
+}
+
+int main() {
+    return 0;
+}

@@ -2,8 +2,8 @@
 // Created by nanos on 2020/11/7.
 //
 
-#ifndef CS323_COMPLIERS_VISITSYNTAXTREE_TWO_HPP
-#define CS323_COMPLIERS_VISITSYNTAXTREE_TWO_HPP
+#ifndef CS323_COMPLIERS_PROJECT2_SRC_VISITSYNTAXTREE_TWO_HPP
+#define CS323_COMPLIERS_PROJECT2_SRC_VISITSYNTAXTREE_TWO_HPP
 
 
 #include "type.hpp"
@@ -39,4 +39,6 @@ void checkReturnValueFromStmt(Type *type, Node *stmt);
 
 void checkReturnValueFromCompStmt(Type *type, Node *compStmt);
 
-#endif //CS323_COMPLIERS_VISITSYNTAXTREE_TWO_HPP
+void getNamesOfDefList(Node *node, vector<Node *> &namesofFileds);
+
+#endif //CS323_COMPLIERS_PROJECT2_SRC_VISITSYNTAXTREE_TWO_HPP

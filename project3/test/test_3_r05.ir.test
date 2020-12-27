@@ -1,0 +1,57 @@
+FUNCTION main :
+t0 := #1
+a := t0
+t1 := #2
+b := t1
+t2 := #3
+c := t2
+t3 := #1
+tu1 := t3
+t4 := #1
+tu2 := t4
+READ m
+t5 := #1
+IF m < t5 GOTO label10
+GOTO label11
+LABEL label10 :
+t6 := #0
+WRITE t6
+GOTO label12
+LABEL label11 :
+t7 := #1
+IF m == t7 GOTO label6
+GOTO label9
+LABEL label9 :
+t8 := #2
+IF m == t8 GOTO label6
+GOTO label7
+LABEL label6 :
+t9 := #1
+WRITE t9
+GOTO label8
+LABEL label7 :
+t10 := #2
+IF m > t10 GOTO label4
+GOTO label5
+LABEL label4 :
+t11 := #3
+i := t11
+LABEL label1 :
+IF i <= m GOTO label2
+GOTO label3
+LABEL label2 :
+t12 := tu1 + tu2
+tu3 := t12
+tu1 := tu2
+tu2 := tu3
+t13 := #1
+t14 := i + t13
+i := t14
+GOTO label1
+LABEL label3 :
+WRITE tu3
+LABEL label5 :
+LABEL label8 :
+LABEL label12 :
+t15 := #0
+RETURN t15

@@ -7,6 +7,9 @@
  * @LastEditTime: 2020-09-09 08:18:52
  */
 #include "linked_list.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // this is based on C standard 11
 // compiler command is `gcc linked_list.c --shared -fPIC -o libll.so`
@@ -14,7 +17,7 @@
 node *linked_list_init_value(int value) {
     node *head = (node *) malloc(sizeof(node));
     head->count = value;
-    head->next = NULL;
+    head->next = nullptr;
     return head;
 }
 
@@ -25,7 +28,7 @@ node *linked_list_init() {
 void linked_list_free(node *head) {
     node *cur = head;
     node *last;
-    while (cur != NULL) {
+    while (cur != nullptr) {
         last = cur;
         cur = cur->next;
         free(last);
@@ -38,11 +41,11 @@ char *linked_list_tostring(node *head) {
     node *cur = head->next;
     char *position;
     int length = 0;
-    while (cur != NULL) {
+    while (cur != nullptr) {
         position = linked_list_string + length;
         length += sprintf(position, "%d", cur->value);
         cur = cur->next;
-        if (cur != NULL) {
+        if (cur != nullptr) {
             position = linked_list_string + length;
             length += sprintf(position, "->");
         }
@@ -59,12 +62,12 @@ int linked_list_size(node *head) {
 void linked_list_append(node *head, int val) {
     node *cur = head;
     node *new_node;
-    while (cur->next != NULL) {
+    while (cur->next != nullptr) {
         cur = cur->next;
     }
     new_node = (node *) malloc(sizeof(node));
     new_node->value = val;
-    new_node->next = NULL;
+    new_node->next = nullptr;
     cur->next = new_node;
     head->count++;
 }
@@ -77,7 +80,7 @@ void linked_list_insert(node *head, int val, int index) {
     node *will_insert = linked_list_init_value(val);
     // node will insert prepare ok
     node *cur = head->next;
-    while (cur != NULL) {
+    while (cur != nullptr) {
         index--;
         if (index == 0) {
             will_insert->next = cur->next;
@@ -96,13 +99,13 @@ void linked_list_delete(node *head, int index) {
     }
     node *cur = head->next;
     node *temp;
-    while (cur != NULL) {
+    while (cur != nullptr) {
         index--;
         if (index == 0) {
             temp = cur->next;
-            if (temp != NULL) {
+            if (temp != nullptr) {
                 cur->next = temp->next;
-                temp->next = NULL;
+                temp->next = nullptr;
             }
             free(temp);
             break;
@@ -116,7 +119,7 @@ void linked_list_delete(node *head, int index) {
 void linked_list_remove(node *head, int val) {
     int index = 0;
     node *cur = head->next;
-    while (cur != NULL) {
+    while (cur != nullptr) {
         if (cur->value == val) {
             linked_list_delete(head, index);
             return;
@@ -132,7 +135,7 @@ void linked_list_remove_all(node *head, int val) {
     int count_remove_number = 0;
     int index = 0;
     node *cur = head->next;
-    while (cur != NULL) {
+    while (cur != nullptr) {
         if (cur->value == val) {
             address[count_remove_number] = index;
             count_remove_number++;
@@ -152,7 +155,7 @@ int linked_list_get(node *head, int index) {
         return 0x80000000;
     }
     node *cur = head->next;
-    while (cur != NULL) {
+    while (cur != nullptr) {
         if (index == 0) {
             return cur->value;
         }
@@ -166,7 +169,7 @@ int linked_list_get(node *head, int index) {
 int linked_list_search(node *head, int val) {
     int index = 0;
     node *cur = head->next;
-    while (cur != NULL) {
+    while (cur != nullptr) {
         if (cur->value == val) {
             return index;
         }
@@ -185,7 +188,7 @@ node *linked_list_search_all(node *head, int val) {
     int count_remove_number = 0;
     int index = 0;
     node *cur = head->next;
-    while (cur != NULL) {
+    while (cur != nullptr) {
         if (cur->value == val) {
             indexs[count_remove_number] = index;
             count_remove_number++;
@@ -201,5 +204,8 @@ node *linked_list_search_all(node *head, int val) {
     return head_willreturn;
 }
 
+#ifdef __cplusplus
+}
+#endif
 /* your implementation goes here */
 

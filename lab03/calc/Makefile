@@ -2,6 +2,7 @@ CC=gcc
 FLEX=flex
 BISON=bison
 
+.PHONY: clean 
 
 .lex: lex.l
 	$(FLEX) lex.l

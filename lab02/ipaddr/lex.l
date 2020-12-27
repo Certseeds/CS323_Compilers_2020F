@@ -32,6 +32,9 @@ v6 ^({v6_ns}:){7}{v6_ns}$
 \n {}
 . {}
 %%
+#ifdef __cplusplus
+extern "C" {
+#endif
 char *validIPAddress(char *IP){
     YY_BUFFER_STATE buf;
     buf = yy_scan_string(IP);
@@ -39,3 +42,6 @@ char *validIPAddress(char *IP){
     yy_delete_buffer(buf);
     return addr_type;
 }
+#ifdef __cplusplus
+}
+#endif

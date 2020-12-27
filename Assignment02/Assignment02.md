@@ -4,12 +4,13 @@
  * @Author: nanoseeds
  * @Date: 2020-09-19 21:47:34
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-10-10 21:29:38
+ * @LastEditTime: 2020-11-28 22:16:52
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
 # CS323 Assignment 2
 
+**Scores**: 100/120(I do the extra part but do not get it, TODO?)  
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
@@ -782,18 +783,4 @@ so we  call it new state **I**=$\epsilon$-closure(move(H,a))=$\epsilon$-closure(
 | {13,14,15} |     H     |   H   | None |
 
 
-<style type="text/css">
-h1,h2,h3,div{
-  text-align: center;
-}
-div>div {
-  text-align: center;
-  border-bottom: 1px solid #d9d9d9;
-  display: inline-block;
-  padding: 2px;
-}
-div>img{
-  border-radius: 0.3125em;
-  box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);
-}
-</style>
+<link rel="stylesheet" type="text/css" href="./../markdown.css">

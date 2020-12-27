@@ -4,12 +4,13 @@
  * @Author: nanoseeds
  * @Date: 2020-10-30 22:42:41
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-01 13:10:25
+ * @LastEditTime: 2020-11-28 22:17:43
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
 # CS323 Assignment 4: Bottom-Up Parsing Exercises
 
+**Scores**: 100/100  
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
@@ -421,18 +422,4 @@ yes , it can accept `aaaa+++`
 | (21)  |                  0 $_{24}\ _{58}$                  |   aB   |    $\$$     | Reduce by $S \to \alpha B$ |
 | (22)  |                        0 1                         |   S    |    $\$$     |            acc             |
 
-<style type="text/css">
-h1,h2,div,table{
-  text-align: center;
-}
-div>div {
-  text-align: center;
-  border-bottom: 1px solid #d9d9d9;
-  display: inline-block;
-  padding: 2px;
-}
-div>img{
-  border-radius: 0.3125em;
-  box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);
-}
-</style>
+<link rel="stylesheet" type="text/css" href="./../markdown.css">

@@ -2,8 +2,8 @@
 // Created by nanos on 2020/11/7.
 //
 
-#ifndef CS323_COMPLIERS_VISITSYNTAXTREE_HPP
-#define CS323_COMPLIERS_VISITSYNTAXTREE_HPP
+#ifndef CS323_COMPLIERS_PROJECT2_SRC_VISITSYNTAXTREE_HPP
+#define CS323_COMPLIERS_PROJECT2_SRC_VISITSYNTAXTREE_HPP
 
 
 #include <string>
@@ -25,13 +25,15 @@ void extDefVisit_SS(Node *node);
 
 void extDefVisit_SFC(Node *node);
 
+void Specifier_FunDec_Recv_SF(Node *node);
+
 void expVisit(Node *node);
 
 void checkRvalueInLeftSide(Node *node);
 
 void checkIdExists(Node *node, int lineNum);
 
-void funDecVisit(Node *node);
+void funDecVisit(Node *funDec);
 
 void checkNoSuchMember(Node *node);
 
@@ -61,4 +63,4 @@ void checkTypeMatch(Node *left, Node *right, int lineNum);
 
 void checkReturnValueMatchDeclaredType(Node *extDefSfc);
 
-#endif //CS323_COMPLIERS_VISITSYNTAXTREE_HPP
+#endif //CS323_COMPLIERS_PROJECT2_SRC_VISITSYNTAXTREE_HPP
