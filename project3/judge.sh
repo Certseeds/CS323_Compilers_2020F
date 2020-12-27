@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euox pipefail
 ###
 # @Github: https://github.com/Certseeds/CS323_Compilers_2020F
 # @Organization: SUSTech
@@ -8,13 +9,9 @@
 # @LastEditTime: 2020-12-12 21:40:49
 ###
 make_steps() {
-  cd src || exit
   make clean
   make splc
-  cp ./splc ./../splc
-  mv ./../splc ./../splc.out
-  make clean
-  cd ..
+  mv ./splc ./splc.out
 }
 cmake_steps(){
   cd "cmake-build-debug" || exit
@@ -30,7 +27,7 @@ test() {
     readinFileName="test_3_r$(printf "%02d" "${i}")"
     ./splc.out \
       ./test/"${readinFileName}.spl" \
-      >./test/"${readinFileName}.ir.test" 2>&1
+      > ./test/"${readinFileName}.ir.test" 2>&1
     i=$((i + 1))
   done
 }
@@ -38,7 +35,7 @@ main() {
   if [[ -f "./splc.out" ]]; then
     rm ./splc.out
   fi
-  cmake_steps
+  make_steps
   test
 }
 main

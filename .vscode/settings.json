@@ -195,6 +195,9 @@
     "xtr1common": "cpp",
     "xutility": "cpp",
     "map": "cpp",
-    "xtree": "cpp"
+    "xtree": "cpp",
+    "deque": "cpp",
+    "stack": "cpp",
+    "unordered_set": "cpp"
   }
 }

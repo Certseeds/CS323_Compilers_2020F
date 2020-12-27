@@ -14,7 +14,7 @@ InterCode *translate_Exp_Bio_Exp(Node *exp, const string& place = "");
 
 InterCode *translate_Exp_Assign_Exp(Node *exp, const std::string &place = "");
 
-void translate_Cond(Node *stmt, string label_true, string label_false);
+void translate_Cond(Node *stmt, string label_true, const string& label_false);
 
 static void insertAJumpLabelToExpNode(Node *exp, string labelName);
 

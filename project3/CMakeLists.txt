@@ -5,6 +5,7 @@ project(CS323_Compilers_project3 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ldl")
 
+include(./../cmake/preBuild.cmake)
 FLEX_BISON_PRE_BUILD(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 set(dependenciesOfMain node yyerror_myself visitSyntaxTree type semanticError translate interCode)
@@ -19,5 +20,3 @@ foreach (elementName IN LISTS dependenciesOfMain)
     target_link_libraries(${PROJECT_NAME}_main ${PROJECT_NAME}_${elementName})
     add_dependencies(${PROJECT_NAME}_main ${PROJECT_NAME}_${elementName})
 endforeach ()
-
-# this file just work for clion's identify, do not use it compiler files
