@@ -1,6 +1,9 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include<cstdio>
+#include<cstdlib>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 typedef struct node {
     union {
         int count;
@@ -61,3 +64,6 @@ int linked_list_search(node *head, int val);
 /* search all indexes of val */
 node *linked_list_search_all(node *head, int val);
 
+#ifdef __cplusplus
+}
+#endif

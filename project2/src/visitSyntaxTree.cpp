@@ -7,6 +7,7 @@
 #include "visitSyntaxTree2.hpp"
 #include "semanticError.hpp"
 
+
 static unordered_map<string, Node_TYPE> snt = {
         {string("int"),   Node_TYPE::INT},
         {string("float"), Node_TYPE::FLOAT},
@@ -86,7 +87,7 @@ DecList
     VarDec
       ID: code
  * */
-string getStrValueFromDecList(Node *node) {
+string getStrValueFromDecList(Node * node) {
     if (node->name == "DecList") {
         Node *VarDec = node->get_nodes(0, 0);
         return getStrValueFromVarDec(VarDec);

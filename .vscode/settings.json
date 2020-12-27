@@ -196,13 +196,15 @@
     "xutility": "cpp",
     "map": "cpp",
     "xtree": "cpp",
-    "unordered_set": "cpp",
     "ctime": "cpp",
     "locale": "cpp",
     "regex": "cpp",
     "xlocbuf": "cpp",
     "xlocmes": "cpp",
     "xlocmon": "cpp",
-    "xloctime": "cpp"
+    "xloctime": "cpp",
+    "deque": "cpp",
+    "stack": "cpp",
+    "unordered_set": "cpp"
   }
 }
