@@ -18,6 +18,7 @@ CPP = $(GPP) $(CXX_FLAGS)
 	@cd $(SRC_PATH);$(BISON) -t -d -v syntax.y
 	@cd ./../
 .prepare:.lex .syntax
+	@mkdir -p $(TEMP_PATH)
 .node: .prepare
 	$(CPP) -c $(SRC_PATH)/node.cpp -o $(TEMP_PATH)/node.o
 	@ar -rc $(TEMP_PATH)/libnode.a $(TEMP_PATH)/node.o
@@ -49,4 +50,8 @@ splc: .node .yyerror .type .semanticError .visit .translate .interCode
 	@cp ./splc ./bin/splc
 clean:
 	@rm -rf bin/ ./splc ./splc.out
+	@rm $(SRC_PATH)/lex.yy.c
+	@rm $(SRC_PATH)/syntax.output
+	@rm $(SRC_PATH)/syntax.tab.c
+	@rm $(SRC_PATH)/syntax.tab.h
 .PHONY: splc clean

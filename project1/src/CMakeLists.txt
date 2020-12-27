@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ldl")
 
 include(./../../cmake/preBuild.cmake)
-FLEX_BISON_PRE_BUILD()
+FLEX_BISON_PRE_BUILD(${CMAKE_CURRENT_SOURCE_DIR})
 
 set(dependenciesOfMain node yyerror_myself)
 

@@ -14,7 +14,7 @@ macro(FLEX_PRE_BUILD language)
 
     set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/lex.yy.c PROPERTIES LANGUAGE ${language} GENERATED TRUE)
 endmacro()
-macro(FLEX_BISON_PRE_BUILD)
+macro(FLEX_BISON_PRE_BUILD FLEX_BISON_WORKING_PATH)
     FIND_PACKAGE(FLEX)
     FIND_PACKAGE(BISON)
     add_custom_target(${PROJECT_NAME}_FLEX_BISON
@@ -22,13 +22,12 @@ macro(FLEX_BISON_PRE_BUILD)
             COMMAND pwd
             COMMAND flex lex.l
             COMMAND bison -t -d -v syntax.y
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            WORKING_DIRECTORY ${FLEX_BISON_WORKING_PATH}
             BYPRODUCTS "syntax.tab.c"
-            COMMENT "This command will be executed before building target ${PROJECT_NAME}_FLEX_BISON")
-
+            COMMENT "This command will be executed before building target ${PROJECT_NAME}_FLEX_BISON \n WIll BUILD IN WORKING_DIRECTORY ${FLEX_BISON_WORKING_PATH}")
     add_custom_target(${PROJECT_NAME}_empty)
 
     add_dependencies(${PROJECT_NAME}_empty ${PROJECT_NAME}_FLEX_BISON)
 
-    set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/syntax.tab.c PROPERTIES LANGUAGE CXX GENERATED TRUE)
+    set_source_files_properties(${FLEX_BISON_WORKING_PATH}/syntax.tab.c PROPERTIES LANGUAGE CXX GENERATED TRUE)
 endmacro()
