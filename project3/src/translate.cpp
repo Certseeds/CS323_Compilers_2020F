@@ -5,28 +5,29 @@
 #include "translate.hpp"
 #include "translate2.hpp"
 
-#include <utility>
-
-
 using std::string;
 using std::unordered_map;
 inline static constexpr int32_t begin_sign = 0;
 
-inline void nodeInterCodeMerge(Node *firstArg, Node *node) {
-    for (const auto &item : node->intercodes) {
-        firstArg->intercodes.push_back(item);
+template<typename T>
+inline static void nodeInterCodeMerge(T f, T s) {
+    for (const auto &item : s->intercodes) {
+        f->intercodes.push_back(item);
     }
 }
 
-inline void nodeInterCodeMerge(Node *firstArg, std::initializer_list<Node *> nodes) {
-    for (const auto &node : nodes) {
-        nodeInterCodeMerge(firstArg, node);
+template<typename First>
+inline static void nodeInterCodeMerge(First f, vector<First> s) {
+    for (const auto &item : s) {
+        nodeInterCodeMerge(f, item);
     }
 }
 
-inline void nodeInterCodeMerge(Node *firstArg, const std::vector<Node *> &nodes) {
-    for (const auto &node : nodes) {
-        nodeInterCodeMerge(firstArg, node);
+template<typename First, typename ...T>
+inline static void nodeInterCodeMerge(First f, First s, T... args) {
+    nodeInterCodeMerge(f, s);
+    if constexpr (sizeof ...(args) > 0) {
+        nodeInterCodeMerge(f, args...);
     }
 }
 
@@ -97,7 +98,7 @@ InterCode *translate_Exp_Bio_Exp(Node *exp, const string &place) {
     auto *const will_return_op1 = new Operand(OperandType::VARIABLE, rightExpLeftName);
     will_return->bioOp = {will_return_result, will_return_op2, will_return_op1};
     exp->interCode = will_return;
-    nodeInterCodeMerge(exp, {leftNode, rightNode});
+    nodeInterCodeMerge(exp, leftNode, rightNode);
     exp->intercodes.push_back(will_return);
     return will_return;
 }
@@ -160,7 +161,7 @@ InterCode *translate_Exp_Assign_Exp(Node *const exp, const std::string &place) {
         auto *const will_return_rightVari = new Operand(OperandType::VARIABLE);
         will_return_rightVari->variName = rightExpLeftName;
         will_return->assign = {will_return_leftVari, will_return_rightVari};
-        nodeInterCodeMerge(exp, {leftNode, rightNode});
+        nodeInterCodeMerge(exp, leftNode, rightNode);
         exp->intercodes.push_back(will_return);
         return will_return;
     }
@@ -171,7 +172,7 @@ InterCode *translate_Exp_Assign_Exp(Node *const exp, const std::string &place) {
     will_return_rightVari->variName = rightExpLeftName;
     will_return->assign = {will_return_leftVari, will_return_rightVari};
     exp->interCode = will_return;
-    nodeInterCodeMerge(exp, {leftNode, rightNode});
+    nodeInterCodeMerge(exp, leftNode, rightNode);
     exp->intercodes.push_back(will_return);
     return will_return;
 }
@@ -181,7 +182,7 @@ InterCode *translate_varDecAssign(Node *const dec) {
 }
 
 void translate_DecListMerge(Node *const decList) {
-    nodeInterCodeMerge(decList, {decList->get_nodes(0), decList->get_nodes(2)});
+    nodeInterCodeMerge(decList, decList->get_nodes(0), decList->get_nodes(2));
 }
 
 // maybe include read
@@ -254,11 +255,11 @@ InterCode *translate_functionWithParamInvoke(Node *stmt) {
 }
 
 void translate_functionBodyDefine(Node *stmt, Node *Specifier_FunDec_Recv, Node *CompSt) {
-    nodeInterCodeMerge(stmt, {Specifier_FunDec_Recv, CompSt});
+    nodeInterCodeMerge(stmt, Specifier_FunDec_Recv, CompSt);
 }
 
 void translate_CompstMerge(Node *CompSt, Node *DefList, Node *StmtList) {
-    nodeInterCodeMerge(CompSt, {DefList, StmtList});
+    nodeInterCodeMerge(CompSt, DefList, StmtList);
 }
 
 InterCode *translate_enterFunction(Node *const stmt) {
@@ -301,7 +302,7 @@ void translate_DeflistMerge(Node *StmtList) {
 }
 
 void translate_StmtMergeExp(Node *Stmt) {
-    nodeInterCodeMerge(Stmt, {Stmt->nodes[0]});
+    nodeInterCodeMerge(Stmt, Stmt->nodes[0]);
 }
 
 void insertAJumpLabelToExpNode(Node *const exp, string labelName) {
@@ -419,7 +420,7 @@ InterCode *translate_relop(Node *const exp, string label_true, string label_fals
             new Operand(OperandType::VARIABLE, tempName2),
             new Operand(OperandType::JUMP_LABEL, std::move(label_true))};
     exp->interCode = will_return;
-    nodeInterCodeMerge(exp, {expSubs[0], expSubs[2]});
+    nodeInterCodeMerge(exp, expSubs[0], expSubs[2]);
     exp->intercodes.push_back(will_return);
     auto *const elsePart = new InterCode(InterCodeType::GOTO);
     elsePart->labelElement = new Operand(OperandType::JUMP_LABEL);
