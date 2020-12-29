@@ -1,6 +1,11 @@
-//
-// Created by nanos on 2020/12/20.
-//
+/*
+ * @Github: https://github.com/Certseeds/CS323_Compilers_2020F
+ * @Organization: SUSTech
+ * @Author: nanoseeds
+ * @Date: 2020-12-20 20:19:22
+ * @LastEditors: nanoseeds
+ * @LastEditTime: 2020-12-29 13:27:09
+ */
 
 #include "translate.hpp"
 #include "translate2.hpp"
@@ -164,7 +169,7 @@ InterCode *translate_Exp_Assign_Exp(Node *const exp, const std::string &place) {
         exp->intercodes.push_back(will_return);
         return will_return;
     }
-    auto * const will_return = new InterCode(InterCodeType::ASSIGN);
+    auto *const will_return = new InterCode(InterCodeType::ASSIGN);
     auto *const will_return_leftVari = new Operand(OperandType::VARIABLE);
     will_return_leftVari->variName = leftVariName;
     auto *const will_return_rightVari = new Operand(OperandType::VARIABLE);
@@ -186,7 +191,7 @@ void translate_DecListMerge(Node *const decList) {
 
 // maybe include read
 InterCode *translate_functionInvoke(Node *stmt) {
-    Node *const subnodes[3]{stmt->get_nodes(0), stmt->get_nodes(1), stmt->get_nodes(2)};
+    const std::array<Node *, 3> subnodes{stmt->get_nodes(0), stmt->get_nodes(1), stmt->get_nodes(2)};
     const auto functionName = std::get<string>(subnodes[0]->value);
     auto *will_return = new InterCode();
     if (functionName == "read") {
@@ -228,7 +233,7 @@ InterCode *translate_functionWithParamInvoke(Node *stmt) {
     auto *argExp = stmt->get_nodes(2);
     vector<InterCode *> tempIntercodes;
     do {
-        const  auto argName = getNameFromArgNode(argExp);
+        const auto argName = getNameFromArgNode(argExp);
         auto *const arg_InterCode = new InterCode(InterCodeType::ARG);
         arg_InterCode->SingleElement = new Operand(OperandType::VARIABLE);
         arg_InterCode->SingleElement->variName = argName;
@@ -241,9 +246,8 @@ InterCode *translate_functionWithParamInvoke(Node *stmt) {
         }
         argExp = argExp->get_nodes(2);
     } while (argExp != nullptr);
-    std::for_each(tempIntercodes.crbegin(), tempIntercodes.crend(), [&stmt](InterCode *ic) {
-        stmt->intercodes.push_back(ic);
-    });
+    std::for_each(tempIntercodes.crbegin(), tempIntercodes.crend(),
+                  [&stmt](InterCode *ic) { stmt->intercodes.push_back(ic); });
     will_return->interCodeType = InterCodeType::CALL;
     stmt->interCode = will_return;
     stmt->interCode->assign = {
@@ -296,26 +300,12 @@ void translate_StmtlistMerge(Node *StmtList) {
     nodeInterCodeMerge(StmtList, StmtList->nodes);
 }
 
-void translate_DeflistMerge(Node *StmtList) {
-    nodeInterCodeMerge(StmtList, StmtList->nodes);
+void translate_DeflistMerge(Node *Deflist) {
+    nodeInterCodeMerge(Deflist, Deflist->nodes);
 }
 
 void translate_StmtMergeExp(Node *Stmt) {
     nodeInterCodeMerge(Stmt, Stmt->nodes[0]);
-}
-
-void insertAJumpLabelToExpNode(Node *const exp, string labelName) {
-    auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
-    label1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
-    label1Intercode->labelElement->jumpLabel = std::move(labelName);
-    exp->intercodes.push_back(label1Intercode);
-}
-
-void insertAGotoLabelToExpNode(Node *const exp, string labelName) {
-    auto *const gotoLabel3Intercode = new InterCode(InterCodeType::GOTO);
-    gotoLabel3Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
-    gotoLabel3Intercode->labelElement->jumpLabel = std::move(labelName);
-    exp->intercodes.push_back(gotoLabel3Intercode);
 }
 
 void translate_if(Node *const stmt) {
@@ -339,7 +329,7 @@ static const unordered_map<Node *, string> relopNameMap = [] {
     return init;
 }();
 
-void translate_Cond(Node *const stmt, string label_true, const string &label_false) {
+static void translate_Cond(Node *const stmt, string label_true, const string &label_false) {
     if (relopNameMap.count(stmt->get_nodes(1)) != 0) {
         translate_relop(stmt, std::move(label_true), label_false);
     } else if (stmt->get_nodes(1) == Node::getSingleNameNodePointer("OR")) {
@@ -390,7 +380,7 @@ InterCode *translate_minus_exp(Node *const exp) {
 }
 
 InterCode *translate_exp_or_exp(Node *const exp, const string &label_true, const string &label_false) {
-    Node *const expSubs[3]{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
+    const std::array<Node *, 3> expSubs{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
     const auto newLabel1 = new_label();
     translate_Cond(expSubs[0], label_true, newLabel1);
     nodeInterCodeMerge(exp, expSubs[0]);
@@ -406,9 +396,9 @@ InterCode *translate_exp_or_exp(Node *const exp, const string &label_true, const
 }
 
 InterCode *translate_relop(Node *const exp, string label_true, string label_false) {
-    Node *const expSubs[3]{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
+    const std::array<Node *, 3> expSubs{exp->get_nodes(0), exp->get_nodes(1), exp->get_nodes(2)};
     const auto tempName1 = getNameFromANode(expSubs[0]);
-    const auto opName = relopNameMap.at(expSubs[1]);
+    const auto &opName = relopNameMap.at(expSubs[1]);
     //const auto op = BioOpNodes.at(expSubs[1]);
     const auto tempName2 = getNameFromANode(expSubs[2]);
     auto *const will_return = new InterCode(InterCodeType::IF_ELSE);
@@ -426,4 +416,18 @@ InterCode *translate_relop(Node *const exp, string label_true, string label_fals
     elsePart->labelElement->jumpLabel = std::move(label_false);
     exp->intercodes.push_back(elsePart);
     return will_return;
+}
+
+inline static void insertAJumpLabelToExpNode(Node *const exp, string labelName) {
+    auto *const label1Intercode = new InterCode(InterCodeType::LABEL);
+    label1Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
+    label1Intercode->labelElement->jumpLabel = std::move(labelName);
+    exp->intercodes.push_back(label1Intercode);
+}
+
+inline static void insertAGotoLabelToExpNode(Node *const exp, string labelName) {
+    auto *const gotoLabel3Intercode = new InterCode(InterCodeType::GOTO);
+    gotoLabel3Intercode->labelElement = new Operand(OperandType::JUMP_LABEL);
+    gotoLabel3Intercode->labelElement->jumpLabel = std::move(labelName);
+    exp->intercodes.push_back(gotoLabel3Intercode);
 }
