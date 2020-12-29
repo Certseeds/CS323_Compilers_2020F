@@ -5,10 +5,9 @@
 #ifndef CS323_COMPLIERS_PROJECT3_INCLUDE_TYPE_HPP
 #define CS323_COMPLIERS_PROJECT3_INCLUDE_TYPE_HPP
 
-#include <string>
+#include "node.hpp"
 #include <variant>
 #include <vector>
-#include "node.hpp"
 
 using std::string;
 using std::variant;

@@ -13,11 +13,11 @@
 #ifndef CS323_COMPLIERS_PROJECT3_INCLUDE_NODE_HPP
 #define CS323_COMPLIERS_PROJECT3_INCLUDE_NODE_HPP
 
+#include "interCode.hpp"
 #include <functional>
 #include <iostream>
-#include <string>
 #include <variant>
-#include "interCode.hpp"
+#include <unordered_map>
 
 class Type;
 

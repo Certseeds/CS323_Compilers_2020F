@@ -6,9 +6,6 @@
  * @LastEditors: nanoseeds
  * @LastEditTime: 2020-12-12 01:46:13
  */
-//
-// Created by nanos on 2020/11/7.
-//
 
 #include "type.hpp"
 
@@ -21,7 +18,7 @@ Type::Type(string _name, CATEGORY _category, Type::PRIMI _type) :
 
 #define getPrimitive(TYPE) \
 Type *Type::getPrimitive##TYPE() {\
-    static auto will_return = new Type{#TYPE, CATEGORY::PRIMITIVE, Node_TYPE::TYPE};\
+    static auto* const will_return = new Type{#TYPE, CATEGORY::PRIMITIVE, Node_TYPE::TYPE};\
     return will_return;\
 }
 

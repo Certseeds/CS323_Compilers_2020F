@@ -12,7 +12,6 @@
 
 #include "node.hpp"
 #include "type.hpp"
-#include <unordered_map>
 
 void Node::print(int space) {
     if (this->TYPE == Node_TYPE::NOTHING) {

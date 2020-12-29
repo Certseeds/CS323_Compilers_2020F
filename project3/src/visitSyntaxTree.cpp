@@ -10,12 +10,12 @@
 static unordered_map<string, Node_TYPE> snt = {
         {string("int"),   Node_TYPE::INT},
         {string("float"), Node_TYPE::FLOAT},
-        {string("char"),  Node_TYPE::CHAR},
+        {string("char"),  Node_TYPE::CHAR}
 };
 static unordered_map<Node_TYPE, string> tns = {
         {Node_TYPE::INT,   string("INT")},
         {Node_TYPE::FLOAT, string("FLOAT")},
-        {Node_TYPE::CHAR,  string("CHAR")},
+        {Node_TYPE::CHAR,  string("CHAR")}
 };
 
 unordered_map<string, Type *> initSymBolTable() {
