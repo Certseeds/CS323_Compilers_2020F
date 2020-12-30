@@ -1,4 +1,4 @@
-macro(FLEX_PRE_BUILD language)
+function(FLEX_PRE_BUILD language)
     FIND_PACKAGE(FLEX)
     add_custom_target(${PROJECT_NAME}_FLEX
             COMMAND ls
@@ -13,8 +13,8 @@ macro(FLEX_PRE_BUILD language)
     add_dependencies(${PROJECT_NAME}_empty ${PROJECT_NAME}_FLEX)
 
     set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/lex.yy.c PROPERTIES LANGUAGE ${language} GENERATED TRUE)
-endmacro()
-macro(FLEX_BISON_PRE_BUILD FLEX_BISON_WORKING_PATH)
+endfunction()
+function(FLEX_BISON_PRE_BUILD FLEX_BISON_WORKING_PATH)
     FIND_PACKAGE(FLEX)
     FIND_PACKAGE(BISON)
     add_custom_target(${PROJECT_NAME}_FLEX_BISON
@@ -30,4 +30,4 @@ macro(FLEX_BISON_PRE_BUILD FLEX_BISON_WORKING_PATH)
     add_dependencies(${PROJECT_NAME}_empty ${PROJECT_NAME}_FLEX_BISON)
 
     set_source_files_properties(${FLEX_BISON_WORKING_PATH}/syntax.tab.c PROPERTIES LANGUAGE CXX GENERATED TRUE)
-endmacro()
+endfunction()
