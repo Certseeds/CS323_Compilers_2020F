@@ -8,10 +8,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ldl")
 include(./../cmake/preBuild.cmake)
 FLEX_BISON_PRE_BUILD(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-set(dependenciesOfMain node yyerror_myself visitSyntaxTree type semanticError translate interCode)
-
 add_executable(${PROJECT_NAME}_main src/main.cpp)
 
+set(dependenciesOfMain node yyerror_myself visitSyntaxTree type semanticError translate interCode)
 foreach (elementName IN LISTS dependenciesOfMain)
     add_library(${PROJECT_NAME}_${elementName} STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/${elementName}.cpp)
     target_include_directories(${PROJECT_NAME}_${elementName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -20,3 +19,4 @@ foreach (elementName IN LISTS dependenciesOfMain)
     target_link_libraries(${PROJECT_NAME}_main ${PROJECT_NAME}_${elementName})
     add_dependencies(${PROJECT_NAME}_main ${PROJECT_NAME}_${elementName})
 endforeach ()
+unset(dependenciesOfMain)
