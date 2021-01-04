@@ -5,7 +5,7 @@ project(CS323_Compilers_lab08 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ldl")
 
-include(./../cmake/preBuild.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/preBuild.cmake)
 FLEX_BISON_PRE_BUILD(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(${PROJECT_NAME}_Object STATIC ${CMAKE_CURRENT_SOURCE_DIR}/Object.cpp)

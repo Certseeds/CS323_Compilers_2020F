@@ -5,7 +5,7 @@ project(CS323_Compilers_lab02_ipaddr LANGUAGES CXX)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -std=c11 -Wall -Wextra")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-include(./../../cmake/preBuild.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/preBuild.cmake)
 FLEX_PRE_BUILD(CXX)
 
 ADD_LIBRARY(${PROJECT_NAME}_ip SHARED ${CMAKE_CURRENT_SOURCE_DIR}/lex.yy.c)
