@@ -1,16 +1,17 @@
 # header begin
 cmake_minimum_required(VERSION 3.16.6)
-project(CS323_Compilers_lab05 LANGUAGES C)
+project(CS323_Compilers_lab05 LANGUAGES CXX)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -std=c11 -Wall -Wextra -fPIC")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -g -Wall -Wextra -fPIC")
 
-add_library(symtab
-        SHARED
-        symtab_bt.c)
+set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/symtab_bt.c PROPERTIES LANGUAGE CXX)
+
+add_library(symtab SHARED ${CMAKE_CURRENT_SOURCE_DIR}/symtab_bt.c)
+
 # add_library(symtab
 #         SHARED
-#         symtab_ht.cpp)  
+#         symtab_ht.cpp)
 # add_library(symtab
 #         SHARED
-#         symtab_ll.cpp)  
+#         symtab_ll.cpp)

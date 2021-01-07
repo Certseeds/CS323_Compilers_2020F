@@ -1,22 +1,22 @@
 #ifndef SYMTAB_H
 #define SYMTAB_H
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
-#define KEY_LEN 32
-#define VAL_T int
+inline static constexpr size_t KEY_LEN = 32;
+using VAL_T = int;
 
-typedef struct symtab symtab;
+struct symtab;
 
 /* symbol table entry, only used internally */
-typedef struct entry {
-    char key[KEY_LEN + 1];
-    VAL_T value;
-} entry;
+struct entry {
+    char key[KEY_LEN + 1]{'\0'};
+    VAL_T value{0};
+};
 
-void entry_init(entry *self, char *key, VAL_T value) {
+void entry_init(entry * const self, char * const key, VAL_T value) {
     sprintf(self->key, "%s", key);
     self->value = value;
 }

@@ -5,7 +5,12 @@ project(CS323_Compilers_lab04_json LANGUAGES CXX)
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lfl -ly")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ldl")
 
-include(${CMAKE_SOURCE_DIR}/cmake/preBuild.cmake)
+IF (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    include(${CMAKE_SOURCE_DIR}/../cmake/preBuild.cmake)
+else ()
+    include(${CMAKE_SOURCE_DIR}/cmake/preBuild.cmake)
+endif ()
+
 FLEX_BISON_PRE_BUILD(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(jp.out ${CMAKE_CURRENT_SOURCE_DIR}/syntax.tab.c)

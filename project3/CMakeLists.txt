@@ -1,11 +1,14 @@
 # header begin
 cmake_minimum_required(VERSION 3.17.2)
 project(CS323_Compilers_project3 LANGUAGES CXX)
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ldl")
 
-include(${CMAKE_SOURCE_DIR}/cmake/preBuild.cmake)
+IF (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    include(${CMAKE_SOURCE_DIR}/../cmake/preBuild.cmake)
+else ()
+    include(${CMAKE_SOURCE_DIR}/cmake/preBuild.cmake)
+endif ()
 FLEX_BISON_PRE_BUILD(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_executable(${PROJECT_NAME}_main src/main.cpp)
