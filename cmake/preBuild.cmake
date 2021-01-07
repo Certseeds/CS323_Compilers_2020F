@@ -1,5 +1,5 @@
 function(FLEX_PRE_BUILD language)
-    FIND_PACKAGE(FLEX)
+    FIND_PACKAGE(FLEX REQUIRED)
     add_custom_target(${PROJECT_NAME}_FLEX
             COMMAND ls
             COMMAND pwd
@@ -15,8 +15,8 @@ function(FLEX_PRE_BUILD language)
     set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/lex.yy.c PROPERTIES LANGUAGE ${language} GENERATED TRUE)
 endfunction()
 function(FLEX_BISON_PRE_BUILD FLEX_BISON_WORKING_PATH)
-    FIND_PACKAGE(FLEX)
-    FIND_PACKAGE(BISON)
+    FIND_PACKAGE(FLEX REQUIRED)
+    FIND_PACKAGE(BISON REQUIRED)
     add_custom_target(${PROJECT_NAME}_FLEX_BISON
             COMMAND ls
             COMMAND pwd

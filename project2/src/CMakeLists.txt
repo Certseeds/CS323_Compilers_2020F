@@ -13,7 +13,7 @@ set(dependenciesOfMain node yyerror_myself visitSyntaxTree type semanticError)
 add_executable(${PROJECT_NAME}_main main.cpp)
 
 foreach (elementName IN LISTS dependenciesOfMain)
-    add_library(${PROJECT_NAME}_${elementName} STATIC ${elementName}.cpp)
+    add_library(${PROJECT_NAME}_${elementName} SHARED ${elementName}.cpp)
     MESSAGE(STATUS "${PROJECT_NAME}_${elementName} from ${elementName}.cpp")
     target_link_libraries(${PROJECT_NAME}_main ${PROJECT_NAME}_${elementName})
     add_dependencies(${PROJECT_NAME}_${elementName} ${PROJECT_NAME}_empty)

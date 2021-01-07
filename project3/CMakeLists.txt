@@ -12,7 +12,7 @@ add_executable(${PROJECT_NAME}_main src/main.cpp)
 
 set(dependenciesOfMain node yyerror_myself visitSyntaxTree type semanticError translate interCode)
 foreach (elementName IN LISTS dependenciesOfMain)
-    add_library(${PROJECT_NAME}_${elementName} STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/${elementName}.cpp)
+    add_library(${PROJECT_NAME}_${elementName} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/${elementName}.cpp)
     target_include_directories(${PROJECT_NAME}_${elementName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
     add_dependencies(${PROJECT_NAME}_${elementName} ${PROJECT_NAME}_empty)
     MESSAGE(STATUS "${PROJECT_NAME}_${elementName} from src/${elementName}.cpp")
