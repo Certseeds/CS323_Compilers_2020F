@@ -2,8 +2,8 @@
 // Created by nanos on 2020/11/10.
 //
 
-#ifndef CS323_COMPLIERS_PROJECT3_INCLUDE_SEMANTICERROR_HPP
-#define CS323_COMPLIERS_PROJECT3_INCLUDE_SEMANTICERROR_HPP
+#ifndef CS323_COMPILERS_PROJECT3_INCLUDE_SEMANTICERROR_HPP
+#define CS323_COMPILERS_PROJECT3_INCLUDE_SEMANTICERROR_HPP
 
 #include <string>
 #include <unordered_map>
@@ -62,4 +62,4 @@ void structRedefined(int lineNum, const std::string &name);
 void structNoDefinition(int lineNum, const std::string &name);
 
 
-#endif //! CS323_COMPLIERS_PROJECT3_INCLUDE_SEMANTICERROR_HPP
+#endif //! CS323_COMPILERS_PROJECT3_INCLUDE_SEMANTICERROR_HPP

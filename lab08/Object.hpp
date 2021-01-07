@@ -6,8 +6,8 @@
  * @LastEditors: nanoseeds
  * @LastEditTime: 2020-11-02 12:04:39
  */
-#ifndef CS323_COMPLIERS_LAB07_OBJECT
-#define CS323_COMPLIERS_LAB07_OBJECT
+#ifndef CS323_COMPILERS_LAB07_OBJECT
+#define CS323_COMPILERS_LAB07_OBJECT
 
 #include <iostream>
 #include <map>
@@ -97,4 +97,4 @@ public:
     ~ArrayValue() = default;
 };
 
-#endif  //! CS323_COMPLIERS_LAB07_OBJECT
+#endif  //! CS323_COMPILERS_LAB07_OBJECT

@@ -10,8 +10,8 @@
 // Created by nanos on 2020/12/20.
 //
 
-#ifndef CS323_COMPLIERS_PROJECT3_INCLUDE_TRANSLATE2_HPP
-#define CS323_COMPLIERS_PROJECT3_INCLUDE_TRANSLATE2_HPP
+#ifndef CS323_COMPILERS_PROJECT3_INCLUDE_TRANSLATE2_HPP
+#define CS323_COMPILERS_PROJECT3_INCLUDE_TRANSLATE2_HPP
 
 // private functions
 InterCode *translate_Exp_RightElement(Node *exp, const string& place = "");
@@ -28,4 +28,4 @@ inline static void insertAJumpLabelToExpNode(Node *exp, string labelName);
 
 inline static void insertAGotoLabelToExpNode(Node *exp, string labelName);
 
-#endif //CS323_COMPLIERS_PROJECT3_INCLUDE_TRANSLATE2_HPP
+#endif //CS323_COMPILERS_PROJECT3_INCLUDE_TRANSLATE2_HPP
