@@ -259,21 +259,21 @@ void tac_print(tac *head, FILE *fd) {
     tac *p = head;
     while (p != nullptr) {
         switch (p->code.kind) {
-            case _tac_inst::LABEL:
+            case tac_inst::LABEL:
                 fprintf(fd, "LABEL ");
                 tac_opd_print(p->code.label.labelno, fd);
                 fprintf(fd, " :\n");
                 break;
-            case _tac_inst::FUNCTION:
+            case tac_inst::FUNCTION:
                 fprintf(fd, "FUNCTION %s :\n", p->code.function.funcname);
                 break;
-            case _tac_inst::ASSIGN:
+            case tac_inst::ASSIGN:
                 tac_opd_print(p->code.assign.left, fd);
                 fprintf(fd, " := ");
                 tac_opd_print(p->code.assign.right, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::ADD:
+            case tac_inst::ADD:
                 tac_opd_print(p->code.add.left, fd);
                 fprintf(fd, " := ");
                 tac_opd_print(p->code.add.r1, fd);
@@ -281,7 +281,7 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.add.r2, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::SUB:
+            case tac_inst::SUB:
                 tac_opd_print(p->code.sub.left, fd);
                 fprintf(fd, " := ");
                 tac_opd_print(p->code.sub.r1, fd);
@@ -289,7 +289,7 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.sub.r2, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::MUL:
+            case tac_inst::MUL:
                 tac_opd_print(p->code.mul.left, fd);
                 fprintf(fd, " := ");
                 tac_opd_print(p->code.mul.r1, fd);
@@ -297,7 +297,7 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.mul.r2, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::DIV:
+            case tac_inst::DIV:
                 tac_opd_print(p->code.div.left, fd);
                 fprintf(fd, " := ");
                 tac_opd_print(p->code.div.r1, fd);
@@ -305,23 +305,23 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.div.r2, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::ADDR:
+            case tac_inst::ADDR:
                 fprintf(fd, "%s := &%s\n", p->code.addr.left->char_val, p->code.addr.right->char_val);
                 break;
-            case _tac_inst::FETCH:
+            case tac_inst::FETCH:
                 fprintf(fd, "%s := *%s\n", p->code.fetch.left->char_val, p->code.fetch.raddr->char_val);
                 break;
-            case _tac_inst::DEREF:
+            case tac_inst::DEREF:
                 fprintf(fd, "*%s := ", p->code.deref.laddr->char_val);
                 tac_opd_print(p->code.deref.right, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::GOTO:
+            case tac_inst::GOTO:
                 fprintf(fd, "GOTO ");
                 tac_opd_print(p->code.goto_.labelno, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::IFLT:
+            case tac_inst::IFLT:
                 fprintf(fd, "IF ");
                 tac_opd_print(p->code.iflt.c1, fd);
                 fprintf(fd, " < ");
@@ -330,7 +330,7 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.iflt.labelno, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::IFLE:
+            case tac_inst::IFLE:
                 fprintf(fd, "IF ");
                 tac_opd_print(p->code.ifle.c1, fd);
                 fprintf(fd, " <= ");
@@ -339,7 +339,7 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.ifle.labelno, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::IFGT:
+            case tac_inst::IFGT:
                 fprintf(fd, "IF ");
                 tac_opd_print(p->code.ifgt.c1, fd);
                 fprintf(fd, " > ");
@@ -348,7 +348,7 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.ifgt.labelno, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::IFGE:
+            case tac_inst::IFGE:
                 fprintf(fd, "IF ");
                 tac_opd_print(p->code.ifge.c1, fd);
                 fprintf(fd, " >= ");
@@ -357,7 +357,7 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.ifge.labelno, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::IFNE:
+            case tac_inst::IFNE:
                 fprintf(fd, "IF ");
                 tac_opd_print(p->code.ifne.c1, fd);
                 fprintf(fd, " != ");
@@ -366,7 +366,7 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.ifne.labelno, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::IFEQ:
+            case tac_inst::IFEQ:
                 fprintf(fd, "IF ");
                 tac_opd_print(p->code.ifeq.c1, fd);
                 fprintf(fd, " == ");
@@ -375,41 +375,41 @@ void tac_print(tac *head, FILE *fd) {
                 tac_opd_print(p->code.ifeq.labelno, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::RETURN:
+            case tac_inst::RETURN:
                 fprintf(fd, "RETURN ");
                 tac_opd_print(p->code.return_.var, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::DEC:
+            case tac_inst::DEC:
                 assert(p->code.dec.var->kind == tac_opd::OP_POINTER);
                 // DEC should not followed &v
                 fprintf(fd, "DEC %s %d\n", p->code.dec.var->char_val, p->code.dec.size);
                 break;
-            case _tac_inst::ARG:
+            case tac_inst::ARG:
                 fprintf(fd, "ARG ");
                 tac_opd_print(p->code.arg.var, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::CALL:
+            case tac_inst::CALL:
                 tac_opd_print(p->code.call.ret, fd);
                 fprintf(fd, " := CALL %s\n", p->code.call.funcname);
                 break;
-            case _tac_inst::PARAM:
+            case tac_inst::PARAM:
                 fprintf(fd, "PARAM ");
                 tac_opd_print(p->code.param.p, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::READ:
+            case tac_inst::READ:
                 fprintf(fd, "READ ");
                 tac_opd_print(p->code.read.p, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::WRITE:
+            case tac_inst::WRITE:
                 fprintf(fd, "WRITE ");
                 tac_opd_print(p->code.write.p, fd);
                 fprintf(fd, "\n");
                 break;
-            case _tac_inst::NONE:
+            case tac_inst::NONE:
                 break;
         }
         p = p->next;
@@ -442,7 +442,7 @@ void tac_append(tac *head, tac *seg) {
 
 tac *tac_init_label(tac_opd *labelno) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::LABEL;
+    self->code.kind = tac_inst::LABEL;
     self->code.label.labelno = labelno;
     self->prev = self->next = nullptr;
     return self;
@@ -450,7 +450,7 @@ tac *tac_init_label(tac_opd *labelno) {
 
 tac *tac_init_function(char *funcname) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::FUNCTION;
+    self->code.kind = tac_inst::FUNCTION;
     self->code.function.funcname = new char[32];
     sprintf(self->code.function.funcname, "%s", funcname);
     self->prev = self->next = nullptr;
@@ -459,7 +459,7 @@ tac *tac_init_function(char *funcname) {
 
 tac *tac_init_assign(tac_opd *left, tac_opd *right) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::ASSIGN;
+    self->code.kind = tac_inst::ASSIGN;
     self->code.assign.left = left;
     self->code.assign.right = right;
     self->prev = self->next = nullptr;
@@ -468,7 +468,7 @@ tac *tac_init_assign(tac_opd *left, tac_opd *right) {
 
 tac *tac_init_add(tac_opd *left, tac_opd *r1, tac_opd *r2) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::ADD;
+    self->code.kind = tac_inst::ADD;
     self->code.add.left = left;
     self->code.add.r1 = r1;
     self->code.add.r2 = r2;
@@ -478,7 +478,7 @@ tac *tac_init_add(tac_opd *left, tac_opd *r1, tac_opd *r2) {
 
 tac *tac_init_sub(tac_opd *left, tac_opd *r1, tac_opd *r2) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::SUB;
+    self->code.kind = tac_inst::SUB;
     self->code.sub.left = left;
     self->code.sub.r1 = r1;
     self->code.sub.r2 = r2;
@@ -488,7 +488,7 @@ tac *tac_init_sub(tac_opd *left, tac_opd *r1, tac_opd *r2) {
 
 tac *tac_init_mul(tac_opd *left, tac_opd *r1, tac_opd *r2) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::MUL;
+    self->code.kind = tac_inst::MUL;
     self->code.mul.left = left;
     self->code.mul.r1 = r1;
     self->code.mul.r2 = r2;
@@ -498,7 +498,7 @@ tac *tac_init_mul(tac_opd *left, tac_opd *r1, tac_opd *r2) {
 
 tac *tac_init_div(tac_opd *left, tac_opd *r1, tac_opd *r2) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::DIV;
+    self->code.kind = tac_inst::DIV;
     self->code.div.left = left;
     self->code.div.r1 = r1;
     self->code.div.r2 = r2;
@@ -509,7 +509,7 @@ tac *tac_init_div(tac_opd *left, tac_opd *r1, tac_opd *r2) {
 tac *tac_init_addr(tac_opd *left, tac_opd *right) {
     assert(right->kind == tac_opd::OP_POINTER);
     auto *const self = new tac();
-    self->code.kind = _tac_inst::ADDR;
+    self->code.kind = tac_inst::ADDR;
     self->code.addr.left = left;
     self->code.addr.right = right;
     self->prev = self->next = nullptr;
@@ -518,7 +518,7 @@ tac *tac_init_addr(tac_opd *left, tac_opd *right) {
 
 tac *tac_init_fetch(tac_opd *left, tac_opd *raddr) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::FETCH;
+    self->code.kind = tac_inst::FETCH;
     self->code.fetch.left = left;
     self->code.fetch.raddr = raddr;
     self->prev = self->next = nullptr;
@@ -527,7 +527,7 @@ tac *tac_init_fetch(tac_opd *left, tac_opd *raddr) {
 
 tac *tac_init_deref(tac_opd *laddr, tac_opd *right) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::DEREF;
+    self->code.kind = tac_inst::DEREF;
     self->code.deref.laddr = laddr;
     self->code.deref.right = right;
     self->prev = self->next = nullptr;
@@ -536,7 +536,7 @@ tac *tac_init_deref(tac_opd *laddr, tac_opd *right) {
 
 tac *tac_init_goto(tac_opd *labelno) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::GOTO;
+    self->code.kind = tac_inst::GOTO;
     self->code.goto_.labelno = labelno;
     self->prev = self->next = nullptr;
     return self;
@@ -544,7 +544,7 @@ tac *tac_init_goto(tac_opd *labelno) {
 
 tac *tac_init_iflt(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::IFLT;
+    self->code.kind = tac_inst::IFLT;
     self->code.iflt.c1 = c1;
     self->code.iflt.c2 = c2;
     self->code.iflt.labelno = labelno;
@@ -554,7 +554,7 @@ tac *tac_init_iflt(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
 
 tac *tac_init_ifle(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::IFLE;
+    self->code.kind = tac_inst::IFLE;
     self->code.ifle.c1 = c1;
     self->code.ifle.c2 = c2;
     self->code.ifle.labelno = labelno;
@@ -564,7 +564,7 @@ tac *tac_init_ifle(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
 
 tac *tac_init_ifgt(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::IFGT;
+    self->code.kind = tac_inst::IFGT;
     self->code.ifgt.c1 = c1;
     self->code.ifgt.c2 = c2;
     self->code.ifgt.labelno = labelno;
@@ -574,7 +574,7 @@ tac *tac_init_ifgt(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
 
 tac *tac_init_ifge(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::IFGE;
+    self->code.kind = tac_inst::IFGE;
     self->code.ifge.c1 = c1;
     self->code.ifge.c2 = c2;
     self->code.ifge.labelno = labelno;
@@ -584,7 +584,7 @@ tac *tac_init_ifge(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
 
 tac *tac_init_ifne(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::IFNE;
+    self->code.kind = tac_inst::IFNE;
     self->code.ifne.c1 = c1;
     self->code.ifne.c2 = c2;
     self->code.ifne.labelno = labelno;
@@ -594,7 +594,7 @@ tac *tac_init_ifne(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
 
 tac *tac_init_ifeq(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::IFEQ;
+    self->code.kind = tac_inst::IFEQ;
     self->code.ifeq.c1 = c1;
     self->code.ifeq.c2 = c2;
     self->code.ifeq.labelno = labelno;
@@ -604,7 +604,7 @@ tac *tac_init_ifeq(tac_opd *c1, tac_opd *c2, tac_opd *labelno) {
 
 tac *tac_init_return(tac_opd *var) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::RETURN;
+    self->code.kind = tac_inst::RETURN;
     self->code.return_.var = var;
     self->prev = self->next = nullptr;
     return self;
@@ -612,7 +612,7 @@ tac *tac_init_return(tac_opd *var) {
 
 tac *tac_init_dec(tac_opd *var, int size) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::DEC;
+    self->code.kind = tac_inst::DEC;
     self->code.dec.var = var;
     self->code.dec.size = size;
     self->prev = self->next = nullptr;
@@ -621,7 +621,7 @@ tac *tac_init_dec(tac_opd *var, int size) {
 
 tac *tac_init_arg(tac_opd *var) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::ARG;
+    self->code.kind = tac_inst::ARG;
     self->code.arg.var = var;
     self->prev = self->next = nullptr;
     return self;
@@ -629,7 +629,7 @@ tac *tac_init_arg(tac_opd *var) {
 
 tac *tac_init_call(tac_opd *ret, char *funcname) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::CALL;
+    self->code.kind = tac_inst::CALL;
     self->code.call.ret = ret;
     self->code.call.funcname = new char[32];
     sprintf(self->code.call.funcname, "%s", funcname);
@@ -639,7 +639,7 @@ tac *tac_init_call(tac_opd *ret, char *funcname) {
 
 tac *tac_init_param(tac_opd *p) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::PARAM;
+    self->code.kind = tac_inst::PARAM;
     self->code.param.p = p;
     self->prev = self->next = nullptr;
     return self;
@@ -647,7 +647,7 @@ tac *tac_init_param(tac_opd *p) {
 
 tac *tac_init_read(tac_opd *p) {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::READ;
+    self->code.kind = tac_inst::READ;
     self->code.read.p = p;
     self->prev = self->next = nullptr;
     return self;
@@ -655,7 +655,7 @@ tac *tac_init_read(tac_opd *p) {
 
 tac *tac_init_write(tac_opd *p) {
     tac *self = new tac();
-    self->code.kind = _tac_inst::WRITE;
+    self->code.kind = tac_inst::WRITE;
     self->code.write.p = p;
     self->prev = self->next = nullptr;
     return self;
@@ -663,7 +663,7 @@ tac *tac_init_write(tac_opd *p) {
 
 tac *tac_init_none() {
     auto *const self = new tac();
-    self->code.kind = _tac_inst::NONE;
+    self->code.kind = tac_inst::NONE;
     self->prev = self->next = nullptr;
     return self;
 }

@@ -53,7 +53,7 @@ void _mips_iprintf(const char *fmt, ...) {
 /* PARAM: a pointer to `struct tac_node` instance
    RETURN: the next instruction to be translated */
 tac *emit_label(tac *label) {
-    assert(tac_kind(label) == _tac_inst::LABEL);
+    assert(tac_kind(label) == tac_inst::LABEL);
     mips_printf("label%d:", tac_quadruple(label).labelno->int_val);
     return label->next;
 }
@@ -330,7 +330,7 @@ tac *emit_code(tac *head) {
     emit_read_function();
     emit_write_function();
     while (tac_code != nullptr) {
-        if (tac_kind(tac_code) != _tac_inst::NONE) {
+        if (tac_kind(tac_code) != tac_inst::NONE) {
             tac_emitter = emitter[tac_kind(tac_code)];
             tac_code = tac_emitter(tac_code);
         } else {

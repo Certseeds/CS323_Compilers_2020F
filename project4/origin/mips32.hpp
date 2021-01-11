@@ -20,7 +20,7 @@ struct RegDesc {    // the register descriptor
     bool dirty; // value updated but not stored
     /* add other fields as you need */
 };
-RegDesc regs[NUM_REGS];
+static RegDesc regs[NUM_REGS];
 
 
 struct VarDesc {    // the variable descriptor
@@ -30,7 +30,8 @@ struct VarDesc {    // the variable descriptor
     /* add other fields as you need */
     struct VarDesc *next;
 };
-VarDesc *vars;
+
+static VarDesc *vars;
 
 void mips32_gen(tac *head, FILE *_fd);
 
