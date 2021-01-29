@@ -12,7 +12,7 @@ main() {
   # build essential include gcc and make
   sudo apt install build-essential
   # get flex and bison
-  sudo apt install flex bison
+  sudo apt install flex bison libfl-dev
   # get python's pip
   # you can change to anaconda,miniconda or use system's python
   sudo apt install python3-pip

@@ -6,7 +6,7 @@ set -eoux pipefail
 # @Author: nanoseeds
 # @Date: 2020-12-25 20:36:25
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-12-25 20:40:23
+ # @LastEditTime: 2021-01-29 22:59:08
 ###
 CMAKE_DIR="cmake-build-debug"
 run_test() {
@@ -22,7 +22,9 @@ cmake_build_path() {
 cmake_build() {
   cmake_build_path
   cd "${CMAKE_DIR}"
-  make clean
+  if [[ -f "Makefile" ]]; then
+    make clean
+  fi
   cmake ..
   make -j "$(nproc)"
   cp ./Object.out ./../Object.out

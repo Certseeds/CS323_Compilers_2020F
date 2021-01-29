@@ -14,7 +14,7 @@ on:
   pull_request:
     branches: [ master ]
   push:
-    branch: [master,dev,project4]
+    branches: [master,dev,project4]
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test:
@@ -24,7 +24,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    
+
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: checkout code
       uses: actions/checkout@v2
@@ -33,15 +33,18 @@ jobs:
     - name: ensure the path and files of project
       run: sudo apt install tree;tree
 
+    - name: ensure Ubuntu2004
+      run: sudo apt install flex bison libfl-dev spim
+
     - name: Use cmake
       run: cmake --version
-    
+
     - name: prepare permission
       run: chmod 0755 ./judge.sh
 
     - name: run the test script
-      run: ./judge.sh > ./judge.log 2>&1 ; cat ./judge.log
-     
+      run: sudo ./judge.sh | tee ./judge.log | cat
+
     - name: tree 
       run: tree
   # This workflow contains a single job called "build"
