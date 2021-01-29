@@ -41,35 +41,40 @@ label2: ## LABEL label2 :
     jr $ra
 
 main:
-    addi $sp, $sp, -4
-    sw $ra, 0($sp)
+    addi $sp, $sp, -8
+    sw $a0,  0($sp)
+    sw $ra, 4($sp)
     jal read
-    lw $ra, 0($sp)
-    addi $sp, $sp, 4
+    lw $a0,  0($sp)
+    lw $ra,  4($sp)
+    addi $sp, $sp, 8
 
     move $t1, $v0
     li $t3, 1
     bgt $t1, $t3, label3
     j label4
 label3:
+    addi $sp, $sp, -8
+    sw $a0,  0($sp)
+    sw $ra, 4($sp)
     move $a0, $t1
-    addi $sp, $sp, -4
-    sw $ra, 0($sp)
     jal fact
-    lw $ra, 0($sp)
-    addi $sp, $sp, 4
+    lw $a0,  0($sp)
+    lw $ra,  4($sp)
+    addi $sp, $sp, 8
     move $t2, $v0
     j label5
 label4:
     li $t2, 1
 label5:
+    addi $sp, $sp, -8
+    sw $a0,  0($sp)
+    sw $ra, 4($sp)
     move $a0, $t2
-    addi $sp, $sp, -4
-    sw $ra, 0($sp)
     jal write
-    lw $ra, 0($sp)
-    addi $sp, $sp, 4
-    move $v0, $0
+    lw $a0,  0($sp)
+    lw $ra,  4($sp)
+    addi $sp, $sp, 8
     jr $ra
 
 
