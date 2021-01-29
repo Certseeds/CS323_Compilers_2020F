@@ -63,6 +63,7 @@ Coursework of SUSTech CS323_Compilers_2020F (2020fall)
   + Parsing malformed JSON: [A Dirty JSON Parser](https://rmarcus.info/blog/2014/10/05/dirty-json-parser.html)
 
 ## License
-All code that commit by github user certseeds, or named nanoseeds, is based on AGPL3.0.
 
+All code that commit by github user certseeds, or named nanoseeds, is based on AGPL3.0(or any later version).
 
+Any other files create or commit signed by certseeds or named nanoseeds, is based on CC-BY-NC-SA-4.0(or any later version).
