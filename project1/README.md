@@ -36,7 +36,7 @@
 + urwid (Python module) 2.0.1
 + Spim version 8.0
 
-配置脚本为[enviroment.sh](./enviorment.sh)
+配置脚本为[enviroment.sh](../enviorment.sh)
 
 ### 虚拟机部分
 

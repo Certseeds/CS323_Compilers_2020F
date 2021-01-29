@@ -1,7 +1,12 @@
-//
-// Created by nanos on 2021/1/20.
-//
-//
+/*
+ * @Github: https://github.com/Certseeds/CS323_Compilers_2020F
+ * @Organization: SUSTech
+ * @Author: nanoseeds
+ * @Date: 2021-01-20 15:35:30
+ * @LastEditors: nanoseeds
+ * @LastEditTime: 2021-01-29 14:19:43
+ */
+
 #include "mipsAsm.hpp"
 #include <string>
 #include <iostream>

@@ -13,7 +13,7 @@ make_steps() {
   make splc
   mv ./splc ./splc.out
 }
-cmake_steps(){
+cmake_steps() {
   cd "cmake-build-debug" || exit
   #make clean
   cmake ..
@@ -27,7 +27,7 @@ test() {
     readinFileName="test_4_r$(printf "%02d" "${i}")"
     ./splc.out \
       ./test/"${readinFileName}.spl" \
-      > ./test/"${readinFileName}.ir.test" 2>&1
+      >./test/"${readinFileName}.ir.test" 2>&1
     i=$((i + 1))
   done
 }
