@@ -17,6 +17,7 @@
     #define PARSER_error_OUTPUT stdout
     #include "yyerror_myself.hpp"
     #include "mipsAsm.hpp"
+    mipsAsm mips_asm;
 %}
 %require "3.0.4"
 %locations
@@ -55,7 +56,6 @@ Program: ExtDefList {
     $$= new Node("Program",@$.first_line);
     $$->push_back($1);
     root_node=$$;
-    mips_asm::outputDataAndText();
 };
 ExtDefList:{$$=new Node("ExtDefList",@$.first_line,Node_TYPE::NOTHING);}
     | ExtDef ExtDefList {$$=new Node("ExtDefList",@$.first_line); $$->push_back($1,$2);}
@@ -75,7 +75,8 @@ ExtDef: Specifier ExtDecList SEMI  {
     $$->push_back($1->nodes[0],$1->nodes[1],$2);
     extDefVisit_SFC($$);
     translate_functionBodyDefine($$,$1,$2);
-    $$->print_vector_intercode();
+    //$$->print_vector_intercode();
+    mips_asm.add_intercodes($$->intercodes);
     }
     | Specifier ExtDecList error  {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}
     | Specifier error {yyerror_myself(YYERROR_TYPE::MISS_SEMI);}

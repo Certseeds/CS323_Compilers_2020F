@@ -28,4 +28,8 @@ inline static void insertAJumpLabelToExpNode(Node *exp, string labelName);
 
 inline static void insertAGotoLabelToExpNode(Node *exp, string labelName);
 
+std::pair<int, string> new_temp_with_order();
+
+std::pair<int, string> new_label_with_order();
+
 #endif //CS323_COMPILERS_PROJECT4_INCLUDE_TRANSLATE2_HPP

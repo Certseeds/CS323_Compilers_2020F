@@ -13,6 +13,8 @@
 #include <cstdint>
 #include <string>
 
+using std::string;
+
 enum class OperandType {
     VARIABLE, // v1,t1, etc...
     // RETURN VALUE
@@ -39,6 +41,10 @@ public:
     };
 
     void print() const;
+
+    [[nodiscard]] string get_str() const;
+
+    string get_asm_str() const;
 };
 
 enum class InterCodeType {

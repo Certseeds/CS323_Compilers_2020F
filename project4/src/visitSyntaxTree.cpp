@@ -19,13 +19,14 @@ static unordered_map<Node_TYPE, string> tns = {
 };
 
 unordered_map<string, Type *> initSymBolTable() {
-    unordered_map<string, Type *> will_return;
     Type *const readFunctionType = new Type("read", CATEGORY::FUNCTION, static_cast<FieldList *>(nullptr));
     readFunctionType->returnType = Type::getPrimitiveINT();
     auto *const writeFunctionParam = new FieldList("readInt", Type::getPrimitiveINT(), nullptr);
     Type *const writeFunctionType = new Type("write", CATEGORY::FUNCTION, writeFunctionParam);
-    will_return.insert(std::make_pair(string{"read"}, readFunctionType));
-    will_return.insert(std::make_pair(string{"write"}, writeFunctionType));
+    unordered_map<string, Type *> will_return{
+            {string{"read"},  readFunctionType},
+            {string{"write"}, writeFunctionType}
+    };
     return will_return;
 }
 

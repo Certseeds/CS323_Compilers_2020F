@@ -13,24 +13,41 @@ using std::unordered_map;
 
 Operand::Operand(OperandType operandEnum) : operandEnum(operandEnum), variName("") {}
 
+
 void Operand::print() const {
+    std::cout << this->get_str();
+}
+
+string Operand::get_str() const {
     switch (this->operandEnum) {
+        case OperandType::JUMP_LABEL:
         case OperandType::VARIABLE: {
-            std::cout << this->variName;
-            break;
+            return this->variName;
         }
         case OperandType::CONSTANT: {
-            std::cout << '#' << this->value;
-            break;
-        }
-        case OperandType::JUMP_LABEL: {
-            std::cout << this->variName;
+            return string("#").append(string(std::to_string(this->value)));
         }
         default: {
-            break;
+            return "Error";
         }
     }
 }
+
+string Operand::get_asm_str() const {
+    switch (this->operandEnum) {
+        case OperandType::JUMP_LABEL:
+        case OperandType::VARIABLE: {
+            return string("_").append(this->variName);
+        }
+        case OperandType::CONSTANT: {
+            return std::to_string(this->value);
+        }
+        default: {
+            return "Error";
+        }
+    }
+}
+
 
 Operand::Operand(OperandType operandEnum, std::string variName) : operandEnum(operandEnum),
                                                                   variName(std::move(variName)) {}

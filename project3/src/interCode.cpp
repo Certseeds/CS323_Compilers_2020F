@@ -5,6 +5,8 @@
 #include <iostream>
 #include <unordered_map>
 #include "interCode.hpp"
+#include "../../project4/include/interCode.hpp"
+
 
 using std::cout;
 using std::string;
@@ -36,6 +38,7 @@ Operand::Operand(OperandType operandEnum, std::string variName) : operandEnum(op
                                                                   variName(std::move(variName)) {}
 
 Operand::Operand(OperandType operandEnum, int32_t value) : operandEnum(operandEnum), value(value) {}
+
 
 
 InterCode::InterCode(InterCodeType interCodeType) : interCodeType(interCodeType) {}

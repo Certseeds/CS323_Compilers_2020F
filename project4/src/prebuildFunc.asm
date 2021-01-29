@@ -1,7 +1,4 @@
 R"(
-.data
-_prompt: .asciiz "Enter an integer:"
-_ret: .asciiz "\n"
 .globl main
 .text
 read:
@@ -19,4 +16,4 @@ write:
     syscall
     move $v0, $0
     jr $ra
-)"
+)";

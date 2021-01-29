@@ -27,7 +27,7 @@ test() {
     readinFileName="test_4_r$(printf "%02d" "${i}")"
     ./splc.out \
       ./test/"${readinFileName}.spl" \
-      >./test/"${readinFileName}.ir.test" 2>&1
+      >./test/"${readinFileName}.asm.test" 2>&1
     i=$((i + 1))
   done
 }

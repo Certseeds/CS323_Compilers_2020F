@@ -8,6 +8,8 @@
  */
 #include "syntax.tab.c"
 
+extern mipsAsm mips_asm;
+
 int main(int argc, char **argv) {
     if (argc <= 1) {
         fprintf(PARSER_error_OUTPUT, "no input path");
@@ -28,5 +30,8 @@ int main(int argc, char **argv) {
         //root_node->print(0);
         //std::cout << symbolTable.size() << std::endl;
     }
+    mips_asm.scan_symbolTable();
+    mips_asm.outputDataAndText();
+    mips_asm.output_intercodes();
     return 0;
 }

@@ -45,14 +45,24 @@ static const unordered_map<Node *, InterCodeType> BioOpNodes = [] {
     return init;
 }();
 
-static string new_temp() {
+std::pair<int, string> new_temp_with_order() {
     static int tempValueTemp = begin_sign;
-    return string("t").append(std::to_string(tempValueTemp++));
+    return {tempValueTemp, string("t").append(std::to_string(tempValueTemp++))};
+}
+
+static string new_temp() {
+    const auto&[value, will_return] = new_temp_with_order();
+    return will_return;
+}
+
+std::pair<int, string> new_label_with_order() {
+    static int tempValueLabel = begin_sign + 1;
+    return {tempValueLabel, string("label").append(std::to_string(tempValueLabel++))};
 }
 
 static string new_label() {
-    static int tempValueLabel = begin_sign + 1;
-    return string("label").append(std::to_string(tempValueLabel++));
+    const auto&[value, will_return] = new_label_with_order();
+    return will_return;
 }
 
 InterCode *translate_Exp(Node *exp, const string &place) {

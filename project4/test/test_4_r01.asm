@@ -23,6 +23,7 @@ _t16: .word 0
 _t17: .word 0
 _t18: .word 0
 _t19: .word 0
+
 .globl main
 .text
 read:
