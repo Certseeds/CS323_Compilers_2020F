@@ -21,6 +21,7 @@ int32_t read() {
 
 int32_t write(int32_t write_num) {
     std::cout << write_num << std::endl;
+    return 0;
 }
 
 #endif  //CS323_COMPILERS_PROJECT4_TEST_READ_AND_WRITE_HPP
