@@ -16,6 +16,7 @@
     extern int isError;
     #define PARSER_error_OUTPUT stdout
     #include "yyerror_myself.hpp"
+    #include "mipsAsm.hpp"
 %}
 %require "3.0.4"
 %locations
@@ -54,6 +55,7 @@ Program: ExtDefList {
     $$= new Node("Program",@$.first_line);
     $$->push_back($1);
     root_node=$$;
+    mips_asm::outputDataAndText();
 };
 ExtDefList:{$$=new Node("ExtDefList",@$.first_line,Node_TYPE::NOTHING);}
     | ExtDef ExtDefList {$$=new Node("ExtDefList",@$.first_line); $$->push_back($1,$2);}
