@@ -1,0 +1,48 @@
+#
+# @Github: https://github.com/Certseeds/CS203_DSAA_template
+# @Organization: SUSTech
+# @Author: nanoseeds
+# @Date: 2020-07-27 22:08:31
+# @LastEditors: nanoseeds
+# @LastEditTime: 2020-07-27 22:10:08
+
+name: test for dev
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on: 
+  pull_request:
+    branches: [ master ]
+  push:
+    branch: [master,dev,project4]
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  test:
+    name: test judge.sh
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: checkout code
+      uses: actions/checkout@v2
+
+    # ensure the path and files of project
+    - name: ensure the path and files of project
+      run: sudo apt install tree;tree
+
+    - name: Use cmake
+      run: cmake --version
+    
+    - name: prepare permission
+      run: chmod 0755 ./judge.sh
+
+    - name: run the test script
+      run: ./judge.sh > ./judge.log 2>&1 ; cat ./judge.log
+     
+    - name: tree 
+      run: tree
+  # This workflow contains a single job called "build"
+ 

@@ -30,6 +30,7 @@ test() {
       >./test/"${readinFileName}.asm.test" 2>&1
     i=$((i + 1))
   done
+  spim -file ./test/test_4_r03.asm.test
 }
 main() {
   if [[ -f "./splc.out" ]]; then

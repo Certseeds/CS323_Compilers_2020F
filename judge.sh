@@ -6,7 +6,7 @@ set -eoux pipefail
  # @Author: nanoseeds
  # @Date: 2020-10-02 23:30:54
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-12-25 20:48:45
+ # @LastEditTime: 2021-01-29 22:42:04
 ### 
 path=(
     lab01
@@ -18,11 +18,16 @@ path=(
     lab05
     lab07
     lab08
+    project1
+    project2
+    project3
+    project4
 )
 main(){
     for i in "${path[@]}"; do
         old_path=$(pwd)
         cd "${i}"
+        chmod 0755 ./judge.sh
         ./judge.sh
         cd "${old_path}"
     done

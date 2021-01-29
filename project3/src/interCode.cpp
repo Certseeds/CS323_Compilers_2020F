@@ -5,7 +5,6 @@
 #include <iostream>
 #include <unordered_map>
 #include "interCode.hpp"
-#include "../../project4/include/interCode.hpp"
 
 
 using std::cout;
