@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.16.6)
 project(CS323_Compilers_lab03_calc LANGUAGES C)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ly -fPIC -lfl ")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -lfl ")
 
 FIND_PACKAGE(FLEX REQUIRED)
 FIND_PACKAGE(BISON REQUIRED)

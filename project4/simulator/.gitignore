@@ -4,6 +4,9 @@
 ## @Author: nanoseeds
 ## @Date: 2021-01-30 16:40:28
 ## @LastEditors: nanoseeds
-## @LastEditTime: 2021-01-30 16:40:39
+## @LastEditTime: 2021-01-30 17:12:56
 ### 
 *.out
+irsim
+./irsim_*
+*.log

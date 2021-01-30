@@ -6,7 +6,7 @@ set -eoux pipefail
  # @Author: nanoseeds
  # @Date: 2020-09-23 01:30:40
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-09-23 02:26:26
+ # @LastEditTime: 2021-01-29 22:58:20
 ### 
 #! on work on ubuntu1804!
 CMAKE_DIR="cmake-build-debug"
@@ -17,6 +17,9 @@ cmake_ensure_dir() {
 }
 compiler() {
   cd "${CMAKE_DIR}"
+  if [[ -f "Makefile" ]]; then
+    make clean
+  fi
   cmake ..
   make -j "$(nproc)"
   cd ..

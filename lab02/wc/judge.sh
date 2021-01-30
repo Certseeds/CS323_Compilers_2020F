@@ -5,8 +5,8 @@ set -eoux pipefail
 # @Organization: SUSTech
 # @Author: nanoseeds
 # @Date: 2020-09-16 16:36:39
-# @LastEditors: nanoseeds
-# @LastEditTime: 2020-09-16 16:41:24
+ # @LastEditors: nanoseeds
+ # @LastEditTime: 2021-01-29 22:58:02
 ###
 CMAKE_DIR="cmake-build-debug"
 cmake_ensure_dir() {
@@ -16,6 +16,9 @@ cmake_ensure_dir() {
 }
 compiler() {
   cd "${CMAKE_DIR}"
+  if [[ -f "Makefile" ]]; then
+    make clean
+  fi
   cmake ..
   make -j "$(nproc)"
   cp ./wc.out ./../wc.out
