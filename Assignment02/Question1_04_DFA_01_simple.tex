@@ -1,0 +1,25 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\begin{document}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+    thick,base node/.style={circle,draw,minimum size=8pt}, real node/.style={double,circle,draw,minimum size=17pt}]
+
+  \node[state,initial]          (a) {$A$};
+  \node[state]                  (c) [right of=a] {$C$};
+  \node[state]                  (e) [right of=c] {$E$};
+  \node[state,accepting]        (g) [right of=e] {$G$};
+  \path (a) edge       node {$b$} (c)
+        (a) edge [loop above]     node {$a$} (a)
+        (c) edge       node {$b$} (e)
+        (c) edge [loop above]     node {$a$} (c)
+        (e) edge       node {$b$} (g)
+        (e) edge [loop above]     node {$a$} (e)
+        (g) edge [loop above]     node {$a$} (g)
+        ;
+\end{tikzpicture}
+\end{document}

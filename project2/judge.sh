@@ -5,7 +5,7 @@
 # @Author: nanoseeds
 # @Date: 2020-09-19 17:59:07
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-12-12 21:40:49
+ # @LastEditTime: 2021-01-29 22:33:55
 ###
 make_steps() {
   cd src || exit
@@ -25,7 +25,7 @@ test_SID() {
     echo "${is}"
     ./splc.out \
       ./"${folder}/${prefix}${is}".spl \
-      >./"${folder}/${prefix}${is}".out 2>&1
+      >./"${folder}/${prefix}${is}".test 2>&1
     diff \
       "${folder}/${prefix}${is}".out \
       "${folder}/${prefix}${is}".test \

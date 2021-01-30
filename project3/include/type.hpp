@@ -2,13 +2,12 @@
 // Created by nanos on 2020/11/7.
 //
 
-#ifndef CS323_COMPLIERS_PROJECT3_INCLUDE_TYPE_HPP
-#define CS323_COMPLIERS_PROJECT3_INCLUDE_TYPE_HPP
+#ifndef CS323_COMPILERS_PROJECT3_INCLUDE_TYPE_HPP
+#define CS323_COMPILERS_PROJECT3_INCLUDE_TYPE_HPP
 
-#include <string>
+#include "node.hpp"
 #include <variant>
 #include <vector>
-#include "node.hpp"
 
 using std::string;
 using std::variant;
@@ -69,4 +68,4 @@ public:
 
 };
 
-#endif //! CS323_COMPLIERS_PROJECT3_INCLUDE_TYPE_HPP
+#endif //! CS323_COMPILERS_PROJECT3_INCLUDE_TYPE_HPP

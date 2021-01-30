@@ -6,7 +6,7 @@ set -eoux pipefail
  # @Author: nanoseeds
  # @Date: 2020-10-17 17:33:45
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-10-17 17:40:59
+ # @LastEditTime: 2021-01-29 22:36:03
 ### 
 #!the SA said that symtab_ht has some error, so it do not need to do.
 CMAKE_DIR="cmake-build-debug"
@@ -14,6 +14,9 @@ run_test() {
   python3 ./test.py
 }
 cmake_build_path(){
+  if [[ -f "libsymtab.so" ]]; then
+  rm "libsymtab.so"
+  fi
   if [[ ! -d "${CMAKE_DIR}" ]]; then
     mkdir "${CMAKE_DIR}"
   fi
@@ -31,5 +34,4 @@ make_pre(){
   make clean
   make bttest
 }
-
 cmake_pre

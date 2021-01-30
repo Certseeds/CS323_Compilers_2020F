@@ -5,17 +5,25 @@ set -euox pipefail
 # @Organization: SUSTech
 # @Author: nanoseeds
 # @Date: 2020-09-19 17:59:07
-# @LastEditors: nanoseeds
-# @LastEditTime: 2020-12-12 21:40:49
+ # @LastEditors: nanoseeds
+ # @LastEditTime: 2021-01-29 23:19:46
 ###
+CMAKE_DIR="cmake-build-debug"
+cmake_ensure_dir() {
+  # now in /lab01
+  if [[ ! -d "${CMAKE_DIR}" ]]; then
+    mkdir "${CMAKE_DIR}"
+  fi
+}
 make_steps() {
   make clean
   make splc
   mv ./splc ./splc.out
 }
 cmake_steps(){
-  cd "cmake-build-debug" || exit
-  make clean
+  cmake_ensure_dir
+  cd "${CMAKE_DIR}" || exit
+  #make clean
   cmake ..
   make -j "$(nproc)"
   mv ./CS323_Compilers_project3_main ./../splc.out
@@ -35,7 +43,7 @@ main() {
   if [[ -f "./splc.out" ]]; then
     rm ./splc.out
   fi
-  make_steps
+  cmake_steps
   test
 }
 main

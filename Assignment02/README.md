@@ -4,13 +4,13 @@
  * @Author: nanoseeds
  * @Date: 2020-09-19 21:47:34
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-28 22:16:52
+ * @LastEditTime: 2021-01-30 17:46:46
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
 # CS323 Assignment 2
 
-**Scores**: 100/120(I do the extra part but do not get it, TODO?)  
+**Scores**: 100/120(Do not convert DFA to simplest)  
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
@@ -61,12 +61,14 @@ Design NFAs and DFAs to recognize each of the following regular languages:
 </div>
 
 <div>
-  <img src="./Question1_04_DFA_01.png"><br />
+  <img src="./Question1_04_DFA_01_simple.png"><br />
   <div>DFA for  $L(a^{*}ba^{*}ba^{*}ba^{*})$</div>
 </div>
 
+$BUG FIX$
 
 ## Question2 & 3
+
 2: Convert the following regular expressions to NFAs using the Thompson’s
 Construction Algorithm (Algorithm 3.23 in the dragon book). Please put down the
 detailed steps.
@@ -251,7 +253,6 @@ $N(r_{6})$ is
   <img src="./Question1_02_NFA_05.png"><br />
   <div>$N(r_{5})$</div>
 </div>
-
 
 #### Question 3's DFA Part
 
@@ -768,7 +769,6 @@ H={13,14,15} so move(H,b) = None. it can not reach any state.
   <div>DFA of $a^{*}ba^{*}ba^{*}ba^{*}$</div>
 </div>
 
-
 so we  call it new state **I**=$\epsilon$-closure(move(H,a))=$\epsilon$-closure({15})={15}
 
 | NFA state  | DFA state |   a   |    b |
@@ -782,5 +782,23 @@ so we  call it new state **I**=$\epsilon$-closure(move(H,a))=$\epsilon$-closure(
 | {12,13,15} |     G     |   H   | None |
 | {13,14,15} |     H     |   H   | None |
 
+
+this can be simple as 
+
+<div>
+  <img src="./Question1_04_DFA_01_simple.png"><br />
+  <div>DFA of $a^{*}ba^{*}ba^{*}ba^{*}$</div>
+</div>
+
+then the graph is
+
+| NFA state     | DFA state |   a   |    b |
+| :------------ | :-------: | :---: | ---: |
+| {0,1,2,3}     |     A     |   A   |    C |
+| {4,5,6,7}     |     C     |   C   |    E |
+| {8,9,10,11}   |     E     |   E   |    G |
+| {12,13,14,15} |     G     |   G   | None |
+
+$BUG FIX$
 
 <link rel="stylesheet" type="text/css" href="./../markdown.css">

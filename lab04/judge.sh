@@ -6,7 +6,7 @@ set -eoux pipefail
  # @Author: nanoseeds
  # @Date: 2020-09-23 01:30:40
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-09-30 01:18:58
+ # @LastEditTime: 2021-01-29 22:58:41
 ###
 #! on work on ubuntu1804!
 
@@ -18,7 +18,9 @@ cmake_ensure_dir() {
 }
 compiler() {
   cd "${CMAKE_DIR}"
-  make clean
+  if [[ -f "Makefile" ]]; then
+    make clean
+  fi
   cmake ..
   make -j "$(nproc)"
   cp ./jp.out ./../jp.out

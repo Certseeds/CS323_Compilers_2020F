@@ -5,7 +5,7 @@
 # @Author: nanoseeds
 # @Date: 2020-09-19 17:59:07
  # @LastEditors: nanoseeds
- # @LastEditTime: 2020-10-11 12:07:44
+ # @LastEditTime: 2021-01-29 22:59:25
 ###
 CMAKE_DIR="cmake-build-debug"
 cmake_ensure_dir() {
@@ -15,7 +15,9 @@ cmake_ensure_dir() {
 }
 compiler() {
   cd "${CMAKE_DIR}" || exit
-  make clean
+  if [[ -f "Makefile" ]]; then
+    make clean
+  fi
   cmake ..
   make -j "$(nproc)"
   #cd ..

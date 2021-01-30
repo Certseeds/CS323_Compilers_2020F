@@ -4,17 +4,17 @@
  * @Author: nanoseeds
  * @Date: 2020-11-28 21:10:42
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-12-15 21:06:38
+ * @LastEditTime: 2021-01-04 20:28:56
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
 # CS323 Assignment 5
 
-**Scores**: 98/100 (A few error in Question 3) 
+**Scores**: 98/100 (A few error in Question 3)  
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
-## Question 1:
+## Question 1
 
 For the SDD in `Figure 1`, give annotated parse trees for the following expressions:
 

@@ -4,21 +4,25 @@
  * @Author: nanoseeds
  * @Date: 2020-09-19 21:47:34
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-12-15 21:16:57
+ * @LastEditTime: 2021-01-04 20:02:04
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
-<h2 style="text-align:center">CS323 Assignment 1</h2>
+
+# CS323 Assignment 1
 
 **Scores**: 105/110(only have a few error of Question 2-6)  
 **Name**: nanoseeds  
 **SID**: \*\*\*\*\*\*\*\*
 
-### Question1 
+## Question1
+
 When aCcompiler compiles the following statement, how many tokens will itgenerate?[5 points]
 
-#### Answer:
+### Answer
+
 `int a3 = a * 3;`
 will be analysis to Tokens
+
 ``` flex
 TYPE int
 ID a3
@@ -28,9 +32,10 @@ MUL
 INT 3
 SEMI
 ```
+
 so, it will be analysis to 7 tokens.
 
-### Question 2
+## Question 2
 
 In a string of length n(n >0), how many of the following are there?
 
@@ -44,7 +49,7 @@ Answer:
 we know that a proper prefixes is prefixes of a string except the string itself and null. so , the answer is $n-1$.  
 PS: the proper prefixes is write as 'true prefixes'.  
 
-1. Prefixes of length m.($0<m≤n$)[5 points]</br>
+3. Prefixes of length m.($0<m≤n$)[5 points]</br>
 Answer:  
 There only exist one prefix for a const value m of a string length n.  
 which means the string delete (m-n) in the backend.  
@@ -66,12 +71,11 @@ second , the length is n, so we can view the string as n char with n+1 blocks, w
 so Answer is $\tbinom{n+1}{2}$(select 2 from n+1).  
 **Correct Answer: The Answer is  $\tbinom{n+1}{2}+1$**
 
-
 7. subsequence (A subsequence of s is any string formed by deleting zero or more not necessarily consecutive  positions of s. For example, baan is a subsequence of banana.) [10 points]</br>
 Answer:  
 first of all, subsequence' length range is [0,n].  
 for a subsequence length m, we should delete (m-n) chars in the n characters, which is $\tbinom{n}{n-m}=\tbinom{n}{m}$.(select m from n elements)  
-so the sum is $\sum_{m=0}^{n}{\tbinom{n}{m}}$  
+so the sum is $\sum_{m=0}^{n}{\tbinom{n}{m}}=2^{n}$  
 
 ALL in ALL
 1-7's answer is
@@ -83,10 +87,10 @@ ALL in ALL
 | 3     |                                                    $1$ |
 | 4     |                                                    $1$ |
 | 5     | $\begin{cases}  0, & m==n \\\\ 1, & 0<m<n \end{cases}$ |
-| 6     |                                      $\tbinom{n+1}{2}+1$ |
-| 7     |                        $\sum_{m=0}^{n}{\tbinom{n}{m}}$ |
+| 6     |                                    $\tbinom{n+1}{2}+1$ |
+| 7     |                  $\sum_{m=0}^{n}{\tbinom{n}{m}}=2^{n}$ |
 
-### Question 3
+## Question 3
 
 Describe the languages denoted by the following regular expressions.[5 points for each]
 
@@ -103,7 +107,7 @@ and we can descript the language, it's length is at least 3, which third charact
 first, the length is at least 3.  
 second, this regular expressions match a string that length > 3, and was a string that construct by 3 `b` and ($0$ to $\infty$) `a`.
 
-### Question 4
+## Question 4
 
 Write regular definitions or regular expressions for the following languages.[10 points for each]
 
@@ -121,7 +125,7 @@ five vowels is `a` `e` `i` `o` `u`
 we define LL -> $[bcdfghjklmnpqrstwvxyz]$  
 so the answer is $LL^{*}a(LL|a)^{*}e(LL|e)^{*}i(LL|i)^{*}o(LL|o)^{*}u(LL|u)^{*}$
 
-### Bonus
+## Bonus
 
 Suppose we have a alphabet Σ={a,b,c}, write regular definitions to describeall strings over Σ without repeated letters.  [Hint:  You may draw an NFA for the languageand convert the NFA to regular definitions.]
 

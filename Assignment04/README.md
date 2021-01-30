@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2020-10-30 22:42:41
  * @LastEditors: nanoseeds
- * @LastEditTime: 2020-11-28 22:17:43
+ * @LastEditTime: 2021-01-04 22:59:41
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -149,7 +149,7 @@ $I_1=\{[S' \to S \cdot, \$]\}$
 
 GOTO($I_0$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B, \$]\})$
 
-in this case $A=S,\alpha = \alpha,B=B,\beta=\epsilon,a=\$$ so $B \to \gamma$ include $B \to S+B$ and $B \to \epsilon$. FIRST($\beta a$)=FISRT($) so b is just $\$$. 
+in this case $A=S,\alpha = \alpha,B=B,\beta=\epsilon,a=\$$ so $B \to \gamma$ include $B \to S+B$ and $B \to \epsilon$. FIRST($\beta a$)=FISRT($) so b is just $\$$.
 
 then for$[B \to \cdot S+B,\$]$, $A=B,\alpha = \epsilon,B=S,\beta=+B,a=\$$, so $B \to \gamma$ include $S \to \alpha B$, FIRST($\beta a$)= FIRST($+B\$$)=$+$, so b is $+$
 
@@ -257,8 +257,6 @@ Yes, it can
 
 so the CLR(1) parse can accept the input string `aaaa+++`.
 
-
-
 ## Question 3 (Lookahead LR)
 
 Consider the following  grammar $G$:
@@ -298,7 +296,7 @@ $I_1=\{[S' \to S \cdot, \$]\}$
 
 GOTO($I_0$,$\alpha$) = $CLOSURE(\{[S \to \alpha \cdot B, \$]\})$
 
-in this case $A=S,\alpha = \alpha,B=B,\beta=\epsilon,a=\$$ so $B \to \gamma$ include $B \to S+B$ and $B \to \epsilon$. FIRST($\beta a$)=FISRT($) so b is just $\$$. 
+in this case $A=S,\alpha = \alpha,B=B,\beta=\epsilon,a=\$$ so $B \to \gamma$ include $B \to S+B$ and $B \to \epsilon$. FIRST($\beta a$)=FISRT($) so b is just $\$$.
 
 then for$[B \to \cdot S+B,\$]$, $A=B,\alpha = \epsilon,B=S,\beta=+B,a=\$$, so $B \to \gamma$ include $S \to \alpha B$, FIRST($\beta a$)= FIRST($+B\$$)=$+$, so b is $+$
 

@@ -10,14 +10,14 @@
 // Created by nanos on 2020/10/7.
 //
 
-#ifndef CS323_COMPLIERS_PROJECT3_INCLUDE_NODE_HPP
-#define CS323_COMPLIERS_PROJECT3_INCLUDE_NODE_HPP
+#ifndef CS323_COMPILERS_PROJECT3_INCLUDE_NODE_HPP
+#define CS323_COMPILERS_PROJECT3_INCLUDE_NODE_HPP
 
+#include "interCode.hpp"
 #include <functional>
 #include <iostream>
-#include <string>
 #include <variant>
-#include "interCode.hpp"
+#include <unordered_map>
 
 class Type;
 
@@ -103,4 +103,4 @@ private:
     Node(string name, Node_TYPE node_type, int nodes_num, Node_inside_type value);
 };
 
-#endif  //! CS323_COMPLIERS_PROJECT3_INCLUDE_NODE_HPP
+#endif  //! CS323_COMPILERS_PROJECT3_INCLUDE_NODE_HPP
