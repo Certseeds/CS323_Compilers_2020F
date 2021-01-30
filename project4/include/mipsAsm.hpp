@@ -20,7 +20,7 @@ public:
 
     void scan_symbolTable();
 
-    void add_intercodes(vector<InterCode *> ircodes);
+    void add_intercodes(const vector<InterCode *>& ircodes);
 
     void output_intercodes();
 

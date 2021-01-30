@@ -55,7 +55,7 @@ void mipsAsm::scan_symbolTable() {
 
 static vector<vector<InterCode *>> ircodes_vec;
 
-void mipsAsm::add_intercodes(vector<InterCode *> ircodes) {
+void mipsAsm::add_intercodes(const vector<InterCode *> &ircodes) {
     ircodes_vec.push_back(ircodes);
 }
 
@@ -85,6 +85,9 @@ void mipsAsm::output_intercodes() {
                     if (operand->value == 0) {
                         return string("move $t").append(std::to_string(order)).append(",$zero");
                     }
+                }
+                default: {
+                    return string("Error");
                 }
             }
         };
@@ -186,6 +189,9 @@ void mipsAsm::output_intercodes() {
                 }
                 case InterCodeType::ARG: {
                     args.push_back(ircode->SingleElement->variName);
+                    break;
+                }
+                default: {
                     break;
                 }
             }
