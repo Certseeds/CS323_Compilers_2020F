@@ -40,7 +40,7 @@
 *.csv text
 *.tab text
 *.tsv text
-*.txt text
+*.txt text eol=lf
 *.sql text
 
 # Graphics
@@ -68,7 +68,7 @@
 *.ps1 text eol=crlf
 
 # Serialisation
-*.json text
+*.json text eol=lf
 *.toml text
 *.xml text
 *.yaml text
@@ -129,3 +129,9 @@
 *.out binary
 *.app binary
 *.in  eol=lf
+
+Makefile eol=lf
+*.ir eol=lf
+*.asm eol=lf
+*.test eol=lf
+*.spl eol=lf
