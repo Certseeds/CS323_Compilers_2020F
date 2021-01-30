@@ -30,9 +30,26 @@ write:
     jr $ra
 
 main:
+    addi $sp, $sp, -8 ### push stack to store $ra
+    sw   $a0,  0($sp) ## store $a0
+    sw   $ra,  4($sp) ### store $ra
+    jal  read ### invoke read
+    lw   $a0,  0($sp) ## store $a0
+    lw   $ra,  4($sp) ## read $ra
+    addi $sp, $sp, 8
+    move $t0,$v0
+    sw   $t0,_n
+
     li   $t0,0
     sw   $t0,_t0
 
+    lw   $t0,_n
+    lw   $t1,_t0
+    bgt  $t0,$t1,label4
+
+    j label5
+
+label4:
     li   $t0,1
     sw   $t0,_t1
 
@@ -46,13 +63,23 @@ main:
     lw   $a0,  0($sp) ## store $a0
     addi $sp, $sp, 8
 
+    j label6
+
+label5:
     li   $t0,0
     sw   $t0,_t2
 
+    lw   $t0,_n
+    lw   $t1,_t2
+    blt  $t0,$t1,label1
+
+    j label2
+
+label1:
     li   $t0,1
     sw   $t0,_t3
 
-    move $t0$zero
+    move $t0,$zero
     lw   $t1,_t3
     sub  $t2,$t0,$t1
     sw   $t2,_t4
@@ -67,6 +94,9 @@ main:
     lw   $a0,  0($sp) ## store $a0
     addi $sp, $sp, 8
 
+    j label3
+
+label2:
     li   $t0,0
     sw   $t0,_t5
 
@@ -80,6 +110,8 @@ main:
     lw   $a0,  0($sp) ## store $a0
     addi $sp, $sp, 8
 
+label3:
+label6:
     li   $t0,0
     sw   $t0,_t6
 

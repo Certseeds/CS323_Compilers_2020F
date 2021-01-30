@@ -73,7 +73,7 @@ const auto load_vari_to_register = [](int32_t order, Operand *operand) {
         }
         case OperandType::CONSTANT: {
             if (operand->value == 0) {
-                return string("move $t").append(std::to_string(order)).append("$zero");
+                return string("move $t").append(std::to_string(order)).append(",$zero");
             }
         }
     }
@@ -83,6 +83,7 @@ void mipsAsm::output_intercodes() {
     for (const auto &ircodes: ircodes_vec) {
         for (const auto &ircode: ircodes) {
             switch (ircode->interCodeType) {
+                case InterCodeType::LABEL:
                 case InterCodeType::FUNCTION: {
                     printf("%s:\n", ircode->labelElement->jumpLabel.c_str());
                     break;
@@ -122,18 +123,54 @@ void mipsAsm::output_intercodes() {
                     break;
                 }
                 case InterCodeType::WRITE: {
-                    static const string write_begin = R"(    addi $sp, $sp, -8 ### push stack to store $ra
+                    static constexpr const char *const write_begin =
+                            R"(    addi $sp, $sp, -8 ### push stack to store $ra
     sw   $a0,  0($sp) ## store $a0
     sw   $ra,  4($sp) ### store $ra)";
-                    static const string write_end = R"(    move $a0,  $t0
+                    static constexpr const char *const write_end =
+                            R"(    move $a0,  $t0
     jal  write ### invoke write
     lw   $ra,  4($sp) ## read $ra
     lw   $a0,  0($sp) ## store $a0
     addi $sp, $sp, 8)";
-                    printf("%s\n", write_begin.c_str());
+                    printf("%s\n", write_begin);
                     printf("    lw   $t0,%s\n", ircode->SingleElement->get_asm_str().c_str());
-                    printf("%s\n\n", write_end.c_str());
+                    printf("%s\n\n", write_end);
                     break;
+                }
+                case InterCodeType::READ: {
+                    static constexpr const char *const read_begin =
+                            R"(    addi $sp, $sp, -8 ### push stack to store $ra
+    sw   $a0,  0($sp) ## store $a0
+    sw   $ra,  4($sp) ### store $ra
+    jal  read ### invoke read
+    lw   $a0,  0($sp) ## store $a0
+    lw   $ra,  4($sp) ## read $ra
+    addi $sp, $sp, 8
+    move $t0,$v0)";
+                    printf("%s\n", read_begin);
+                    printf("    sw   $t0,%s\n\n", ircode->SingleElement->get_asm_str().c_str());
+                    break;
+                }
+                case InterCodeType::GOTO: {
+                    printf("    j %s\n\n", ircode->labelElement->jumpLabel.c_str());
+                    break;
+                }
+                case InterCodeType::IF_ELSE: {
+                    printf("    %s\n", load_vari_to_register(0, ircode->ifElse.left).c_str());
+                    printf("    %s\n", load_vari_to_register(1, ircode->ifElse.right).c_str());
+                    static const unordered_map<string, string> operandtoStr{
+                            {"<",  "blt"},
+                            {"<=", "ble"},
+                            {">",  "bgt"},
+                            {">=", "bge"},
+                            {"!=", "bne"},
+                            {"==", "beq"}
+                    };
+                    printf("    %s  $t0,$t1,%s\n\n",
+                           operandtoStr.at(ircode->ifElse.operation->variName).c_str(),
+                           ircode->ifElse.if_label->variName.c_str()
+                    );
                 }
             }
         }

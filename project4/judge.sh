@@ -6,7 +6,7 @@ set -euox pipefail
 # @Author: nanoseeds
 # @Date: 2020-09-19 17:59:07
  # @LastEditors: nanoseeds
- # @LastEditTime: 2021-01-29 23:22:19
+ # @LastEditTime: 2021-01-30 10:46:03
 ###
 CMAKE_DIR="cmake-build-debug"
 cmake_ensure_dir() {
@@ -38,6 +38,9 @@ test() {
       >./test/"${readinFileName}.asm.test" 2>&1
     i=$((i + 1))
   done
+  echo "1" | spim -file ./test/test_4_r02.asm.test
+  echo "0" | spim -file ./test/test_4_r02.asm.test 
+  echo "-1" | spim -file ./test/test_4_r02.asm.test
   spim -file ./test/test_4_r03.asm.test
 }
 main() {

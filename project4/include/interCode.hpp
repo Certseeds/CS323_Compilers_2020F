@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2021-01-11 11:53:58
  * @LastEditors: nanoseeds
- * @LastEditTime: 2021-01-11 12:51:06
+ * @LastEditTime: 2021-01-30 10:33:13
  */
 
 #ifndef CS323_COMPILERS_PROJECT4_INCLUDE_INTERCODE_HPP
@@ -44,7 +44,7 @@ public:
 
     [[nodiscard]] string get_str() const;
 
-    string get_asm_str() const;
+    [[nodiscard]] string get_asm_str() const;
 };
 
 enum class InterCodeType {
