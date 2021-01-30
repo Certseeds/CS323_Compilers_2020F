@@ -6,7 +6,7 @@ set -euox pipefail
 # @Author: nanoseeds
 # @Date: 2020-09-19 17:59:07
  # @LastEditors: nanoseeds
- # @LastEditTime: 2021-01-30 10:46:03
+ # @LastEditTime: 2021-01-30 16:17:10
 ###
 CMAKE_DIR="cmake-build-debug"
 cmake_ensure_dir() {
@@ -35,13 +35,14 @@ test() {
     readinFileName="test_4_r$(printf "%02d" "${i}")"
     ./splc.out \
       ./test/"${readinFileName}.spl" \
-      >./test/"${readinFileName}.asm.test" 2>&1
+      >./test/"${readinFileName}.test.asm" 2>&1
     i=$((i + 1))
   done
-  echo "1" | spim -file ./test/test_4_r02.asm.test
-  echo "0" | spim -file ./test/test_4_r02.asm.test 
-  echo "-1" | spim -file ./test/test_4_r02.asm.test
-  spim -file ./test/test_4_r03.asm.test
+  spim -file ./test/test_4_r01.test.asm
+  echo "1" | spim -file ./test/test_4_r02.test.asm
+  echo "0" | spim -file ./test/test_4_r02.test.asm
+  echo "-1" | spim -file ./test/test_4_r02.test.asm
+  spim -file ./test/test_4_r03.test.asm
 }
 main() {
   if [[ -f "./splc.out" ]]; then

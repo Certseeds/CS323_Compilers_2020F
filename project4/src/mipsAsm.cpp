@@ -12,6 +12,7 @@
 #include "translate2.hpp"
 #include <unordered_map>
 #include <iostream>
+#include "mipsAsmStrs.hpp"
 
 using std::unordered_map;
 
@@ -35,7 +36,7 @@ void mipsAsm::outputDataAndText() {
 }
 
 void mipsAsm::insert_vari(const std::string &str) {
-    this->vari_names.push_back(str);
+    this->vari_names.insert(str);
 }
 
 void mipsAsm::scan_symbolTable() {
@@ -66,26 +67,45 @@ static const unordered_map<InterCodeType, string> BioOpNodes = [] {
     };
     return init;
 }();
-const auto load_vari_to_register = [](int32_t order, Operand *operand) {
-    switch (operand->operandEnum) {
-        case OperandType::VARIABLE: {
-            return string("lw   $t").append(std::to_string(order)).append(",_").append(operand->variName);
-        }
-        case OperandType::CONSTANT: {
-            if (operand->value == 0) {
-                return string("move $t").append(std::to_string(order)).append(",$zero");
-            }
-        }
-    }
-};
 
 void mipsAsm::output_intercodes() {
     for (const auto &ircodes: ircodes_vec) {
+        unordered_map<string, int32_t> param_to_reg{};
+        const auto load_vari_to_register = [&param_to_reg](int32_t order, Operand *operand) {
+            switch (operand->operandEnum) {
+                case OperandType::VARIABLE: {
+                    if (param_to_reg.count(operand->variName) == 0) {
+                        return string("lw   $t").append(std::to_string(order)).append(",_").append(operand->variName);
+                    } else {
+                        return string("move $t").append(std::to_string(order)).append(",$a")
+                                .append(std::to_string(param_to_reg.at(operand->variName)));
+                    }
+                }
+                case OperandType::CONSTANT: {
+                    if (operand->value == 0) {
+                        return string("move $t").append(std::to_string(order)).append(",$zero");
+                    }
+                }
+            }
+        };
+        int order_of_a_regs = 0;
+        vector<string> args;
         for (const auto &ircode: ircodes) {
             switch (ircode->interCodeType) {
-                case InterCodeType::LABEL:
+                case InterCodeType::PARAM: {
+                    this->insert_vari(ircode->SingleElement->variName);
+                    if (param_to_reg.count(ircode->SingleElement->variName) == 0) {
+                        param_to_reg[ircode->SingleElement->variName] = order_of_a_regs++;
+                    }
+                    break;
+                }
+                case InterCodeType::LABEL: {
+                    printf("%s:\n", ircode->labelElement->jumpLabel.c_str());
+                    break;
+                }
                 case InterCodeType::FUNCTION: {
                     printf("%s:\n", ircode->labelElement->jumpLabel.c_str());
+                    printf("%s\n\n", function_begin);
                     break;
                 }
                 case InterCodeType::ASSIGN: {
@@ -116,6 +136,7 @@ void mipsAsm::output_intercodes() {
                     break;
                 }
                 case InterCodeType::RETURN: {
+                    printf("%s\n", function_end);
                     printf("    %s\n", load_vari_to_register(0, ircode->SingleElement).c_str());
                     static const string return_sentenct = R"(move $v0,$t0
     jr $ra)";
@@ -123,31 +144,12 @@ void mipsAsm::output_intercodes() {
                     break;
                 }
                 case InterCodeType::WRITE: {
-                    static constexpr const char *const write_begin =
-                            R"(    addi $sp, $sp, -8 ### push stack to store $ra
-    sw   $a0,  0($sp) ## store $a0
-    sw   $ra,  4($sp) ### store $ra)";
-                    static constexpr const char *const write_end =
-                            R"(    move $a0,  $t0
-    jal  write ### invoke write
-    lw   $ra,  4($sp) ## read $ra
-    lw   $a0,  0($sp) ## store $a0
-    addi $sp, $sp, 8)";
                     printf("%s\n", write_begin);
                     printf("    lw   $t0,%s\n", ircode->SingleElement->get_asm_str().c_str());
                     printf("%s\n\n", write_end);
                     break;
                 }
                 case InterCodeType::READ: {
-                    static constexpr const char *const read_begin =
-                            R"(    addi $sp, $sp, -8 ### push stack to store $ra
-    sw   $a0,  0($sp) ## store $a0
-    sw   $ra,  4($sp) ### store $ra
-    jal  read ### invoke read
-    lw   $a0,  0($sp) ## store $a0
-    lw   $ra,  4($sp) ## read $ra
-    addi $sp, $sp, 8
-    move $t0,$v0)";
                     printf("%s\n", read_begin);
                     printf("    sw   $t0,%s\n\n", ircode->SingleElement->get_asm_str().c_str());
                     break;
@@ -171,6 +173,20 @@ void mipsAsm::output_intercodes() {
                            operandtoStr.at(ircode->ifElse.operation->variName).c_str(),
                            ircode->ifElse.if_label->variName.c_str()
                     );
+                    break;
+                }
+                case InterCodeType::CALL: {
+                    const auto call_sentences = caller(this->vari_names, args, param_to_reg);
+                    printf("%s", call_sentences.first.c_str());
+                    args.clear();
+                    printf("    jal %s\n", ircode->assign.right->variName.c_str());
+                    printf("%s", call_sentences.second.c_str());
+                    printf("    sw $v0,_%s\n\n", ircode->assign.left->variName.c_str());
+                    break;
+                }
+                case InterCodeType::ARG: {
+                    args.push_back(ircode->SingleElement->variName);
+                    break;
                 }
             }
         }

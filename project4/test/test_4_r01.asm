@@ -238,7 +238,7 @@ label2:
     sub  $t2,$t0,$t1
     sw   $t2,_t11 ## t11 := n - t10
 
-addi $sp, $sp, -108 ### push stack to store $ra
+  addi $sp, $sp, -108 ### push stack to store $ra
     sw $a0,  0($sp) ## store $a0
     sw $a1,  4($sp) ## store $a1
     sw $a2,  8($sp) ## store $a2
@@ -291,9 +291,9 @@ addi $sp, $sp, -108 ### push stack to store $ra
     lw $a3,12($sp)
     lw $a2,4($sp)
     lw $a1,8($sp)
-    lw $a0,_t11
+  lw $a0,_t11
     jal hanoi ### invoke write
-    lw $a0,  0($sp) ## store $a0
+  lw $a0,  0($sp) ## store $a0
     lw $a1,  4($sp) ## store $a1
     lw $a2,  8($sp) ## store $a2
     lw $a3, 12($sp) ## store $a3
@@ -343,7 +343,7 @@ addi $sp, $sp, -108 ### push stack to store $ra
     sw $t0,_sum
     lw $ra, 104($sp) ## read $ra
     addi $sp, $sp, 108
-    sw $v0,_t12     ## t12 = hanoi(n - 1, p2, p1, p3);
+  sw $v0,_t12     ## t12 = hanoi(n - 1, p2, p1, p3);
 
 label3:
     li   $t0,0

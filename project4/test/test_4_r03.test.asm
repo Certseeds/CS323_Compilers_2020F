@@ -2,17 +2,17 @@
 _prompt: .asciiz "Enter an integer:"
 _ret: .asciiz "\n"
 
+_t7: .word 0
+_t6: .word 0
+_t5: .word 0
+_t3: .word 0
+_t4: .word 0
 _b: .word 0
 _a: .word 0
 _c: .word 0
 _t0: .word 0
 _t1: .word 0
 _t2: .word 0
-_t3: .word 0
-_t4: .word 0
-_t5: .word 0
-_t6: .word 0
-_t7: .word 0
 
 .globl main
 .text
@@ -33,6 +33,16 @@ write:
     jr $ra
 
 main:
+    addi $sp,$sp,-32
+    sw $s0,0($sp)
+    sw $s1,4($sp)
+    sw $s2,8($sp)
+    sw $s3,12($sp)
+    sw $s4,16($sp)
+    sw $s5,20($sp)
+    sw $s6,24($sp)
+    sw $s7,28($sp)
+
     li   $t0,110
     sw   $t0,_t0
 
@@ -85,6 +95,15 @@ main:
     li   $t0,0
     sw   $t0,_t7
 
+    lw $s7,28($sp)
+    lw $s6,24($sp)
+    lw $s5,20($sp)
+    lw $s4,16($sp)
+    lw $s3,12($sp)
+    lw $s2,8($sp)
+    lw $s1,4($sp)
+    lw $s0,0($sp)
+    addi $sp,$sp,32
     lw   $t0,_t7
     move $v0,$t0
     jr $ra

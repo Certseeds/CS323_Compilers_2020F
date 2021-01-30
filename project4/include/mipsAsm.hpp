@@ -8,9 +8,11 @@
 #include "interCode.hpp"
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 using std::string;
 using std::vector;
+using std::unordered_set;
 
 class mipsAsm {
 public:
@@ -23,7 +25,7 @@ public:
     void output_intercodes();
 
 private:
-    std::vector<std::string> vari_names;
+    unordered_set<string> vari_names;
 
     void insert_vari(const std::string &str);
 };
