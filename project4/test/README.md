@@ -4,7 +4,7 @@
  * @Author: nanoseeds
  * @Date: 2021-01-29 20:20:35
  * @LastEditors: nanoseeds
- * @LastEditTime: 2021-01-30 16:04:08
+ * @LastEditTime: 2021-01-30 17:57:50
  * @License: CC-BY-NC-SA_V4_0 or any later version 
  -->
 
@@ -51,7 +51,11 @@ and now it is
 ```
 
 `*.ir` come from `*.spl` file by default.
+
 `*.test.ir` come from `*.spl` file by my compiler.
+
 `*.cpp` is `*.spl`'s translation in cpp.
+
 `*.asm` translate `*.spl` to mips32 Assembly by handwrite.
+
 `*.test.asm` translate `*.spl` to mips32 Assembly by my compiler.
