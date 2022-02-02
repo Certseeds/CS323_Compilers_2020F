@@ -105,7 +105,7 @@ then we rewrite it as a input file
 
 ```
 
-we use a Question2.cpp to slovthis question
+we use a Question2.cpp to solve this question
 
 ``` cpp
 /*
